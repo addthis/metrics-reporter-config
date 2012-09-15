@@ -1,0 +1,5 @@
+csv:
+  - 
+    outdir: '/tmp/metrics/csv-dir'
+    period: 2
+    timeunit: 'SECONDS'
