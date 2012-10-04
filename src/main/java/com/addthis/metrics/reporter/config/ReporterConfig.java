@@ -1,4 +1,4 @@
-package cburroughs.metrics.reporter.config;
+package com.addthis.metrics.reporter.config;
 
 import java.io.File;
 import java.io.FileInputStream;

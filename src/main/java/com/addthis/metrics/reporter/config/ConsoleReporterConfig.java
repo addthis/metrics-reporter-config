@@ -1,4 +1,4 @@
-package cburroughs.metrics.reporter.config;
+package com.addthis.metrics.reporter.config;
 
 import com.yammer.metrics.reporting.ConsoleReporter;
 

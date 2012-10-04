@@ -1,4 +1,4 @@
-package cburroughs.metrics.reporter.config;
+package com.addthis.metrics.reporter.config;
 
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.MetricPredicate;

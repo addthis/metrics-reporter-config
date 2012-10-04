@@ -1,4 +1,4 @@
-package cburroughs.metrics.reporter.config;
+package com.addthis.metrics.reporter.config;
 
 public class HostPort
 {
