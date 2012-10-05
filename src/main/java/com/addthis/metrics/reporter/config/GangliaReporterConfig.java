@@ -11,7 +11,8 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GangliaReporterConfig extends AbstractReporterConfig {
+public class GangliaReporterConfig extends AbstractReporterConfig
+{
     private static final Logger log = LoggerFactory.getLogger(GangliaReporterConfig.class);
 
     @Valid
@@ -27,7 +28,8 @@ public class GangliaReporterConfig extends AbstractReporterConfig {
         return hosts;
     }
 
-    public void setHosts(List<HostPort> hosts) {
+    public void setHosts(List<HostPort> hosts)
+    {
         this.hosts = hosts;
     }
 
@@ -56,15 +58,18 @@ public class GangliaReporterConfig extends AbstractReporterConfig {
     public void enable()
     {
         String className = "com.yammer.metrics.reporting.GangliaReporter";
-        if (!isClassAvailable(className)) {
+        if (!isClassAvailable(className))
+        {
             log.error("Tried to enable GangliaReporter, but class {} was not found", className);
             return;
         }
-        if (hosts == null || hosts.isEmpty()) {
+        if (hosts == null || hosts.isEmpty())
+        {
             log.error("No hosts specified, cannot enable GangliaReporter");
             return;
         }
-        for (HostPort hostPort : hosts) {
+        for (HostPort hostPort : hosts)
+        {
             log.info("Enabling GangliaReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
             com.yammer.metrics.reporting.GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
                                                                 hostPort.getHost(), hostPort.getPort(), groupPrefix,

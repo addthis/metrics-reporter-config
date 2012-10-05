@@ -17,6 +17,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 public class SampleTest
 {
     private static final Yaml yaml = new Yaml(new Constructor(ReporterConfig.class));
+    private final int loops = 2;
 
     @Test
     public void sampleConsole() throws Exception
@@ -26,7 +27,8 @@ public class SampleTest
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
         config.enableConsole();
-        for (int i=0; i< 15 ; i++) {
+        for (int i=0; i< loops; i++)
+        {
             counter.inc();
             meter.mark();
             Thread.sleep(1000);
@@ -44,7 +46,8 @@ public class SampleTest
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
         config.enableCsv();
-        for (int i=0; i< 15 ; i++) {
+        for (int i=0; i< loops; i++)
+        {
             counter.inc();
             meter.mark();
             Thread.sleep(1000);
@@ -61,7 +64,8 @@ public class SampleTest
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
         config.enableGanglia();
-        for (int i=0; i< 15 ; i++) {
+        for (int i=0; i< loops; i++)
+        {
             counter.inc();
             meter.mark();
             Thread.sleep(1000);
@@ -78,7 +82,8 @@ public class SampleTest
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
         config.enableGraphite();
-        for (int i=0; i< 15 ; i++) {
+        for (int i=0; i< loops; i++)
+        {
             counter.inc();
             meter.mark();
             Thread.sleep(1000);
@@ -96,13 +101,13 @@ public class SampleTest
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
         config.enableAll();
-        for (int i=0; i< 15 ; i++) {
+        for (int i=0; i< loops; i++)
+        {
             counter.inc();
             meter.mark();
             Thread.sleep(1000);
         }
         System.out.println("Done!");
     }
-
 
 }

@@ -12,17 +12,17 @@ public class HostPort
     @Min(0)
     @Max(65535)
     private int port;
-    
+
     public String getHost()
     {
         return host;
     }
-    
+
     public void setHost(String host)
     {
         this.host = host;
     }
-    
+
     public int getPort()
     {
         return port;
@@ -34,4 +34,4 @@ public class HostPort
     }
 }
 
-        
+

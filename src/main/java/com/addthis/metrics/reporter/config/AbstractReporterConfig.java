@@ -1,19 +1,18 @@
 package com.addthis.metrics.reporter.config;
 
-import java.lang.Class;
-
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public abstract class AbstractReporterConfig {
+public abstract class AbstractReporterConfig
+{
     @NotNull
     @Min(1)
-    protected long period;
+    private long period;
     @NotNull
-    protected String timeunit;
-    
+    private String timeunit;
+
     public long getPeriod()
     {
         return period;
@@ -39,13 +38,15 @@ public abstract class AbstractReporterConfig {
         return TimeUnit.valueOf(timeunit);
     }
 
-
     protected boolean isClassAvailable(String className)
     {
-         try {
+         try
+         {
              Class.forName(className);
              return true;
-         } catch(ClassNotFoundException e) {
+         }
+         catch (ClassNotFoundException e)
+         {
              return false;
          }
     }

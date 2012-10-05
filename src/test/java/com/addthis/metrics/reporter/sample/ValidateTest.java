@@ -5,8 +5,6 @@ import com.addthis.metrics.reporter.config.ReporterConfig;
 
 import java.io.IOException;
 
-import java.util.concurrent.TimeUnit;
-
 import static org.junit.Assert.assertFalse;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +13,7 @@ import org.junit.rules.ExpectedException;
 public class ValidateTest
 {
     @Rule
-    public ExpectedException thrown= ExpectedException.none();
+    private ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void validateSamples() throws IOException

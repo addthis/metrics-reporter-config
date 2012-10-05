@@ -5,15 +5,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Path;
 import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
@@ -29,7 +26,8 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 // Stupid bean for simplicity and snakeyaml, instead of @Immutable
 // like any sane person would intend
-public class ReporterConfig {
+public class ReporterConfig
+{
     private static final Logger log = LoggerFactory.getLogger(ReporterConfig.class);
 
     @Valid
@@ -86,44 +84,52 @@ public class ReporterConfig {
 
     public void enableConsole()
     {
-        if (console == null) {
+        if (console == null)
+        {
             log.warn("Asked to enable console, but it was not configured");
             return;
         }
-        for (ConsoleReporterConfig consoleConfig : console) {
+        for (ConsoleReporterConfig consoleConfig : console)
+        {
             consoleConfig.enable();
         }
     }
 
     public void enableCsv()
     {
-        if (csv == null) {
+        if (csv == null)
+        {
             log.warn("Asked to enable csv, but it was not configured");
             return;
         }
-        for (CsvReporterConfig csvConfig : csv) {
+        for (CsvReporterConfig csvConfig : csv)
+        {
             csvConfig.enable();
         }
     }
 
     public void enableGanglia()
     {
-        if (ganglia == null) {
+        if (ganglia == null)
+        {
             log.warn("Asked to enable ganglia, but it was not configured");
             return;
         }
-        for (GangliaReporterConfig gangliaConfig : ganglia) {
+        for (GangliaReporterConfig gangliaConfig : ganglia)
+        {
             gangliaConfig.enable();
         }
     }
 
     public void enableGraphite()
     {
-        if (graphite == null) {
+        if (graphite == null)
+        {
             log.warn("Asked to enable graphite, but it was not configured");
             return;
         }
-        for (GraphiteReporterConfig graphiteConfig : graphite) {
+        for (GraphiteReporterConfig graphiteConfig : graphite)
+        {
             graphiteConfig.enable();
         }
     }
@@ -132,13 +138,21 @@ public class ReporterConfig {
     public void enableAll()
     {
         if (console != null)
+        {
             enableConsole();
+        }
         if (csv != null)
+        {
             enableCsv();
+        }
         if (ganglia != null)
+        {
             enableGanglia();
+        }
         if (graphite != null)
+        {
             enableGraphite();
+        }
     }
 
 
@@ -171,7 +185,8 @@ public class ReporterConfig {
         final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         final Set<ConstraintViolation<T>> violations = factory.getValidator().validate(obj);
         final SortedSet<String> errors = new TreeSet<String>();
-        for (ConstraintViolation<T> v : violations) {
+        for (ConstraintViolation<T> v : violations)
+        {
             errors.add(String.format("%s %s (was %s)",
                                      v.getPropertyPath(),
                                      v.getMessage(),
