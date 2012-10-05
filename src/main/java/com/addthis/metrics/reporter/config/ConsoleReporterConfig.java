@@ -2,13 +2,27 @@ package com.addthis.metrics.reporter.config;
 
 import com.yammer.metrics.reporting.ConsoleReporter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class ConsoleReporterConfig extends AbstractReporterConfig
 {
+    private static final Logger log = LoggerFactory.getLogger(ConsoleReporterConfig.class);
 
     @Override
-    public void enable()
+    public boolean enable()
     {
-        ConsoleReporter.enable(getPeriod(), getRealTimeunit());
+        try
+        {
+            ConsoleReporter.enable(getPeriod(), getRealTimeunit());
+        }
+        catch (Exception e)
+        {
+            log.error("Failure while enabling console reporter", e);
+            return false;
+        }
+        return true;
     }
 
 }

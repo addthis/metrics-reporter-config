@@ -56,5 +56,5 @@ public abstract class AbstractReporterConfig
          }
     }
 
-    public abstract void enable();
+    public abstract boolean enable();
 }

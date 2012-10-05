@@ -82,77 +82,115 @@ public class ReporterConfig
     }
 
 
-    public void enableConsole()
+    public boolean enableConsole()
     {
+        boolean failures = false;
         if (console == null)
         {
-            log.warn("Asked to enable console, but it was not configured");
-            return;
+            log.debug("Asked to enable console, but it was not configured");
+            return false;
         }
         for (ConsoleReporterConfig consoleConfig : console)
         {
-            consoleConfig.enable();
+            if (!consoleConfig.enable())
+            {
+                failures = true;
+            }
         }
+        return !failures;
     }
 
-    public void enableCsv()
+    public boolean enableCsv()
     {
+        boolean failures = false;
         if (csv == null)
         {
-            log.warn("Asked to enable csv, but it was not configured");
-            return;
+            log.debug("Asked to enable csv, but it was not configured");
+            return false;
         }
         for (CsvReporterConfig csvConfig : csv)
         {
-            csvConfig.enable();
+            if (!csvConfig.enable())
+            {
+                failures = true;
+            }
         }
+        return !failures;
     }
 
-    public void enableGanglia()
+    public boolean enableGanglia()
     {
+        boolean failures = false;
         if (ganglia == null)
         {
-            log.warn("Asked to enable ganglia, but it was not configured");
-            return;
+            log.debug("Asked to enable ganglia, but it was not configured");
+            return false;
         }
         for (GangliaReporterConfig gangliaConfig : ganglia)
         {
-            gangliaConfig.enable();
+            if (!gangliaConfig.enable())
+            {
+                failures = true;
+            }
         }
+        return !failures;
     }
 
-    public void enableGraphite()
+    public boolean enableGraphite()
     {
+        boolean failures = false;
         if (graphite == null)
         {
-            log.warn("Asked to enable graphite, but it was not configured");
-            return;
+            log.debug("Asked to enable graphite, but it was not configured");
+            return false;
         }
         for (GraphiteReporterConfig graphiteConfig : graphite)
         {
-            graphiteConfig.enable();
+            if (!graphiteConfig.enable())
+            {
+                failures = true;
+            }
         }
+        return !failures;
     }
 
 
-    public void enableAll()
+    public boolean enableAll()
     {
+        boolean enabled = false;
         if (console != null)
         {
-            enableConsole();
+            if (enableConsole())
+            {
+                enabled = true;
+            }
         }
         if (csv != null)
         {
-            enableCsv();
+            if (enableCsv())
+            {
+                enabled = true;
+            }
         }
         if (ganglia != null)
         {
-            enableGanglia();
+            if (enableGanglia())
+            {
+                enabled = true;
+            }
         }
         if (graphite != null)
         {
-            enableGraphite();
+            if (enableGraphite())
+            {
+                enabled = true;
+            }
         }
+        if (!enabled)
+        {
+            log.warn("No reporters were succesfully enabled");
+        }
+        return enabled;
     }
 
 

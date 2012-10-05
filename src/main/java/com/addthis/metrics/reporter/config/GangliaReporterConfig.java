@@ -55,26 +55,35 @@ public class GangliaReporterConfig extends AbstractReporterConfig
 
 
     @Override
-    public void enable()
+    public boolean enable()
     {
         String className = "com.yammer.metrics.reporting.GangliaReporter";
         if (!isClassAvailable(className))
         {
             log.error("Tried to enable GangliaReporter, but class {} was not found", className);
-            return;
+            return false;
         }
         if (hosts == null || hosts.isEmpty())
         {
             log.error("No hosts specified, cannot enable GangliaReporter");
-            return;
+            return false;
         }
         for (HostPort hostPort : hosts)
         {
             log.info("Enabling GangliaReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
-            com.yammer.metrics.reporting.GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
-                                                                hostPort.getHost(), hostPort.getPort(), groupPrefix,
-                                                                MetricPredicate.ALL, compressPackageNames);
+            try
+            {
+                com.yammer.metrics.reporting.GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                                                                    hostPort.getHost(), hostPort.getPort(), groupPrefix,
+                                                                    MetricPredicate.ALL, compressPackageNames);
+            }
+            catch (Exception e)
+            {
+                log.error("Faliure while enabling GangliaReporter", e);
+                return false;
+            }
 
         }
+        return true;
     }
 }

@@ -27,12 +27,21 @@ public class CsvReporterConfig extends AbstractReporterConfig
     }
 
     @Override
-    public void enable()
+    public boolean enable()
     {
         log.info("Enabling CsvReporter to {}", outdir);
-        File foutDir = new File(outdir);
-        foutDir.mkdirs();
-        CsvReporter.enable(foutDir, getPeriod(), getRealTimeunit());
+        try
+        {
+            File foutDir = new File(outdir);
+            foutDir.mkdirs();
+            CsvReporter.enable(foutDir, getPeriod(), getRealTimeunit());
+        }
+        catch (Exception e)
+        {
+            log.error("Failure while Enabling CsvReporter", e);
+            return false;
+        }
+        return true;
     }
 
 }

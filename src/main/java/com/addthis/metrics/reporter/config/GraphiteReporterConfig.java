@@ -44,24 +44,33 @@ public class GraphiteReporterConfig extends AbstractReporterConfig
 
 
     @Override
-    public void enable()
+    public boolean enable()
     {
         String className = "com.yammer.metrics.reporting.GraphiteReporter";
         if (!isClassAvailable(className))
         {
             log.error("Tried to enable GraphiteReporter, but class {} was not found", className);
-            return;
+            return false;
         }
         if (hosts == null || hosts.isEmpty())
         {
             log.error("No hosts specified, cannot enable GraphiteReporter");
-            return;
+            return false;
         }
         for (HostPort hostPort : hosts)
         {
-            log.info("Enabling GraphiteReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
-            com.yammer.metrics.reporting.GraphiteReporter.enable(getPeriod(), getRealTimeunit(),
-                                                                 hostPort.getHost(), hostPort.getPort(), prefix);
+            try
+            {
+                log.info("Enabling GraphiteReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
+                com.yammer.metrics.reporting.GraphiteReporter.enable(getPeriod(), getRealTimeunit(),
+                                                                     hostPort.getHost(), hostPort.getPort(), prefix);
+            }
+            catch (Exception e)
+            {
+                log.error("Failed to enable GraphiteReporter", e);
+                return false;
+            }
         }
+        return true;
     }
 }
