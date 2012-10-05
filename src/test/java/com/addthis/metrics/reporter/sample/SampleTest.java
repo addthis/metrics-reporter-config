@@ -1,14 +1,10 @@
 package com.addthis.metrics.reporter.sample;
 
-import cburroughs.metrics.reporter.config.ReporterConfig;
+import com.addthis.metrics.reporter.config.ReporterConfig;
 
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Counter;
 import com.yammer.metrics.core.Meter;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +21,7 @@ public class SampleTest
     @Test
     public void sampleConsole() throws Exception
     {
-        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/console.yaml");
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/console.yaml");
         System.out.println(yaml.dump(config));
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);

@@ -1,8 +1,16 @@
 package com.addthis.metrics.reporter.config;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class HostPort
 {
+    @NotNull
     private String host;
+    @NotNull
+    @Min(0)
+    @Max(65535)
     private int port;
     
     public String getHost()

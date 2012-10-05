@@ -4,8 +4,14 @@ import java.lang.Class;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public abstract class AbstractReporterConfig {
+    @NotNull
+    @Min(1)
     protected long period;
+    @NotNull
     protected String timeunit;
     
     public long getPeriod()

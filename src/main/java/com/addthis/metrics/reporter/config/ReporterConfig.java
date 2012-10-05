@@ -5,13 +5,25 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+
 
 // ser/d class.  May make a different abstract for commonalities
 
@@ -20,10 +32,13 @@ import org.yaml.snakeyaml.constructor.Constructor;
 public class ReporterConfig {
     private static final Logger log = LoggerFactory.getLogger(ReporterConfig.class);
 
-
+    @Valid
     private List<ConsoleReporterConfig> console;
+    @Valid
     private List<CsvReporterConfig> csv;
+    @Valid
     private List<GangliaReporterConfig> ganglia;
+    @Valid
     private List<GraphiteReporterConfig> graphite;
 
     public List<ConsoleReporterConfig> getConsole()
@@ -126,6 +141,21 @@ public class ReporterConfig {
             enableGraphite();
     }
 
+
+    public static ReporterConfig loadFromFileAndValidate(String fileName) throws IOException
+    {
+        ReporterConfig config = loadFromFile(fileName);
+        if (validate(config))
+        {
+            return config;
+        }
+        else
+        {
+            throw new ReporterConfigurationException("configuration failed validation");
+        }
+    }
+
+
     public static ReporterConfig loadFromFile(String fileName) throws IOException
     {
         Yaml yaml = new Yaml(new Constructor(ReporterConfig.class));
@@ -134,4 +164,35 @@ public class ReporterConfig {
         return config;
     }
 
+
+    // Based on com.yammer.dropwizard.validation.Validator
+    public static <T> boolean validate(T obj)
+    {
+        final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        final Set<ConstraintViolation<T>> violations = factory.getValidator().validate(obj);
+        final SortedSet<String> errors = new TreeSet<String>();
+        for (ConstraintViolation<T> v : violations) {
+            errors.add(String.format("%s %s (was %s)",
+                                     v.getPropertyPath(),
+                                     v.getMessage(),
+                                     v.getInvalidValue()));
+        }
+        if (errors.isEmpty())
+        {
+            return true;
+        }
+        else
+        {
+            log.error("Failed to validate: {}", errors);
+            return false;
+        }
+    }
+
+    public static class ReporterConfigurationException extends RuntimeException
+    {
+        public ReporterConfigurationException(String msg)
+        {
+            super(msg);
+        }
+    }
 }

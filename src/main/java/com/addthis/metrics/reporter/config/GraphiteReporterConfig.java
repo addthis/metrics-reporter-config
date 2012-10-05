@@ -5,13 +5,19 @@ import com.yammer.metrics.core.MetricPredicate;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GraphiteReporterConfig extends AbstractReporterConfig {
     private static final Logger log = LoggerFactory.getLogger(GraphiteReporterConfig.class);
 
+    @Valid
+    @NotNull
     private List<HostPort> hosts;
+    @NotNull
     private String prefix = "";
 
     public List<HostPort> getHosts()
