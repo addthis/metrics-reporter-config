@@ -91,6 +91,43 @@ public class SampleTest
         System.out.println("Done!");
     }
 
+    @Test
+    public void sampleGraphiteString() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string.yaml");
+        System.out.println(yaml.dump(config));
+        System.out.println("GRAPHITE STRING!!!!!!!!!!");
+        Counter counter = Metrics.newCounter(getClass(), "counter");
+        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
+        config.enableGraphite();
+        for (int i=0; i< loops; i++)
+        {
+            counter.inc();
+            meter.mark();
+            Thread.sleep(1000);
+        }
+        System.out.println("Done!");
+    }
+
+    @Test
+    public void sampleGraphiteStringDupe() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string-dupe.yaml");
+        System.out.println(yaml.dump(config));
+        System.out.println("GRAPHITE STRING Dupe!!!!!!!!!!");
+        Counter counter = Metrics.newCounter(getClass(), "counter");
+        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
+        config.enableGraphite();
+        for (int i=0; i< loops; i++)
+        {
+            counter.inc();
+            meter.mark();
+            Thread.sleep(1000);
+        }
+        System.out.println("Done!");
+    }
+
+
 
     @Test
     public void sampleMulti() throws Exception

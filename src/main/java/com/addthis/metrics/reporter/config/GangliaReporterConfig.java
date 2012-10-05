@@ -11,27 +11,14 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GangliaReporterConfig extends AbstractReporterConfig
+public class GangliaReporterConfig extends AbstractHostPortReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(GangliaReporterConfig.class);
 
-    @Valid
-    @NotNull
-    private List<HostPort> hosts;
     @NotNull
     private String groupPrefix = "";
     @NotNull
     private boolean compressPackageNames = false;
-
-    public List<HostPort> getHosts()
-    {
-        return hosts;
-    }
-
-    public void setHosts(List<HostPort> hosts)
-    {
-        this.hosts = hosts;
-    }
 
     public String getGroupPrefix()
     {
@@ -53,6 +40,12 @@ public class GangliaReporterConfig extends AbstractReporterConfig
         this.compressPackageNames = compressPackageNames;
     }
 
+    @Override
+    public List<HostPort> getFullHostList()
+    {
+        return getHostListAndStringList();
+    }
+
 
     @Override
     public boolean enable()
@@ -63,6 +56,7 @@ public class GangliaReporterConfig extends AbstractReporterConfig
             log.error("Tried to enable GangliaReporter, but class {} was not found", className);
             return false;
         }
+        List<HostPort> hosts = getFullHostList();
         if (hosts == null || hosts.isEmpty())
         {
             log.error("No hosts specified, cannot enable GangliaReporter");

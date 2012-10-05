@@ -13,6 +13,14 @@ public class HostPort
     @Max(65535)
     private int port;
 
+    public HostPort() {}
+
+    public HostPort(String host, int port)
+    {
+        this.host = host;
+        this.port = port;
+    }
+
     public String getHost()
     {
         return host;

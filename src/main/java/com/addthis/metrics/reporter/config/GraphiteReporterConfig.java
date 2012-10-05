@@ -12,25 +12,12 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GraphiteReporterConfig extends AbstractReporterConfig
+public class GraphiteReporterConfig extends AbstractHostPortReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(GraphiteReporterConfig.class);
 
-    @Valid
-    @NotNull
-    private List<HostPort> hosts;
     @NotNull
     private String prefix = "";
-
-    public List<HostPort> getHosts()
-    {
-        return hosts;
-    }
-
-    public void setHosts(List<HostPort> hosts)
-    {
-        this.hosts = hosts;
-    }
 
     public String getPrefix()
     {
@@ -42,6 +29,11 @@ public class GraphiteReporterConfig extends AbstractReporterConfig
         this.prefix = prefix;
     }
 
+    @Override
+    public List<HostPort> getFullHostList()
+    {
+        return getHostListAndStringList();
+    }
 
     @Override
     public boolean enable()
@@ -52,6 +44,7 @@ public class GraphiteReporterConfig extends AbstractReporterConfig
             log.error("Tried to enable GraphiteReporter, but class {} was not found", className);
             return false;
         }
+        List<HostPort> hosts = getFullHostList();
         if (hosts == null || hosts.isEmpty())
         {
             log.error("No hosts specified, cannot enable GraphiteReporter");
