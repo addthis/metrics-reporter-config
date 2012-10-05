@@ -48,11 +48,11 @@
     <!-- Checks that property files contain the same keys.         -->
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
     <module name="Translation"/>
-    
+
     <!-- Checks for Size Violations.                    -->
     <!-- See http://checkstyle.sf.net/config_sizes.html -->
     <module name="FileLength"/>
-    
+
     <!-- Checks for whitespace                               -->
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
     <module name="FileTabCharacter"/>
@@ -81,10 +81,8 @@
             <module name="JavadocMethod"/>
             <module name="JavadocType"/>
             <module name="JavadocVariable"/>
+            <module name="JavadocStyle"/>
         -->
-        <module name="JavadocStyle"/>
-
-
 
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
@@ -104,7 +102,9 @@
         <!-- Checks for imports                              -->
         <!-- See http://checkstyle.sf.net/config_import.html -->
         <module name="AvoidStarImport"/>
-        <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
+        <!-- compiler already yells at you, if you are useing Unsafe you should know what you are doing
+            <module name="IllegalImport"/>
+        -->
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
@@ -113,10 +113,12 @@
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="LineLength">
           <property name="ignorePattern" value="^ *\* *[^ ]+$"/>
-          <property name="max" value="125"/>
+          <property name="max" value="150"/>
         </module>
         <module name="MethodLength"/>
-        <module name="ParameterNumber"/>
+        <module name="ParameterNumber"> <!-- @immutable classes need everything in the constructor -->
+          <property name="tokens" value="METHOD_DEF"/>
+        </module>
 
 
         <!-- Checks for whitespace                               -->
@@ -124,12 +126,19 @@
         <module name="EmptyForIteratorPad"/>
         <module name="GenericWhitespace"/>
         <module name="MethodParamPad"/>
-        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceAfter">
+          <property name="tokens" value="TYPECAST"/>
+        </module>
         <module name="NoWhitespaceBefore"/>
-        <module name="OperatorWrap"/>
+        <module name="OperatorWrap">
+          <property name="tokens" value="ASSIGN,PLUS,QUESTION"/>
+          <property name="option" value="eol"/>
+        </module>
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
-        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAfter"> <!-- not fine grained enough, don't want spaces in generics -->
+          <property name="tokens" value="SEMI"/>
+        </module>
         <!-- eyes just expect i=0 in for loops
             <module name="WhitespaceAround"/>
         -->
@@ -138,7 +147,9 @@
         <!-- Modifier Checks                                    -->
         <!-- See http://checkstyle.sf.net/config_modifiers.html -->
         <module name="ModifierOrder"/>
-        <module name="RedundantModifier"/>
+        <!-- Preferring explicit
+            <module name="RedundantModifier"/>
+        -->
 
 
         <!-- Checks for blocks. You know, those {}'s         -->
@@ -185,12 +196,17 @@
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
-        <module name="VisibilityModifier"/>
+        <!-- somtimes not having crazy verbosity is better
+             <module name="VisibilityModifier"/>
+        -->
+
 
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
-        <module name="ArrayTypeStyle"/>
+        <!--
+            <module name="ArrayTypeStyle"/>
+        -->
         <!--
             <module name="FinalParameters"/>
         -->
