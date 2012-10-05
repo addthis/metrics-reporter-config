@@ -1,2 +1,117 @@
-THIS IS ONLY A DRAFT PROOF OF CONCEPT. DON'T USE IT.  IT MAY BE DELETED
-AT ANY TIME.
+## Description
+
+Coda Hale's [Metrics](http://github.com/codahale/metrics) package
+makes it easy to create useful metrics so you know what is going on in
+production.  In addition to showing up in the normal Java places
+(JMX), [Metrics](http://github.com/codahale/metrics) supports an
+arbitrary number of *Reporters* (where to send the application
+telemetry to make pretty graphs).  [Ganglia](http://ganglia.info/) and
+[Graphite](http://graphite.wikidot.com/) (or both!) are among the most
+popular choices.
+
+However, [Metrics](http://github.com/codahale/metrics) purposefully
+doesn't come with a kitchen sink of support for every dependency
+injection or configuration tool yet devised by Java developers.
+Metrics-Reporter-Config aims to provide a simple way to configure and
+enable a set of *Reporters* that can be shared among applications.  It
+should fit most (say 90%) of use cases and avoid outcomes like a
+plethora of subtly incompatible properties files.
+
+In particular, it should seamlessly fit into
+[Dropwizard](http://dropwizard.codahale.com/) service
+[Configuration](http://dropwizard.codahale.com/getting-started/#creating-a-configuration-class)
+classes.
+
+## Use
+
+Current supported reporters include:
+ * console
+ * csv
+ * ganglia
+ * graphite
+
+Note that Metrics-Reporter-Config's dependencies on non-core reporters
+are *optional* in maven-speak.  That means that depending on
+Metrics-Reporter-Config should not pull in "a bunch of junk", but your
+applications will need to explicitly depend on the reporters they want
+(such as `metrics-ganglia`).
+
+An example config file might look like this:
+
+    csv:
+      -
+        outdir: '/tmp/metrics/crazy-debugging'
+        period: 2
+        timeunit: 'MINUTES'
+    ganglia:
+      -
+        period: 60
+        timeunit: 'SECONDS'
+        hosts:
+          - host: 'gmond.domain.local'
+            port: 8649
+          - host: 'gmond-backup.domain.local'
+            port: 8649
+    graphite:
+      -
+        period: 120
+        timeunit: 'SECONDS'
+        hosts:
+         - host: 'graphite-server.domain.local'
+            port: 2003
+
+
+And then wire up your app and call
+`ReporterConfig.loadFromFileAndValidate()` (or `loadFromFile()` if you
+aren't into validating), and then call `enableAll()`.
+
+
+### Maven
+
+    <dependency>
+      <groupId>com.addthis.metrics</groupId>
+      <artifactId>reporter-config</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+
+### Dropwizard
+
+Just add a `ReporterConfig` instance to your app's
+[Configuration](http://dropwizard.codahale.com/getting-started/#creating-a-configuration-class)
+class.  Metrics-Reporter-Config uses the same validation
+implementation as dropwizard. You will still need to call an enable
+method when initialization your app.
+
+### Predicates
+
+IN PROGRESS
+
+
+## Building
+
+Assuming you have [Apache Maven](http://maven.apache.org/) installed
+and configured:
+
+    mvn package
+
+And you should be all set.
+
+## Administrivia
+
+### Versioning
+
+It's x.y.z where:
+ * x: compatible [Metrics](http://github.com/codahale/metrics) major version
+ * y: next release
+ * z: bug fix only
+
+### License
+
+Metrics-Reporter-Config is released under the Apache License Version 2.0.  See
+[Apache](http://www.apache.org/licenses/LICENSE-2.0) or the LICENSE file
+in this distribution for details.
+
+
+### Where People Hang Out
+
+Main Metrics mailing list: http://groups.google.com/group/metrics-user
