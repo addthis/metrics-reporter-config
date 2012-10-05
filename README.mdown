@@ -14,7 +14,7 @@ doesn't come with a kitchen sink of support for every dependency
 injection or configuration tool yet devised by Java developers.
 Metrics-Reporter-Config aims to provide a simple way to configure and
 enable a set of *Reporters* that can be shared among applications.  It
-should fit most (say 90%) of use cases and avoid outcomes like a
+should fit most (say 90% of) use cases and avoid situations like a
 plethora of subtly incompatible properties files.
 
 In particular, it should seamlessly fit into

@@ -13,7 +13,7 @@ import org.junit.rules.ExpectedException;
 public class ValidateTest
 {
     @Rule
-    private ExpectedException thrown = ExpectedException.none();
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void validateSamples() throws IOException
@@ -52,6 +52,13 @@ public class ValidateTest
     {
         thrown.expect(ReporterConfig.ReporterConfigurationException.class);
         ReporterConfig config = ReporterConfig.loadFromFileAndValidate("src/test/resources/invalid/invalid-port-range.yaml");
+    }
+
+    @Test
+    public void validateTimeUnit() throws IOException
+    {
+        thrown.expect(ReporterConfig.ReporterConfigurationException.class);
+        ReporterConfig config = ReporterConfig.loadFromFileAndValidate("src/test/resources/invalid/bad-timeunit.yaml");
     }
 
 

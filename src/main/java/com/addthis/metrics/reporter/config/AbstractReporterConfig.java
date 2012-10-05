@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public abstract class AbstractReporterConfig
 {
@@ -11,6 +12,10 @@ public abstract class AbstractReporterConfig
     @Min(1)
     private long period;
     @NotNull
+    @Pattern(
+        regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
+        message = "must be a valid java.util.concurrent.TimeUnit"
+    )
     private String timeunit;
 
     public long getPeriod()
