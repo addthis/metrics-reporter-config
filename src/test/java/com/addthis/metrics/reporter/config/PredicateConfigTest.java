@@ -31,6 +31,16 @@ public class PredicateConfigTest
         assertFalse(pc.allowString("badFoo"));
     }
 
+    @Test
+    public void jmxRegex()
+    {
+        PredicateConfig pc = new PredicateConfig("black", ImmutableList.of(".*JMXONLY$"));
+        assertTrue(pc.allowString("foo"));
+        assertTrue(pc.allowString("foobad"));
+        assertTrue(pc.allowString("badFoo"));
+        assertTrue(pc.allowString("com.example.foo.CoolMetric"));
+        assertFalse(pc.allowString("com.example.foo.CoolMetric_JMXONLY"));
+    }
 
     @Test
     public void singleWhite()
