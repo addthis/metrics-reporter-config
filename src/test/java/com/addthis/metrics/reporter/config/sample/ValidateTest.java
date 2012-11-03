@@ -1,4 +1,4 @@
-package com.addthis.metrics.reporter.sample;
+package com.addthis.metrics.reporter.config.sample;
 
 import com.addthis.metrics.reporter.config.HostPort;
 import com.addthis.metrics.reporter.config.ReporterConfig;
