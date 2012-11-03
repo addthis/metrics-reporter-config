@@ -1,11 +1,9 @@
 package com.addthis.metrics.reporter.config;
 
 import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.MetricPredicate;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
@@ -69,7 +67,7 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
             {
                 com.yammer.metrics.reporting.GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
                                                                     hostPort.getHost(), hostPort.getPort(), groupPrefix,
-                                                                    MetricPredicate.ALL, compressPackageNames);
+                                                                    getMetricPredicate(), compressPackageNames);
             }
             catch (Exception e)
             {

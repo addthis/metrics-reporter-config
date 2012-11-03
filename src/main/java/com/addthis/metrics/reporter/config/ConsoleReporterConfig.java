@@ -5,7 +5,7 @@ import com.yammer.metrics.reporting.ConsoleReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+// TODO: Use predicate (enable method does not support)
 public class ConsoleReporterConfig extends AbstractReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(ConsoleReporterConfig.class);

@@ -1,12 +1,9 @@
 package com.addthis.metrics.reporter.config;
 
-// TODO: Why does constructor below not use predicates
-//import com.yammer.metrics.Metrics;
-//import com.yammer.metrics.core.MetricPredicate;
+import com.yammer.metrics.Metrics;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
@@ -55,8 +52,9 @@ public class GraphiteReporterConfig extends AbstractHostPortReporterConfig
             try
             {
                 log.info("Enabling GraphiteReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
-                com.yammer.metrics.reporting.GraphiteReporter.enable(getPeriod(), getRealTimeunit(),
-                                                                     hostPort.getHost(), hostPort.getPort(), prefix);
+                com.yammer.metrics.reporting.GraphiteReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                                                                     hostPort.getHost(), hostPort.getPort(), prefix, getMetricPredicate());
+
             }
             catch (Exception e)
             {
