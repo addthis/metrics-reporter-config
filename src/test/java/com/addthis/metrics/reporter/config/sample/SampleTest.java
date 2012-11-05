@@ -36,11 +36,8 @@ public class SampleTest
     private static final Yaml yaml = new Yaml(new Constructor(ReporterConfig.class));
     private final int loops = 2;
 
-    @Test
-    public void sampleConsole() throws Exception
+    private void runLoop(ReporterConfig config) throws Exception
     {
-        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/console.yaml");
-        System.out.println(yaml.dump(config));
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
         config.enableConsole();
@@ -55,21 +52,20 @@ public class SampleTest
     }
 
     @Test
+    public void sampleConsole() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/console.yaml");
+        System.out.println(yaml.dump(config));
+        runLoop(config);
+    }
+
+    @Test
     public void sampleCSV() throws Exception
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("CSV!!!!!!!!!!");
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableCsv();
-        for (int i=0; i< loops; i++)
-        {
-            counter.inc();
-            meter.mark();
-            Thread.sleep(1000);
-        }
-        System.out.println("Done!");
+        System.out.println("CSV Reporter");
+        runLoop(config);
     }
 
     @Test
@@ -77,17 +73,9 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/ganglia.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("GANGLIA!!!!!!!!!!");
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableGanglia();
-        for (int i=0; i< loops; i++)
-        {
-            counter.inc();
-            meter.mark();
-            Thread.sleep(1000);
-        }
-        System.out.println("Done!");
+        System.out.println("Ganglia Reporter");
+        runLoop(config);
+
     }
 
     @Test
@@ -96,16 +84,7 @@ public class SampleTest
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/ganglia-gmond.yaml");
         System.out.println(yaml.dump(config));
         System.out.println("Ganglia Gmond");
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableGanglia();
-        for (int i=0; i< loops; i++)
-        {
-            counter.inc();
-            meter.mark();
-            Thread.sleep(1000);
-        }
-        System.out.println("Done!");
+        runLoop(config);
     }
 
 
@@ -114,17 +93,8 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("GRAPHITE!!!!!!!!!!");
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableGraphite();
-        for (int i=0; i< loops; i++)
-        {
-            counter.inc();
-            meter.mark();
-            Thread.sleep(1000);
-        }
-        System.out.println("Done!");
+        System.out.println("Graphite");
+        runLoop(config);
     }
 
     @Test
@@ -132,17 +102,8 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("GRAPHITE STRING!!!!!!!!!!");
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableGraphite();
-        for (int i=0; i< loops; i++)
-        {
-            counter.inc();
-            meter.mark();
-            Thread.sleep(1000);
-        }
-        System.out.println("Done!");
+        System.out.println("Graphite String");
+        runLoop(config);
     }
 
     @Test
@@ -150,17 +111,8 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string-dupe.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("GRAPHITE STRING Dupe!!!!!!!!!!");
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableGraphite();
-        for (int i=0; i< loops; i++)
-        {
-            counter.inc();
-            meter.mark();
-            Thread.sleep(1000);
-        }
-        System.out.println("Done!");
+        System.out.println("Graphite String Dupe");
+        runLoop(config);
     }
 
 
@@ -170,17 +122,8 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/multi.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("MULTI!!!!!!!!!!");
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableAll();
-        for (int i=0; i< loops; i++)
-        {
-            counter.inc();
-            meter.mark();
-            Thread.sleep(1000);
-        }
-        System.out.println("Done!");
+        System.out.println("Multi Reporter");
+        runLoop(config);
     }
 
 }
