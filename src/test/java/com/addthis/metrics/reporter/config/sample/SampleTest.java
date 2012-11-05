@@ -14,6 +14,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 
+// TODO: Make this an integration test
 public class SampleTest
 {
     private static final Yaml yaml = new Yaml(new Constructor(ReporterConfig.class));
@@ -72,6 +73,25 @@ public class SampleTest
         }
         System.out.println("Done!");
     }
+
+    @Test
+    public void sampleGangliaGmond() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/ganglia-gmond.yaml");
+        System.out.println(yaml.dump(config));
+        System.out.println("Ganglia Gmond");
+        Counter counter = Metrics.newCounter(getClass(), "counter");
+        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
+        config.enableGanglia();
+        for (int i=0; i< loops; i++)
+        {
+            counter.inc();
+            meter.mark();
+            Thread.sleep(1000);
+        }
+        System.out.println("Done!");
+    }
+
 
     @Test
     public void sampleGraphite() throws Exception

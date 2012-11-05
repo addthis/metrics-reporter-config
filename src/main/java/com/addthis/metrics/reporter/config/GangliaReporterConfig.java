@@ -17,6 +17,8 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
     private String groupPrefix = "";
     @NotNull
     private boolean compressPackageNames = false;
+    private String gmondConf;
+
 
     public String getGroupPrefix()
     {
@@ -38,10 +40,33 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
         this.compressPackageNames = compressPackageNames;
     }
 
+    public String getGmondConf()
+    {
+        return gmondConf;
+    }
+
+    public void setGmondConf(String gmondConf)
+    {
+        this.gmondConf = gmondConf;
+    }
+
     @Override
     public List<HostPort> getFullHostList()
     {
-        return getHostListAndStringList();
+         if (gmondConf != null)
+         {
+             GmondConfigParser gcp = new GmondConfigParser();
+             List<HostPort> confHosts = gcp.getGmondSendChannels(gmondConf);
+             if (confHosts == null || confHosts.isEmpty())
+             {
+                 log.warn("No send channels found after reading {}", gmondConf);
+             }
+             return confHosts;
+         }
+         else
+         {
+             return getHostListAndStringList();
+         }
     }
 
 

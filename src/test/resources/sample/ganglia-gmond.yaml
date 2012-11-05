@@ -1,0 +1,5 @@
+ganglia:
+  - 
+    period: 2
+    timeunit: 'SECONDS'
+    gmondConf: 'src/test/resources/gmond/comments.conf'
