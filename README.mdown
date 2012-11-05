@@ -35,6 +35,7 @@ classes.
 ### Basics
 
 Current supported reporters include:
+
  * console
  * csv
  * ganglia
@@ -75,9 +76,12 @@ And then wire up your app and call
 `ReporterConfig.loadFromFileAndValidate()` (or `loadFromFile()` if you
 aren't into validating), and then call `enableAll()`.
 
-### Remote Reporters
+In addition to an inline list, the ganglia config supports `gmondConf`
+field which tells it where to find gmond's config file (ie
+`/etc/ganglia/gmond.conf`) and read any UDP send channels there.  This
+should make it easy to keep the java app config and the rest of the
+system in sync.
 
-IN PROGRESS
 
 ### Dropwizard
 
@@ -88,11 +92,17 @@ implementation as dropwizard. You will still need to call an enable
 method when initialization your app.
 
 
-
 ### Predicates
 
-IN PROGRESS
+    predicate:
+      color: "black"
+      predicates:
+        - ".*JMXONLY$"
 
+Each reporter can have a simple name based predicate with a white or
+black list of regular expressions.  Use this to add rarely used
+metrics that will only show up in JMX without flooding ganglia with
+20k extra metrics.
 
 ## Building
 
@@ -108,6 +118,7 @@ And you should be all set.
 ### Versioning
 
 It's x.y.z where:
+
  * x: compatible [Metrics](http://github.com/codahale/metrics) major version
  * y: next release
  * z: bug fix only
