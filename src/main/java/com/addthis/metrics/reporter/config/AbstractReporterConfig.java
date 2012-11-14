@@ -70,7 +70,7 @@ public abstract class AbstractReporterConfig
         return predicate;
     }
 
-    public void setPredicates(PredicateConfig predicate)
+    public void setPredicate(PredicateConfig predicate)
     {
         this.predicate = predicate;
     }
