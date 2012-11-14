@@ -1,0 +1,9 @@
+ganglia:
+  - 
+    period: 60
+    timeunit: 'SECONDS'
+    gmondConf: 'src/test/resources/gmond/comments.conf'
+    predicate:
+      color: "black"
+      patterns: 
+      - ".*JMXONLY$"

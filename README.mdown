@@ -96,7 +96,7 @@ method when initialization your app.
 
     predicate:
       color: "black"
-      predicates:
+      patterns:
         - ".*JMXONLY$"
 
 Each reporter can have a simple name based predicate with a white or

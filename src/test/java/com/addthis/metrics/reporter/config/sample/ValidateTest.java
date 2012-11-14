@@ -37,6 +37,8 @@ public class ValidateTest
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/console.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/csv.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/ganglia.yaml");
+        ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/ganglia-gmond.yaml");
+        ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/ganglia-gmond-predicate.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/graphite.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/multi.yaml");
     }
