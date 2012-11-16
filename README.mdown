@@ -29,7 +29,7 @@ classes.
     <dependency>
       <groupId>com.addthis.metrics</groupId>
       <artifactId>reporter-config</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.4</version>
     </dependency>
 
 ### Basics
@@ -72,9 +72,9 @@ An example config file might look like this:
             port: 2003
 
 
-And then wire up your app and call
+And then to wire up your app call
 `ReporterConfig.loadFromFileAndValidate()` (or `loadFromFile()` if you
-aren't into validating), and then call `enableAll()`.
+aren't into validating), and then `enableAll()`.
 
 In addition to an inline list, the ganglia config supports `gmondConf`
 field which tells it where to find gmond's config file (ie
@@ -100,9 +100,20 @@ method when initialization your app.
         - ".*JMXONLY$"
 
 Each reporter can have a simple name based predicate with a white or
-black list of regular expressions.  Use this to add rarely used
-metrics that will only show up in JMX without flooding ganglia with
-20k extra metrics.
+black list of regular expressions.  Use this for rarely used metrics
+that will only show up in JMX without flooding ganglia with 20k extra
+metrics.  In practice our configurations tend to look like this:
+
+    ganglia:
+      -
+        period: 60
+        timeunit: 'SECONDS'
+        gmondConf: '/etc/ganglia/gmond.conf'
+        predicate:
+          color: "black"
+          patterns:
+          - ".*JMXONLY$"
+
 
 ## Building
 
