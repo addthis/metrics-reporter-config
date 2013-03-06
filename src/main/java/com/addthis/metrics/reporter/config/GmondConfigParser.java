@@ -56,7 +56,7 @@ public class GmondConfigParser
         }
         catch (IOException e)
         {
-            log.error("Unable to read gmond config from:" + fileName, fileName);
+            log.error("Unable to read gmond config from:" + fileName, e);
             return null;
         }
     }
