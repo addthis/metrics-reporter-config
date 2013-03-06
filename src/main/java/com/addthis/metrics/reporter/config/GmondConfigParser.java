@@ -54,9 +54,14 @@ public class GmondConfigParser
             String conf = readFile(fileName);
             return getGmondSendChannelsFromConf(conf);
         }
-        catch (IOException e)
+        catch (IOException ioe)
         {
-            log.error("Unable to read gmond config from:" + fileName, e);
+            log.error("Unable to read gmond config from:" + fileName, ioe);
+            return null;
+        }
+        catch (Exception e)
+        {
+            log.error("Error searching for unicast udp_send_channels.  It is possible none are defined in " + fileName, e);
             return null;
         }
     }

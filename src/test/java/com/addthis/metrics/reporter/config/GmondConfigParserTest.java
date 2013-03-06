@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 
@@ -108,5 +109,14 @@ public class GmondConfigParserTest
         assertEquals(8649, hosts.get(0).getPort());
         assertEquals("foo2.local", hosts.get(1).getHost());
         assertEquals(8649, hosts.get(1).getPort());
+    }
+
+    @Test
+    public void noChannelFoundHandling() throws Exception
+    {
+        System.out.println("Stack trace expected below");
+        GmondConfigParser g = new GmondConfigParser();
+        List<HostPort> hosts = g. getGmondSendChannels("src/test/resources/gmond/upstream-default.conf");
+        assertNull(hosts);
     }
 }
