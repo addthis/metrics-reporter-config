@@ -16,6 +16,7 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.yammer.metrics.Metrics;
 import com.yammer.metrics.reporting.CsvReporter;
 
 import java.io.File;
@@ -25,7 +26,7 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO: Use predicate (enable method does not support)
+
 public class CsvReporterConfig extends AbstractReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(CsvReporterConfig.class);
@@ -51,7 +52,11 @@ public class CsvReporterConfig extends AbstractReporterConfig
         {
             File foutDir = new File(outdir);
             foutDir.mkdirs();
-            CsvReporter.enable(foutDir, getPeriod(), getRealTimeunit());
+            // static enable() methods omit the option of specifying a
+            // predicate.  Calling constructor and starting manually
+            // instead
+            final CsvReporter reporter = new CsvReporter(Metrics.defaultRegistry(), getMetricPredicate(), foutDir);
+            reporter.start(getPeriod(), getRealTimeunit());
         }
         catch (Exception e)
         {
