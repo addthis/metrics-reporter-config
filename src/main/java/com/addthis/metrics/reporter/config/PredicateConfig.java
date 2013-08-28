@@ -100,7 +100,7 @@ public class PredicateConfig implements MetricPredicate
                 }
             }
         }
-        return false; // trusing validator
+        return false; // trusting validator
     }
 
 
