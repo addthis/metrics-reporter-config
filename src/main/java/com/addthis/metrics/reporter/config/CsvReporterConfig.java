@@ -49,7 +49,12 @@ public class CsvReporterConfig extends AbstractReporterConfig
         try
         {
             File foutDir = new File(outdir);
-            foutDir.mkdirs();
+            boolean success = foutDir.mkdirs();
+            if (!success)
+            {
+                log.error("Failed to create directory {} for CsvReporter", outdir);
+                return false;
+            }
             // static enable() methods omit the option of specifying a
             // predicate.  Calling constructor and starting manually
             // instead

@@ -166,10 +166,11 @@ static cfg_opt_t udp_send_channel_opts[] = {
     protected String readFile(String fileName) throws IOException
     {
         FileReader fr = null;
+        BufferedReader br = null;
         try
         {
             fr = new FileReader(fileName);    
-            BufferedReader br = new BufferedReader(fr);
+            br = new BufferedReader(fr);
             StringBuffer sb = new StringBuffer();
             String line = br.readLine();
             while (line != null)
@@ -185,6 +186,10 @@ static cfg_opt_t udp_send_channel_opts[] = {
             if (fr != null)
             {
                 fr.close();
+            }
+            if (br != null)
+            {
+                br.close();
             }
         }
     }
