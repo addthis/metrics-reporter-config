@@ -26,6 +26,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -33,6 +36,8 @@ import org.yaml.snakeyaml.constructor.Constructor;
 // TODO: Make this an integration test
 public class SampleTest
 {
+    private static final Logger log = LoggerFactory.getLogger(SampleTest.class);
+
     private static final Yaml yaml = new Yaml(new Constructor(ReporterConfig.class));
     private final int loops = 2;
 
@@ -46,9 +51,9 @@ public class SampleTest
             counter.inc();
             meter.mark();
             Thread.sleep(1000);
-            System.out.println("Hi");
+            log.debug("runLoop tick");
         }
-        System.out.println("Done!");
+        log.info("Done with sample data loop");
     }
 
     @Test
@@ -64,7 +69,7 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("CSV Reporter");
+        log.info("Sample CSV Reporter");
         runLoop(config);
     }
 
@@ -73,7 +78,7 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/ganglia.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("Ganglia Reporter");
+        log.info("Sample Ganglia Reporter");
         runLoop(config);
 
     }
@@ -83,7 +88,7 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/ganglia-gmond.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("Ganglia Gmond");
+        log.info("Sample Ganglia Gmond");
         runLoop(config);
     }
 
@@ -93,7 +98,7 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("Graphite");
+        log.info("Sample Graphite");
         runLoop(config);
     }
 
@@ -102,7 +107,7 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("Graphite String");
+        log.info("Graphite String");
         runLoop(config);
     }
 
@@ -111,7 +116,7 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string-dupe.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("Graphite String Dupe");
+        log.info("Graphite String Dupe");
         runLoop(config);
     }
 
@@ -122,7 +127,7 @@ public class SampleTest
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/multi.yaml");
         System.out.println(yaml.dump(config));
-        System.out.println("Multi Reporter");
+        log.info("Multi Reporter");
         runLoop(config);
     }
 
