@@ -124,6 +124,10 @@ and configured:
 
 And you should be all set.
 
+To run individual tests use `-Dtest=` and
+`-Dorg.slf4j.simpleLogger.defaultLogLevel=` to change the test log
+level.
+
 ## Administrivia
 
 ### Versioning
