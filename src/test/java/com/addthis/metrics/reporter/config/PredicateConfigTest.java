@@ -89,4 +89,40 @@ public class PredicateConfigTest
         assertTrue(pc.allowString("goodfoogood"));
     }
 
+   @Test
+   public void cassWhite()
+    {
+        PredicateConfig pc = new PredicateConfig("white",
+                                                 ImmutableList.of("^org.apache.cassandra.metrics.ColumnFamily.system.*",
+                                                                  "^org.apache.cassandra.metrics.Cache.*"),
+                                                 true);
+        assertFalse(pc.allowString("foo"));
+        assertFalse(pc.allowString("org.apache.cassandra.metrics.StuffIMadeUp"));
+        assertFalse(pc.allowString("org.apache.cassandra.metrics.ColumnFamily.Keyspace1.Counter3.LiveSSTableCount"));
+        assertTrue(pc.allowString("org.apache.cassandra.metrics.Cache.KeyCache.Size"));
+        assertTrue(pc.allowString("org.apache.cassandra.metrics.ColumnFamily.system.NodeIdInfo.MeanRowSize"));
+    }
+
+
+   @Test
+   public void cassSampleDefault()
+    {
+        PredicateConfig pc = new PredicateConfig("white",
+                                                 ImmutableList.of("^org.apache.cassandra.metrics.Cache.+",
+                                                                  "^org.apache.cassandra.metrics.ClientRequest.+",// includes ClientRequestMetrics
+                                                                  "^org.apache.cassandra.metrics.CommitLog.+",
+                                                                  "^org.apache.cassandra.metrics.Compaction.+",
+                                                                  "^org.apache.cassandra.metrics.DroppedMetrics.+",
+                                                                  "^org.apache.cassandra.metrics.ReadRepair.+",
+                                                                  "^org.apache.cassandra.metrics.Storage.+",
+                                                                  "^org.apache.cassandra.metrics.ThradPools.+"),
+                                                 true);
+        assertFalse(pc.allowString("foo"));
+        assertFalse(pc.allowString("org.apache.cassandra.metrics.StuffIMadeUp"));
+        assertFalse(pc.allowString("org.apache.cassandra.metrics.ColumnFamily.Keyspace1.Counter3.LiveSSTableCount"));
+        assertTrue(pc.allowString("org.apache.cassandra.metrics.Cache.KeyCache.Size"));
+        assertFalse(pc.allowString("org.apache.cassandra.metrics.ColumnFamily.system.NodeIdInfo.MeanRowSize"));
+    }
+
+
 }

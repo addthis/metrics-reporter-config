@@ -24,11 +24,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class PredicateConfig implements MetricPredicate
 {
+    private static final Logger log = LoggerFactory.getLogger(PredicateConfig.class);
+
+
     // white ||, black &&
     @NotNull
     @javax.validation.constraints.Pattern(
@@ -39,6 +46,7 @@ public class PredicateConfig implements MetricPredicate
     @NotNull
     @Size(min=1)
     private List<String> patterns;
+    private boolean useQualifiedName;
 
     private List<Pattern> cPatterns;
 
@@ -46,8 +54,14 @@ public class PredicateConfig implements MetricPredicate
 
     public PredicateConfig(String color, List<String> patterns)
     {
+        this(color, patterns, false);
+    }
+
+    public PredicateConfig(String color, List<String> patterns, boolean useQualifiedName)
+    {
         setColor(color);
         setPatterns(patterns);
+        setUseQualifiedName(useQualifiedName);
     }
 
     public String getColor()
@@ -73,6 +87,16 @@ public class PredicateConfig implements MetricPredicate
         {
             cPatterns.add(Pattern.compile(s));
         }
+    }
+
+    public boolean getUseQualifiedName()
+    {
+        return useQualifiedName;
+    }
+
+    public void setUseQualifiedName(boolean useQualifiedName)
+    {
+        this.useQualifiedName = useQualifiedName;
     }
 
     public boolean allowString(String name)
@@ -103,11 +127,32 @@ public class PredicateConfig implements MetricPredicate
         return false; // trusting validator
     }
 
+    // Qualify (ie include class name and whatnot -- the metric name.
+    // MetricName.getName() is just the last part of that.  Joining on
+    // "." and based on code from MetricsRegistry.groupedMetrics()
+    public String qualifyMetricName(MetricName mn)
+    {
+        String qualifiedTypeName = mn.getGroup() + "." + mn.getType();
+        if (mn.hasScope())
+        {
+            qualifiedTypeName += "." + mn.getScope();
+        }
+        return qualifiedTypeName += "." + mn.getName();
+    }
+
 
     @Override
     public boolean matches(MetricName name, Metric metric)
     {
-        return allowString(name.getName());
+        log.trace("Checking Metric name: {} {}", new Object[] {name.getName(), qualifyMetricName(name)});
+        if (useQualifiedName)
+        {
+            return allowString(qualifyMetricName(name));
+        }
+        else
+        {
+            return allowString(name.getName());
+        }
     }
 
 }
