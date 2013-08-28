@@ -135,7 +135,8 @@ public class PredicateConfig implements MetricPredicate
         {
             qualifiedTypeName += "." + mn.getScope();
         }
-        return qualifiedTypeName += "." + mn.getName();
+        qualifiedTypeName += "." + mn.getName();
+        return qualifiedTypeName;
     }
 
 

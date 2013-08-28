@@ -169,7 +169,7 @@ static cfg_opt_t udp_send_channel_opts[] = {
         BufferedReader br = null;
         try
         {
-            fr = new FileReader(fileName);    
+            fr = new FileReader(fileName);
             br = new BufferedReader(fr);
             StringBuffer sb = new StringBuffer();
             String line = br.readLine();
