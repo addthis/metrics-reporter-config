@@ -114,6 +114,10 @@ metrics.  In practice our configurations tend to look like this:
           patterns:
           - ".*JMXONLY$"
 
+By default predicates operate on the "Metric Name" (usually something
+like `MyClass`).  If you want to operable on the conventional "full"
+name (`org.example.foo.MyClass`) enable `useQualifiedName`.
+
 
 ## Building
 
