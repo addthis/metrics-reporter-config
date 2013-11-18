@@ -118,6 +118,27 @@ By default predicates operate on the "Metric Name" (usually something
 like `MyClass`).  If you want to operable on the conventional "full"
 name (`org.example.foo.MyClass`) enable `useQualifiedName`.
 
+If you want to report only a subset of the measurements that are
+typically reported by a meter then use can use the measurement
+options on the predicate configuration. The per-measurement filters
+are only applied only if a metric has passed the top level filter.
+
+    ganglia:
+      -
+        period: 60
+        timeunit: 'SECONDS'
+        gmondConf: '/etc/ganglia/gmond.conf'
+        predicate:
+          color: "black"
+          patterns:
+          - ".*JMXONLY$"
+          histogram:
+              color: "white"
+              patterns:
+              - metric: ".*WidgetRunner$"
+                measure: "[mean|stddev]"
+              - metric: ".*SprocketRunner$"
+                measure: ".*percentile"
 
 ## Building
 

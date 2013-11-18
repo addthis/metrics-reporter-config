@@ -14,9 +14,13 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.addthis.metrics.reporter.config.PredicateConfig.Measurement;
+import com.addthis.metrics.reporter.config.PredicateConfig.MeasurementPattern;
+
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -122,5 +126,79 @@ public class PredicateConfigTest
         assertFalse(pc.allowString("org.apache.cassandra.metrics.ColumnFamily.system.NodeIdInfo.MeanRowSize"));
     }
 
+    @Test
+    public void emptyMeasurement()
+    {
+        PredicateConfig pc = new PredicateConfig("white", new ArrayList());
+        assertTrue(pc.matches(null,null,null));
+        pc = new PredicateConfig("black", new ArrayList());
+        assertTrue(pc.matches(null,null,null));
+    }
+
+    @Test
+    public void singleWhiteMeasurement()
+    {
+        MeasurementPattern pattern = new MeasurementPattern("^foo.+", "^bar.+");
+        List<MeasurementPattern> patternList = new ArrayList<MeasurementPattern>();
+        patternList.add(pattern);
+        Measurement type = new Measurement("white", false);
+
+        assertFalse(PredicateConfig.allowMeasurement("foo", "bar", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("foo", "bars", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("foos", "bar", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("foos", "bars", type, patternList));
+    }
+
+    @Test
+    public void singleBlackMeasurement()
+    {
+        MeasurementPattern pattern = new MeasurementPattern("^foo.+", "^bar.+");
+        List<MeasurementPattern> patternList = new ArrayList<MeasurementPattern>();
+        patternList.add(pattern);
+        Measurement type = new Measurement("black", false);
+
+        assertTrue(PredicateConfig.allowMeasurement("foo", "bar", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("foo", "bars", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("foos", "bar", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("foos", "bars", type, patternList));
+    }
+
+    @Test
+    public void multiWhiteMeasurement()
+    {
+        MeasurementPattern pattern1 = new MeasurementPattern("^foo.+", "^bar.+");
+        MeasurementPattern pattern2 = new MeasurementPattern(".*foo$", ".*bar$");
+
+        List<MeasurementPattern> patternList = new ArrayList<MeasurementPattern>();
+        patternList.add(pattern1);
+        patternList.add(pattern2);
+        Measurement type = new Measurement("white", false);
+
+        assertFalse(PredicateConfig.allowMeasurement("hello", "world", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("hellofooworld", "hellobarworld", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("hellobarworld", "hellofooworld", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("fooworld", "barworld", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("hellofoo", "hellobar", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("foohellofoo", "barhellobar", type, patternList));
+    }
+
+    @Test
+    public void multiBlackMeasurement()
+    {
+        MeasurementPattern pattern1 = new MeasurementPattern("^foo.+", "^bar.+");
+        MeasurementPattern pattern2 = new MeasurementPattern(".*foo$", ".*bar$");
+
+        List<MeasurementPattern> patternList = new ArrayList<MeasurementPattern>();
+        patternList.add(pattern1);
+        patternList.add(pattern2);
+        Measurement type = new Measurement("black", false);
+
+        assertTrue(PredicateConfig.allowMeasurement("hello", "world", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("hellofooworld", "hellobarworld", type, patternList));
+        assertTrue(PredicateConfig.allowMeasurement("hellobarworld", "hellofooworld", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("fooworld", "barworld", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("hellofoo", "hellobar", type, patternList));
+        assertFalse(PredicateConfig.allowMeasurement("foohellofoo", "barhellobar", type, patternList));
+    }
 
 }
