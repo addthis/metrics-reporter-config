@@ -72,6 +72,13 @@ public class PredicateConfig implements MetricPredicate
             this.color = color;
             this.useQualifiedName = useQualifiedName;
         }
+
+        public String getColor() { return color; }
+        public boolean getUseQualifiedName() { return useQualifiedName; }
+        public List<MeasurementSpecification> getPatterns() { return patterns; }
+        public void setColor(String color) { this.color = color; }
+        public void setUseQualifiedName(boolean value) { this.useQualifiedName = value; }
+        public void setPatterns(List<MeasurementSpecification> patterns) { this.patterns = patterns; }
     }
 
     public static class MeasurementSpecification
@@ -82,6 +89,10 @@ public class PredicateConfig implements MetricPredicate
         private String measure;
 
         public MeasurementSpecification() {}
+        public String getMetric() { return metric; }
+        public String getMeasure() { return measure; }
+        public void setMetric(String metric) { this.metric = metric; }
+        public void setMeasure(String measure) { this.measure = measure; }
     }
 
     public static class MeasurementPattern
@@ -105,7 +116,6 @@ public class PredicateConfig implements MetricPredicate
     private List<MeasurementPattern> histogramPatterns;
     private List<MeasurementPattern> timerPatterns;
 
-    @SuppressWarnings("unused")
     public PredicateConfig() {}
 
     public PredicateConfig(String color, List<String> patterns)
@@ -120,7 +130,6 @@ public class PredicateConfig implements MetricPredicate
         setUseQualifiedName(useQualifiedName);
     }
 
-    @SuppressWarnings("unused")
     public String getColor()
     {
         return color;
@@ -131,7 +140,6 @@ public class PredicateConfig implements MetricPredicate
         this.color = color;
     }
 
-    @SuppressWarnings("unused")
     public List<String> getPatterns()
     {
         return patterns;
@@ -147,7 +155,6 @@ public class PredicateConfig implements MetricPredicate
         }
     }
 
-    @SuppressWarnings("unused")
     public boolean getUseQualifiedName()
     {
         return useQualifiedName;
@@ -158,39 +165,33 @@ public class PredicateConfig implements MetricPredicate
         this.useQualifiedName = useQualifiedName;
     }
 
-    @SuppressWarnings("unused")
     public Measurement getMeter()
     {
         return meter;
     }
 
-    @SuppressWarnings("unused")
     public Measurement getHistogram()
     {
         return histogram;
     }
 
-    @SuppressWarnings("unused")
     public Measurement getTimer()
     {
         return timer;
     }
 
-    @SuppressWarnings("unused")
     public void setMeter(Measurement meter)
     {
         this.meter = meter;
         this.meterPatterns = createMeasurementPatterns(meter);
     }
 
-    @SuppressWarnings("unused")
     public void setHistogram(Measurement histogram)
     {
         this.histogram = histogram;
         this.histogramPatterns = createMeasurementPatterns(histogram);
     }
 
-    @SuppressWarnings("unused")
     public void setTimer(Measurement timer)
     {
         this.timer = timer;
@@ -268,7 +269,7 @@ public class PredicateConfig implements MetricPredicate
     }
 
     public static boolean allowMeasurement(String name, String measurement,
-                                    Measurement type, List<MeasurementPattern> patterns)
+                                           Measurement type, List<MeasurementPattern> patterns)
     {
         if (type.color.equals("black"))
         {
@@ -302,7 +303,7 @@ public class PredicateConfig implements MetricPredicate
     }
 
     public boolean allowMeasurement(MetricName name, String measurement,
-                                           Measurement type, List<MeasurementPattern> patterns)
+                                    Measurement type, List<MeasurementPattern> patterns)
     {
         if (type.useQualifiedName)
         {
@@ -316,9 +317,11 @@ public class PredicateConfig implements MetricPredicate
 
     /**
      * This will only be invoked if using a fork of the metrics library with support
-     * for filtering on a per-measurement basis - http://github.com/mspiegel/metrics
+     * for filtering on a per-measurement basis - http://github.com/mspiegel/metrics.
+     * Otherwise this method is not invoked. The @Override annotation is omitted so
+     * that compilation is successful using either the metrics library or the fork of the
+     * metrics library.
      */
-    @SuppressWarnings("unused")
     public boolean matches(MetricName name, Metric metric, String measurement)
     {
         if ((meter != null) && (metric instanceof Meter))

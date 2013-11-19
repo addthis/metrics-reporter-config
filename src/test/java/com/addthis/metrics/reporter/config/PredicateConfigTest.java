@@ -24,6 +24,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import com.yammer.metrics.core.MetricName;
 import org.junit.Test;
 
 public class PredicateConfigTest
@@ -147,6 +149,21 @@ public class PredicateConfigTest
         assertFalse(PredicateConfig.allowMeasurement("foo", "bars", type, patternList));
         assertFalse(PredicateConfig.allowMeasurement("foos", "bar", type, patternList));
         assertTrue(PredicateConfig.allowMeasurement("foos", "bars", type, patternList));
+    }
+
+    @Test
+    public void qualifiedNameMeasurement()
+    {
+        PredicateConfig pc = new PredicateConfig("white", new ArrayList());
+        Measurement type = new Measurement("white", true);
+        MeasurementPattern pattern = new MeasurementPattern(
+            "^com.addthis.metrics.reporter.config.PredicateConfigTest.+", "min");
+        List<MeasurementPattern> patternList = new ArrayList<MeasurementPattern>();
+        patternList.add(pattern);
+        MetricName name1 = new MetricName(PredicateConfigTest.class, "name", "scope");
+        assertTrue(pc.allowMeasurement(name1, "min", type, patternList));
+        MetricName name2 = new MetricName(PredicateConfig.class, "name", "scope");
+        assertFalse(pc.allowMeasurement(name2, "min", type, patternList));
     }
 
     @Test
