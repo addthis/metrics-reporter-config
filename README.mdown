@@ -118,13 +118,13 @@ By default predicates operate on the "Metric Name" (usually something
 like `MyClass`).  If you want to operable on the conventional "full"
 name (`org.example.foo.MyClass`) enable `useQualifiedName`.
 
-If you want to report only a subset of the measurements that are
-reported by a meter then use can use the measurement
-options on the predicate configuration. This feature is only available
-if you include as a dependency a fork of the metrics project that
-supports this feature, such as http://github.com/mspiegel/metrics.
-If the per measurement filtering is available then it is only
-applied once a metric has passed the top level filter.
+[EXPERIMENTAL] If you want to report only a subset of the measurements
+that are reported by a meter then use can use the measurement options
+on the predicate configuration. This feature is only available if you
+include as a dependency a fork of the metrics project that supports
+this feature, such as http://github.com/mspiegel/metrics.  If the per
+measurement filtering is available then it is only applied once a
+metric has passed the top level filter.
 
     ganglia:
       -
