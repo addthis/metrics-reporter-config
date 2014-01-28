@@ -143,6 +143,21 @@ metric has passed the top level filter.
               - metric: ".*SprocketRunner$"
                 measure: ".*percentile"
 
+### Graphite reporter
+
+Graphite reporter supports the "prefix" parameter. Its value will be
+prepended to each metric name sent by GraphiteReporter. This value
+may contain one of the following variable references using "${variable.name}"
+as format.
+
+	- host.name = the value returned for local host by `java.net.InetAddress#getHostAddress()`
+	- host.name.short = same as ${host.name} up to first dot
+	- host.address = the value returned for local host by `java.net.InetAddress#getHostName()`
+	- host.fqdn = the value returned for local host by `java.net.InetAddress#getCanonicalHostName()`
+
+Each substituted value gets sanitized by replacing all characters that
+are not allowed in the host name plus "-" with the underscore.
+
 ## Building
 
 Assuming you have [Apache Maven](http://maven.apache.org/) installed
