@@ -18,7 +18,6 @@ import com.yammer.metrics.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +25,10 @@ public class RiemannReporterConfig extends AbstractHostPortReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(RiemannReporterConfig.class);
 
-    @NotNull
-    private String localHost = "";
-    @NotNull
-    private String separator = "";
-    @NotNull
-    private String prefix = "";
-    @NotNull
-    private List<String> tags = new ArrayList<String>();
+    private String localHost;
+    private String prefix;
+    private String separator;
+    private List<String> tags;
 
     public List<String> getTags() {
         return tags;
@@ -96,19 +91,31 @@ public class RiemannReporterConfig extends AbstractHostPortReporterConfig
             try
             {
                 log.info("Enabling RiemannReporter to {}:{}", new Object[]{hostPort.getHost(), hostPort.getPort()});
-                com.yammer.metrics.reporting.RiemannReporter.enable(
-                        com.yammer.metrics.reporting.RiemannReporter.Config.newBuilder()
-                                .metricsRegistry(Metrics.defaultRegistry())
-                                .period(getPeriod())
-                                .unit(getRealTimeunit())
-                                .host(hostPort.getHost())
-                                .port(hostPort.getPort())
-                                .prefix(prefix)
-                                .separator(separator)
-                                .localHost(localHost)
-                                .tags(tags)
-                                .predicate(getMetricPredicate()).build());
-
+                com.yammer.metrics.reporting.RiemannReporter.ConfigBuilder builder =
+                    com.yammer.metrics.reporting.RiemannReporter.Config.newBuilder()
+                    .metricsRegistry(Metrics.defaultRegistry())
+                    .period(getPeriod())
+                    .unit(getRealTimeunit())
+                    .host(hostPort.getHost())
+                    .port(hostPort.getPort())
+                    .predicate(getMetricPredicate());
+                if (prefix != null && !prefix.isEmpty())
+                {
+                    builder.prefix(prefix);
+                }
+                if (separator != null && !separator.isEmpty())
+                {
+                    builder.separator(separator);
+                }
+                if (localHost != null && !localHost.isEmpty())
+                {
+                    builder.localHost(localHost);
+                }
+                if (tags != null && !tags.isEmpty())
+                {
+                    builder.tags(tags);
+                }
+                com.yammer.metrics.reporting.RiemannReporter.enable(builder.build());
             }
             catch (Exception e)
             {
