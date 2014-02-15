@@ -63,6 +63,12 @@
       <version>${dep.metrics.version}</version>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.aphyr</groupId>
+      <artifactId>riemann-java-client</artifactId>
+      <version>0.2.8</version>
+      <optional>true</optional>
+    </dependency>
     <!-- testing -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -107,6 +113,13 @@
       </plugin>
     </plugins>
   </reporting>
+
+  <repositories>
+    <repository>
+      <id>clojars.org</id>
+      <url>http://clojars.org/repo</url>
+    </repository>
+  </repositories>
 
   <scm>
     <connection>scm:git:git@github.com:addthis/metrics-reporter-config.git</connection>
