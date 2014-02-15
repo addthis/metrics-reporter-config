@@ -52,6 +52,8 @@ public class ReporterConfig
     private List<GangliaReporterConfig> ganglia;
     @Valid
     private List<GraphiteReporterConfig> graphite;
+    @Valid
+    private List<RiemannReporterConfig> riemann;
 
     public List<ConsoleReporterConfig> getConsole()
     {
@@ -93,6 +95,17 @@ public class ReporterConfig
     public void setGraphite(List<GraphiteReporterConfig> graphite)
     {
         this.graphite = graphite;
+    }
+
+
+    public List<RiemannReporterConfig> getRiemann()
+    {
+        return riemann;
+    }
+
+    public void setRiemann(List<RiemannReporterConfig> riemann)
+    {
+        this.riemann = riemann;
     }
 
 
@@ -168,6 +181,24 @@ public class ReporterConfig
         return !failures;
     }
 
+    public boolean enableRiemann()
+    {
+        boolean failures = false;
+        if (riemann == null)
+        {
+            log.debug("Asked to enable riemann, but it was not configured");
+            return false;
+        }
+        for (RiemannReporterConfig riemannConfig : riemann)
+        {
+            if (!riemannConfig.enable())
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
 
     public boolean enableAll()
     {
@@ -196,6 +227,13 @@ public class ReporterConfig
         if (graphite != null)
         {
             if (enableGraphite())
+            {
+                enabled = true;
+            }
+        }
+        if (riemann != null)
+        {
+            if (enableRiemann())
             {
                 enabled = true;
             }
