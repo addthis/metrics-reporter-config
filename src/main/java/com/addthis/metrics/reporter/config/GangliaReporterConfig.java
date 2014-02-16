@@ -14,12 +14,13 @@
 
 package com.addthis.metrics.reporter.config;
 
-import com.yammer.metrics.Metrics;
 
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.codahale.metrics.MetricRegistry;
+import info.ganglia.gmetric4j.gmetric.GMetric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,9 +86,9 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
 
 
     @Override
-    public boolean enable()
+    public boolean enable(MetricRegistry registry)
     {
-        String className = "com.yammer.metrics.reporting.GangliaReporter";
+        String className = "com.codahale.metrics.ganglia.GangliaReporter";
         if (!isClassAvailable(className))
         {
             log.error("Tried to enable GangliaReporter, but class {} was not found", className);
@@ -104,9 +105,12 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
             log.info("Enabling GangliaReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
             try
             {
-                com.yammer.metrics.reporting.GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
-                                                                    hostPort.getHost(), hostPort.getPort(), groupPrefix,
-                                                                    getMetricPredicate(), compressPackageNames);
+                com.codahale.metrics.ganglia.GangliaReporter.forRegistry(registry)
+                        .prefixedWith(groupPrefix)
+                        .filter(getMetricPredicate())
+                        .build(new info.ganglia.gmetric4j.gmetric.GMetric(hostPort.getHost(), hostPort.getPort(),
+                                info.ganglia.gmetric4j.gmetric.GMetric.UDPAddressingMode.MULTICAST, 1))
+                        .start(getPeriod(), getRealTimeunit());
             }
             catch (Exception e)
             {

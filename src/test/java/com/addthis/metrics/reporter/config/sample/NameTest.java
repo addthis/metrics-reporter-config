@@ -16,11 +16,8 @@ package com.addthis.metrics.reporter.config.sample;
 
 import com.addthis.metrics.reporter.config.ReporterConfig;
 
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Counter;
-import com.yammer.metrics.core.Meter;
-
-import java.util.concurrent.TimeUnit;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Counter;
 
 import org.junit.Test;
 
@@ -46,9 +43,10 @@ public class NameTest
     public void csvNamePrinting() throws Exception
     {
         log.debug("name test");
-        Counter counter = Metrics.newCounter(getClass(), "mycounter");
+        MetricRegistry registry = new MetricRegistry();
+        Counter counter = registry.counter(MetricRegistry.name(getClass(), "mycounter"));
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv-predicate.yaml");
-        config.enableAll();
+        config.enableAll(registry);
         counter.inc();
         Thread.sleep(10000);
     }

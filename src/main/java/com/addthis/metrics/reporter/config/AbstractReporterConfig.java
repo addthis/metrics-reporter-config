@@ -14,7 +14,8 @@
 
 package com.addthis.metrics.reporter.config;
 
-import com.yammer.metrics.core.MetricPredicate;
+import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.MetricRegistry;
 
 import java.util.concurrent.TimeUnit;
 
@@ -86,11 +87,11 @@ public abstract class AbstractReporterConfig
          }
     }
 
-    public MetricPredicate getMetricPredicate()
+    public MetricFilter getMetricPredicate()
     {
         if (predicate == null)
         {
-            return MetricPredicate.ALL;
+            return MetricFilter.ALL;
         }
         else
         {
@@ -98,5 +99,5 @@ public abstract class AbstractReporterConfig
         }
     }
 
-    public abstract boolean enable();
+    public abstract boolean enable(MetricRegistry registry);
 }

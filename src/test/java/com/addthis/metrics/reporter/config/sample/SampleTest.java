@@ -16,12 +16,12 @@ package com.addthis.metrics.reporter.config.sample;
 
 import com.addthis.metrics.reporter.config.ReporterConfig;
 
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Counter;
-import com.yammer.metrics.core.Meter;
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Meter;
 
 import java.util.concurrent.TimeUnit;
 
+import com.codahale.metrics.MetricRegistry;
 import org.junit.Test;
 
 import org.slf4j.Logger;
@@ -41,9 +41,10 @@ public class SampleTest
 
     private void runLoop(ReporterConfig config) throws Exception
     {
-        Counter counter = Metrics.newCounter(getClass(), "counter");
-        Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableConsole();
+        MetricRegistry registry = new MetricRegistry();
+        Counter counter = registry.counter(MetricRegistry.name(getClass(), "counter"));
+        Meter meter = registry.meter(MetricRegistry.name(getClass(), "meter", "foo"));
+        config.enableConsole(registry);
         for (int i=0; i< loops; i++)
         {
             counter.inc();
