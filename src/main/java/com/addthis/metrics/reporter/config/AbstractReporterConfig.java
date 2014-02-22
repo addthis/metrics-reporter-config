@@ -34,13 +34,13 @@ public abstract class AbstractReporterConfig
         regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
         message = "must be a valid java.util.concurrent.TimeUnit"
     )
-    private String rateunit;
+    private String rateunit = "SECONDS";
     @NotNull
     @Pattern(
         regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
         message = "must be a valid java.util.concurrent.TimeUnit"
     )
-    private String durationunit;
+    private String durationunit = "MILLISECONDS";
     @NotNull
     @Pattern(
         regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
