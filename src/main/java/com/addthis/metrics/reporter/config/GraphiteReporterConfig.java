@@ -68,6 +68,8 @@ public class GraphiteReporterConfig extends AbstractHostPortReporterConfig
             {
                 log.info("Enabling GraphiteReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
                 com.codahale.metrics.graphite.GraphiteReporter.forRegistry(registry)
+                    .convertRatesTo(getRealRateunit())
+                    .convertDurationsTo(getRealDurationunit())
                     .prefixedWith(prefix)
                     .filter(getMetricPredicate())
                     .build(new com.codahale.metrics.graphite.Graphite(new InetSocketAddress(hostPort.getHost(),

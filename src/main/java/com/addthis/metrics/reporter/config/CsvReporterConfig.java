@@ -59,6 +59,8 @@ public class CsvReporterConfig extends AbstractReporterConfig
             // predicate.  Calling constructor and starting manually
             // instead
             final CsvReporter reporter = CsvReporter.forRegistry(registry)
+                    .convertRatesTo(getRealRateunit())
+                    .convertDurationsTo(getRealDurationunit())
                     .filter(getMetricPredicate())
                     .build(foutDir);
             reporter.start(getPeriod(), getRealTimeunit());

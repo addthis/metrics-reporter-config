@@ -56,6 +56,8 @@ public class ConsoleReporterConfig extends AbstractReporterConfig
             }
 
             final ConsoleReporter reporter = ConsoleReporter.forRegistry(registry)
+                    .convertRatesTo(getRealRateunit())
+                    .convertDurationsTo(getRealDurationunit())
                     .filter(getMetricPredicate())
                     .outputTo(stream)
                     .build();

@@ -106,6 +106,8 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
             try
             {
                 com.codahale.metrics.ganglia.GangliaReporter.forRegistry(registry)
+                        .convertRatesTo(getRealRateunit())
+                        .convertDurationsTo(getRealDurationunit())
                         .prefixedWith(groupPrefix)
                         .filter(getMetricPredicate())
                         .build(new info.ganglia.gmetric4j.gmetric.GMetric(hostPort.getHost(), hostPort.getPort(),

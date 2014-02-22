@@ -34,6 +34,18 @@ public abstract class AbstractReporterConfig
         regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
         message = "must be a valid java.util.concurrent.TimeUnit"
     )
+    private String rateunit;
+    @NotNull
+    @Pattern(
+        regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
+        message = "must be a valid java.util.concurrent.TimeUnit"
+    )
+    private String durationunit;
+    @NotNull
+    @Pattern(
+        regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
+        message = "must be a valid java.util.concurrent.TimeUnit"
+    )
     private String timeunit;
     @Valid
     private PredicateConfig predicate;
@@ -62,6 +74,36 @@ public abstract class AbstractReporterConfig
     public TimeUnit getRealTimeunit()
     {
         return TimeUnit.valueOf(timeunit);
+    }
+
+    public String getRateunit()
+    {
+        return rateunit;
+    }
+
+    public void setRateunit(String rateunit)
+    {
+        this.rateunit = rateunit;
+    }
+
+    public TimeUnit getRealRateunit()
+    {
+        return TimeUnit.valueOf(rateunit);
+    }
+
+    public String getDurationunit()
+    {
+        return durationunit;
+    }
+
+    public void setDurationunit(String durationunit)
+    {
+        this.durationunit = durationunit;
+    }
+
+    public TimeUnit getRealDurationunit()
+    {
+        return TimeUnit.valueOf(durationunit);
     }
 
     public PredicateConfig getPredicate()
