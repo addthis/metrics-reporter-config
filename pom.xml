@@ -12,7 +12,7 @@
 
   <groupId>com.addthis.metrics</groupId>
   <artifactId>reporter-config</artifactId>
-  <version>2.2.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Metrics Reporter Config</name>
   <url>https://github.com/addthis/metrics-reporter-config</url>
@@ -24,7 +24,7 @@
   </licenses>
 
   <properties>
-    <dep.metrics.version>2.2.0</dep.metrics.version>
+    <dep.metrics.version>3.0.1</dep.metrics.version>
     <project.build.targetJdk>1.6</project.build.targetJdk>
   </properties>
 
@@ -45,20 +45,20 @@
       <version>4.3.0.Final</version>
     </dependency>
     <dependency>
-      <groupId>com.yammer.metrics</groupId>
+      <groupId>com.codahale.metrics</groupId>
       <artifactId>metrics-core</artifactId>
       <version>${dep.metrics.version}</version>
     </dependency>
     <!-- reporters -->
     <!-- console, csv, jmx included in core -->
     <dependency>
-      <groupId>com.yammer.metrics</groupId>
+      <groupId>com.codahale.metrics</groupId>
       <artifactId>metrics-ganglia</artifactId>
       <version>${dep.metrics.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.yammer.metrics</groupId>
+      <groupId>com.codahale.metrics</groupId>
       <artifactId>metrics-graphite</artifactId>
       <version>${dep.metrics.version}</version>
       <optional>true</optional>

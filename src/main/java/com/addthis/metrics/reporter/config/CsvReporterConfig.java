@@ -14,8 +14,8 @@
 
 package com.addthis.metrics.reporter.config;
 
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.reporting.CsvReporter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.CsvReporter;
 
 import java.io.File;
 
@@ -43,7 +43,7 @@ public class CsvReporterConfig extends AbstractReporterConfig
     }
 
     @Override
-    public boolean enable()
+    public boolean enable(MetricRegistry registry)
     {
         log.info("Enabling CsvReporter to {}", outdir);
         try
@@ -58,7 +58,11 @@ public class CsvReporterConfig extends AbstractReporterConfig
             // static enable() methods omit the option of specifying a
             // predicate.  Calling constructor and starting manually
             // instead
-            final CsvReporter reporter = new CsvReporter(Metrics.defaultRegistry(), getMetricPredicate(), foutDir);
+            final CsvReporter reporter = CsvReporter.forRegistry(registry)
+                    .convertRatesTo(getRealRateunit())
+                    .convertDurationsTo(getRealDurationunit())
+                    .filter(getMetricPredicate())
+                    .build(foutDir);
             reporter.start(getPeriod(), getRealTimeunit());
         }
         catch (Exception e)

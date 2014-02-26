@@ -29,6 +29,7 @@ import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 
+import com.codahale.metrics.MetricRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +97,7 @@ public class ReporterConfig
     }
 
 
-    public boolean enableConsole()
+    public boolean enableConsole(MetricRegistry registry)
     {
         boolean failures = false;
         if (console == null)
@@ -106,7 +107,7 @@ public class ReporterConfig
         }
         for (ConsoleReporterConfig consoleConfig : console)
         {
-            if (!consoleConfig.enable())
+            if (!consoleConfig.enable(registry))
             {
                 failures = true;
             }
@@ -114,7 +115,7 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableCsv()
+    public boolean enableCsv(MetricRegistry registry)
     {
         boolean failures = false;
         if (csv == null)
@@ -124,7 +125,7 @@ public class ReporterConfig
         }
         for (CsvReporterConfig csvConfig : csv)
         {
-            if (!csvConfig.enable())
+            if (!csvConfig.enable(registry))
             {
                 failures = true;
             }
@@ -132,7 +133,7 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableGanglia()
+    public boolean enableGanglia(MetricRegistry registry)
     {
         boolean failures = false;
         if (ganglia == null)
@@ -142,7 +143,7 @@ public class ReporterConfig
         }
         for (GangliaReporterConfig gangliaConfig : ganglia)
         {
-            if (!gangliaConfig.enable())
+            if (!gangliaConfig.enable(registry))
             {
                 failures = true;
             }
@@ -150,7 +151,7 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableGraphite()
+    public boolean enableGraphite(MetricRegistry registry)
     {
         boolean failures = false;
         if (graphite == null)
@@ -160,7 +161,7 @@ public class ReporterConfig
         }
         for (GraphiteReporterConfig graphiteConfig : graphite)
         {
-            if (!graphiteConfig.enable())
+            if (!graphiteConfig.enable(registry))
             {
                 failures = true;
             }
@@ -169,33 +170,33 @@ public class ReporterConfig
     }
 
 
-    public boolean enableAll()
+    public boolean enableAll(MetricRegistry registry)
     {
         boolean enabled = false;
         if (console != null)
         {
-            if (enableConsole())
+            if (enableConsole(registry))
             {
                 enabled = true;
             }
         }
         if (csv != null)
         {
-            if (enableCsv())
+            if (enableCsv(registry))
             {
                 enabled = true;
             }
         }
         if (ganglia != null)
         {
-            if (enableGanglia())
+            if (enableGanglia(registry))
             {
                 enabled = true;
             }
         }
         if (graphite != null)
         {
-            if (enableGraphite())
+            if (enableGraphite(registry))
             {
                 enabled = true;
             }

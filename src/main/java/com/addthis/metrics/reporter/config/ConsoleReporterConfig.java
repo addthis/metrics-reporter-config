@@ -14,11 +14,11 @@
 
 package com.addthis.metrics.reporter.config;
 
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.reporting.ConsoleReporter;
+import com.codahale.metrics.ConsoleReporter;
 
 import java.io.PrintStream;
 
+import com.codahale.metrics.MetricRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public class ConsoleReporterConfig extends AbstractReporterConfig
     }
 
     @Override
-    public boolean enable()
+    public boolean enable(MetricRegistry registry)
     {
         try
         {
@@ -55,12 +55,12 @@ public class ConsoleReporterConfig extends AbstractReporterConfig
                 stream = System.out;
             }
 
-            // static enable() methods omit the option of specifying a
-            // predicate.  Calling constructor and starting manually
-            // instead
-            final ConsoleReporter reporter = new ConsoleReporter(Metrics.defaultRegistry(),
-                                                                 stream,
-                                                                 getMetricPredicate());
+            final ConsoleReporter reporter = ConsoleReporter.forRegistry(registry)
+                    .convertRatesTo(getRealRateunit())
+                    .convertDurationsTo(getRealDurationunit())
+                    .filter(getMetricPredicate())
+                    .outputTo(stream)
+                    .build();
             reporter.start(getPeriod(), getRealTimeunit());
 
         }

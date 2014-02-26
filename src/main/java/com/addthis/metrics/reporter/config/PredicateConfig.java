@@ -14,17 +14,17 @@
 
 package com.addthis.metrics.reporter.config;
 
-import com.yammer.metrics.core.Histogram;
-import com.yammer.metrics.core.Meter;
-import com.yammer.metrics.core.Metric;
-import com.yammer.metrics.core.MetricName;
-import com.yammer.metrics.core.MetricPredicate;
+import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.Metric;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.Timer;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.yammer.metrics.core.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PredicateConfig implements MetricPredicate
+public class PredicateConfig implements MetricFilter
 {
     private static final Logger log = LoggerFactory.getLogger(PredicateConfig.class);
 
@@ -240,31 +240,17 @@ public class PredicateConfig implements MetricPredicate
         return false; // trusting validator
     }
 
-    // Qualify (ie include class name and whatnot -- the metric name.
-    // MetricName.getName() is just the last part of that.  Joining on
-    // "." and based on code from MetricsRegistry.groupedMetrics()
-    public String qualifyMetricName(MetricName mn)
-    {
-        String qualifiedTypeName = mn.getGroup() + "." + mn.getType();
-        if (mn.hasScope())
-        {
-            qualifiedTypeName += "." + mn.getScope();
-        }
-        qualifiedTypeName += "." + mn.getName();
-        return qualifiedTypeName;
-    }
-
     @Override
-    public boolean matches(MetricName name, Metric metric)
+    public boolean matches(String name, Metric metric)
     {
-        log.trace("Checking Metric name: {} {}", new Object[] {name.getName(), qualifyMetricName(name)});
+        log.trace("Checking Metric name: {} {}", new Object[] {name, metric.getClass().getCanonicalName()});
         if (useQualifiedName)
         {
-            return allowString(qualifyMetricName(name));
+            return allowString(metric.getClass().getCanonicalName());
         }
         else
         {
-            return allowString(name.getName());
+            return allowString(name);
         }
     }
 
@@ -302,16 +288,15 @@ public class PredicateConfig implements MetricPredicate
         return false; // trusting validator
     }
 
-    public boolean allowMeasurement(MetricName name, String measurement,
-                                    Measurement type, List<MeasurementPattern> patterns)
+    private static String determineMatchName(String name, Metric metric, Measurement type)
     {
         if (type.useQualifiedName)
         {
-            return allowMeasurement(qualifyMetricName(name), measurement, type, patterns);
+            return metric.getClass().getCanonicalName();
         }
         else
         {
-            return allowMeasurement(name.getName(), measurement, type, patterns);
+            return name;
         }
     }
 
@@ -322,19 +307,19 @@ public class PredicateConfig implements MetricPredicate
      * that compilation is successful using either the metrics library or the fork of the
      * metrics library.
      */
-    public boolean matches(MetricName name, Metric metric, String measurement)
+    public boolean matches(String name, Metric metric, String measurement)
     {
         if ((meter != null) && (metric instanceof Meter))
         {
-            return allowMeasurement(name, measurement, meter, meterPatterns);
+            return allowMeasurement(determineMatchName(name, metric, meter), measurement, meter, meterPatterns);
         }
         else if ((histogram != null) && (metric instanceof Histogram))
         {
-            return allowMeasurement(name, measurement, histogram, histogramPatterns);
+            return allowMeasurement(determineMatchName(name, metric, histogram), measurement, histogram, histogramPatterns);
         }
         else if ((timer != null) && (metric instanceof Timer))
         {
-            return allowMeasurement(name, measurement, timer, timerPatterns);
+            return allowMeasurement(determineMatchName(name, metric, timer), measurement, timer, timerPatterns);
         }
         else
         {

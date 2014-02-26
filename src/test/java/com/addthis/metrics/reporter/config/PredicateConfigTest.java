@@ -17,6 +17,7 @@ package com.addthis.metrics.reporter.config;
 import com.addthis.metrics.reporter.config.PredicateConfig.Measurement;
 import com.addthis.metrics.reporter.config.PredicateConfig.MeasurementPattern;
 
+import com.codahale.metrics.MetricRegistry;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.yammer.metrics.core.MetricName;
 import org.junit.Test;
 
 public class PredicateConfigTest
@@ -160,9 +160,11 @@ public class PredicateConfigTest
             "^com.addthis.metrics.reporter.config.PredicateConfigTest.+", "min");
         List<MeasurementPattern> patternList = new ArrayList<MeasurementPattern>();
         patternList.add(pattern);
-        MetricName name1 = new MetricName(PredicateConfigTest.class, "name", "scope");
+//        String name1 = new MetricName(PredicateConfigTest.class, "name", "scope");
+        String name1 = MetricRegistry.name(PredicateConfigTest.class, "name", "scope");
         assertTrue(pc.allowMeasurement(name1, "min", type, patternList));
-        MetricName name2 = new MetricName(PredicateConfig.class, "name", "scope");
+//        String name2 = new MetricName(PredicateConfig.class, "name", "scope");
+        String name2 = MetricRegistry.name(PredicateConfig.class, "name", "scope");
         assertFalse(pc.allowMeasurement(name2, "min", type, patternList));
     }
 

@@ -14,7 +14,8 @@
 
 package com.addthis.metrics.reporter.config;
 
-import com.yammer.metrics.core.MetricPredicate;
+import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.MetricRegistry;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +29,18 @@ public abstract class AbstractReporterConfig
     @NotNull
     @Min(1)
     private long period;
+    @NotNull
+    @Pattern(
+        regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
+        message = "must be a valid java.util.concurrent.TimeUnit"
+    )
+    private String rateunit = "SECONDS";
+    @NotNull
+    @Pattern(
+        regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
+        message = "must be a valid java.util.concurrent.TimeUnit"
+    )
+    private String durationunit = "MILLISECONDS";
     @NotNull
     @Pattern(
         regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
@@ -63,6 +76,36 @@ public abstract class AbstractReporterConfig
         return TimeUnit.valueOf(timeunit);
     }
 
+    public String getRateunit()
+    {
+        return rateunit;
+    }
+
+    public void setRateunit(String rateunit)
+    {
+        this.rateunit = rateunit;
+    }
+
+    public TimeUnit getRealRateunit()
+    {
+        return TimeUnit.valueOf(rateunit);
+    }
+
+    public String getDurationunit()
+    {
+        return durationunit;
+    }
+
+    public void setDurationunit(String durationunit)
+    {
+        this.durationunit = durationunit;
+    }
+
+    public TimeUnit getRealDurationunit()
+    {
+        return TimeUnit.valueOf(durationunit);
+    }
+
     public PredicateConfig getPredicate()
     {
         return predicate;
@@ -86,11 +129,11 @@ public abstract class AbstractReporterConfig
          }
     }
 
-    public MetricPredicate getMetricPredicate()
+    public MetricFilter getMetricPredicate()
     {
         if (predicate == null)
         {
-            return MetricPredicate.ALL;
+            return MetricFilter.ALL;
         }
         else
         {
@@ -98,5 +141,5 @@ public abstract class AbstractReporterConfig
         }
     }
 
-    public abstract boolean enable();
+    public abstract boolean enable(MetricRegistry registry);
 }
