@@ -15,6 +15,7 @@
 package com.addthis.metrics.reporter.config;
 
 import com.yammer.metrics.Metrics;
+import com.yammer.metrics.reporting.MetricPrefixGangliaReporter;
 
 import java.util.List;
 
@@ -32,17 +33,6 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
     @NotNull
     private boolean compressPackageNames = false;
     private String gmondConf;
-
-
-    public String getGroupPrefix()
-    {
-        return groupPrefix;
-    }
-
-    public void setGroupPrefix(String groupPrefix)
-    {
-        this.groupPrefix = groupPrefix;
-    }
 
     public boolean getCompressPackageNames()
     {
@@ -104,9 +94,9 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
             log.info("Enabling GangliaReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
             try
             {
-                com.yammer.metrics.reporting.GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
-                                                                    hostPort.getHost(), hostPort.getPort(), groupPrefix,
-                                                                    getMetricPredicate(), compressPackageNames);
+                MetricPrefixGangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                        hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
+                        getResolvedPrefix(), getMetricPredicate(), compressPackageNames);
             }
             catch (Exception e)
             {
