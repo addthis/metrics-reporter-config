@@ -15,10 +15,16 @@
 package com.addthis.metrics.reporter.config;
 
 import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.MetricPredicate;
+import com.yammer.metrics.core.MetricsRegistry;
+import com.yammer.metrics.reporting.GangliaReporter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.constraints.NotNull;
+
+import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,17 +38,6 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
     @NotNull
     private boolean compressPackageNames = false;
     private String gmondConf;
-
-
-    public String getGroupPrefix()
-    {
-        return groupPrefix;
-    }
-
-    public void setGroupPrefix(String groupPrefix)
-    {
-        this.groupPrefix = groupPrefix;
-    }
 
     public boolean getCompressPackageNames()
     {
@@ -104,9 +99,26 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
             log.info("Enabling GangliaReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
             try
             {
-                com.yammer.metrics.reporting.GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
-                                                                    hostPort.getHost(), hostPort.getPort(), groupPrefix,
-                                                                    getMetricPredicate(), compressPackageNames);
+                try
+                {
+                    /**
+                     * This will only be invoked if using a fork of the 2.2.0 metrics library with support
+                     * for ganglia metric prefixes (in addition to the regular group prefixes):
+                     * http://github.com/mspiegel/metrics. Otherwise the regular ganglia reporter is enabled.
+                     */
+                    Method enable = GangliaReporter.class.getDeclaredMethod("enable", MetricsRegistry.class,
+                        Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class, String.class,
+                        MetricPredicate.class, Boolean.TYPE);
+                    enable.invoke(null, Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                            hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
+                            getResolvedPrefix(), getMetricPredicate(), compressPackageNames);
+                }
+                catch(NoSuchMethodException ex)
+                {
+                    GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                            hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
+                            getMetricPredicate(), compressPackageNames);
+                }
             }
             catch (Exception e)
             {

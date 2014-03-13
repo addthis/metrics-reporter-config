@@ -16,9 +16,18 @@
 package com.addthis.metrics.reporter.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +37,20 @@ public abstract class AbstractHostPortReporterConfig extends AbstractReporterCon
 {
     private static final Logger log = LoggerFactory.getLogger(AbstractHostPortReporterConfig.class);
 
+    public static final String MACRO_HOST_NAME = "host.name";
+    public static final String MACRO_HOST_ADDRESS = "host.address";
+    public static final String MACRO_HOST_FQDN = "host.fqdn";
+    public static final String MACRO_HOST_NAME_SHORT = "host.name.short";
+
     @Valid
     private List<HostPort> hosts;
     @Valid
     private String hostsString;
+    @NotNull
+    private String prefix = "";
+
+    private InetAddress localhost;
+    private String resolvedPrefix;
 
     public List<HostPort> getHosts()
     {
@@ -43,7 +62,6 @@ public abstract class AbstractHostPortReporterConfig extends AbstractReporterCon
         this.hosts = hosts;
     }
 
-
     public String getHostsString()
     {
         return hostsString;
@@ -52,6 +70,34 @@ public abstract class AbstractHostPortReporterConfig extends AbstractReporterCon
     public void setHostsString(String hostsString)
     {
         this.hostsString = hostsString;
+    }
+
+    private String getPrefix()
+    {
+        return prefix;
+    }
+
+    public String getResolvedPrefix() {
+        return resolvedPrefix;
+    }
+
+    /**
+     * Test constructor
+     *
+     * @param localhost
+     *            localhost
+     */
+    AbstractHostPortReporterConfig(InetAddress localhost) {
+        this.localhost = localhost;
+    }
+
+    public AbstractHostPortReporterConfig() {
+        try {
+            this.localhost = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            // not expected to happen with properly configured system
+            log.error("Unable to get localhost", e);
+        }
     }
 
     public List<HostPort> parseHostString()
@@ -94,5 +140,60 @@ public abstract class AbstractHostPortReporterConfig extends AbstractReporterCon
     }
 
     public abstract List<HostPort> getFullHostList();
+
+    /**
+     * <p>
+     * Sets the prefix to be prepended to all metric names. The prefix may
+     * contain the variable references in the following format: ${macro_name}.
+     * <p>
+     * The following macros are supported:
+     * <dl>
+     * <dt>{@link #MACRO_HOST_ADDRESS}</dt>
+     * <dd>The value returned for local host by
+     * {@link java.net.InetAddress#getHostAddress()}</dd>
+     * <dt>{@link #MACRO_HOST_NAME}</dt>
+     * <dd>The value returned for local host by
+     * {@link java.net.InetAddress#getHostName()}</dd>
+     * <dt>{@link #MACRO_HOST_NAME_SHORT}</dt>
+     * <dd>The value returned for local host by
+     * {@link java.net.InetAddress#getHostName()} up to first dot</dd>
+     * <dt>{@link #MACRO_HOST_FQDN}</dt>
+     * <dd>The value returned for local host by
+     * {@link java.net.InetAddress#getCanonicalHostName()}</dd>
+     * </dl>
+     *
+     * <p>
+     * All substituted values are made metric-safe
+     *
+     * @param prefix
+     *            prefix value
+     */
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+        this.resolvedPrefix = resolvePrefix(prefix);
+    }
+
+    private String sanitizeName(String name) {
+        return name.replaceAll("[^a-zA-Z0-9_-]", "_");
+    }
+
+    String resolvePrefix(String prefixTemplate) {
+        Map<String, String> valueMap = new HashMap<String, String>();
+        if (localhost != null) {
+            String hostname = localhost.getHostName();
+            valueMap.put(MACRO_HOST_NAME, sanitizeName(hostname));
+            if (!StringUtils.isEmpty(hostname)) {
+                valueMap.put(MACRO_HOST_NAME_SHORT,
+                        sanitizeName(StringUtils.split(hostname, '.')[0]));
+            }
+            valueMap.put(MACRO_HOST_ADDRESS,
+                    sanitizeName(localhost.getHostAddress()));
+            valueMap.put(MACRO_HOST_FQDN,
+                    sanitizeName(localhost.getCanonicalHostName()));
+        }
+
+        return StrSubstitutor.replace(prefixTemplate, valueMap);
+    }
+
 
 }
