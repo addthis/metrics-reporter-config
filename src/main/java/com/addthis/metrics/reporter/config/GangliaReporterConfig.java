@@ -115,7 +115,10 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
                 }
                 catch(NoSuchMethodException ex)
                 {
-                    GangliaReporter.enable(Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                    Method enable = GangliaReporter.class.getDeclaredMethod("enable", MetricsRegistry.class,
+                            Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class,
+                            MetricPredicate.class, Boolean.TYPE);
+                    enable.invoke(null, Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
                             hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
                             getMetricPredicate(), compressPackageNames);
                 }
