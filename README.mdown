@@ -139,7 +139,7 @@ metric has passed the top level filter.
               color: "white"
               patterns:
               - metric: ".*WidgetRunner$"
-                measure: "[mean|stddev]"
+                measure: "mean|stddev"
               - metric: ".*SprocketRunner$"
                 measure: ".*percentile"
 
