@@ -66,7 +66,7 @@
     <dependency>
       <groupId>com.aphyr</groupId>
       <artifactId>riemann-java-client</artifactId>
-      <version>0.2.8</version>
+      <version>0.2.10</version>
       <optional>true</optional>
     </dependency>
     <!-- testing -->
