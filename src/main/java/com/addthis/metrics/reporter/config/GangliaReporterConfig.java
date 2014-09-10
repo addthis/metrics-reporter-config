@@ -59,6 +59,14 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
         this.gmondConf = gmondConf;
     }
 
+    public String getGroupPrefix() {
+        return groupPrefix;
+    }
+
+    public void setGroupPrefix(String groupPrefix) {
+        this.groupPrefix = groupPrefix;
+    }
+
     @Override
     public List<HostPort> getFullHostList()
     {
