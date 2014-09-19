@@ -1,0 +1,5 @@
+graphite:
+  - 
+    period: 2
+    timeunit: 'SECONDS'
+    hostsString: 'localhost:2003,localhost:2004'
