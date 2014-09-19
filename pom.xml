@@ -24,7 +24,8 @@
   </licenses>
 
   <properties>
-    <dep.metrics.version>2.2.0</dep.metrics.version>
+    <dep.metrics2.version>2.2.0</dep.metrics2.version>
+    <dep.metrics3.version>3.1.0</dep.metrics3.version>
     <project.build.targetJdk>1.6</project.build.targetJdk>
   </properties>
 
@@ -44,23 +45,44 @@
       <artifactId>hibernate-validator</artifactId>
       <version>4.3.0.Final</version>
     </dependency>
+    <!-- FIXME should we make this optional? -->
     <dependency>
       <groupId>com.yammer.metrics</groupId>
       <artifactId>metrics-core</artifactId>
-      <version>${dep.metrics.version}</version>
+      <version>${dep.metrics2.version}</version>
     </dependency>
     <!-- reporters -->
     <!-- console, csv, jmx included in core -->
     <dependency>
       <groupId>com.yammer.metrics</groupId>
       <artifactId>metrics-ganglia</artifactId>
-      <version>${dep.metrics.version}</version>
+      <version>${dep.metrics2.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.yammer.metrics</groupId>
       <artifactId>metrics-graphite</artifactId>
-      <version>${dep.metrics.version}</version>
+      <version>${dep.metrics2.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <!-- FIXME should we make this optional? -->
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <version>${dep.metrics3.version}</version>
+    </dependency>
+    <!-- reporters -->
+    <!-- console, csv, jmx included in core -->
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-ganglia</artifactId>
+      <version>${dep.metrics3.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-graphite</artifactId>
+      <version>${dep.metrics3.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>

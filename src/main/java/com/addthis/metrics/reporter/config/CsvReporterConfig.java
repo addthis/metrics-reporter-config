@@ -14,8 +14,8 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.codahale.metrics.MetricRegistry;
 import com.yammer.metrics.Metrics;
-import com.yammer.metrics.reporting.CsvReporter;
 
 import java.io.File;
 
@@ -42,23 +42,66 @@ public class CsvReporterConfig extends AbstractReporterConfig
         this.outdir = outdir;
     }
 
+    private File createFile()
+    {
+        File foutDir = new File(outdir);
+        boolean success = foutDir.mkdirs();
+        if (!success)
+        {
+            log.error("Failed to create directory {} for CsvReporter", outdir);
+            return null;
+        }
+        return foutDir;
+    }
+
+    @Override
+    public boolean enable(MetricRegistry registry)
+    {
+        log.info("Enabling CsvReporter to {}", outdir);
+        try
+        {
+            File foutDir = createFile();
+            if (foutDir == null)
+            {
+                return false;
+            }
+            // static enable() methods omit the option of specifying a
+            // predicate.  Calling constructor and starting manually
+            // instead
+            final com.codahale.metrics.CsvReporter reporter =
+                    com.codahale.metrics.CsvReporter.forRegistry(registry)
+                    .convertRatesTo(getRealRateunit())
+                    .convertDurationsTo(getRealDurationunit())
+                    .filter(getMetricFilter())
+                    .build(foutDir);
+
+            reporter.start(getPeriod(), getRealTimeunit());
+        }
+        catch (Exception e)
+        {
+            log.error("Failure while Enabling CsvReporter", e);
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public boolean enable()
     {
         log.info("Enabling CsvReporter to {}", outdir);
         try
         {
-            File foutDir = new File(outdir);
-            boolean success = foutDir.mkdirs();
-            if (!success)
+            File foutDir = createFile();
+            if (foutDir == null)
             {
-                log.error("Failed to create directory {} for CsvReporter", outdir);
                 return false;
             }
             // static enable() methods omit the option of specifying a
             // predicate.  Calling constructor and starting manually
             // instead
-            final CsvReporter reporter = new CsvReporter(Metrics.defaultRegistry(), getMetricPredicate(), foutDir);
+            final com.yammer.metrics.reporting.CsvReporter reporter =
+                    new com.yammer.metrics.reporting.CsvReporter(
+                            Metrics.defaultRegistry(), getMetricPredicate(), foutDir);
             reporter.start(getPeriod(), getRealTimeunit());
         }
         catch (Exception e)

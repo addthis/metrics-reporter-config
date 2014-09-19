@@ -14,16 +14,19 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.codahale.metrics.MetricRegistry;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.MetricPredicate;
 import com.yammer.metrics.core.MetricsRegistry;
-import com.yammer.metrics.reporting.GangliaReporter;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.constraints.NotNull;
 
+import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
@@ -86,11 +89,50 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
          }
     }
 
-
-    @Override
-    public boolean enable()
+    private void enableMetrics2(HostPort hostPort) throws InvocationTargetException,
+                                                          IllegalAccessException,
+                                                          NoSuchMethodException
     {
-        String className = "com.yammer.metrics.reporting.GangliaReporter";
+        try
+        {
+            /**
+             * This will only be invoked if using a fork of the 2.2.0 metrics library with support
+             * for ganglia metric prefixes (in addition to the regular group prefixes):
+             * http://github.com/mspiegel/metrics. Otherwise the regular ganglia reporter is enabled.
+             */
+            Method enable = com.yammer.metrics.reporting.GangliaReporter.class.getDeclaredMethod(
+                    "enable", MetricsRegistry.class,
+                    Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class, String.class,
+                    MetricPredicate.class, Boolean.TYPE);
+            enable.invoke(null, Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                    hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
+                    getResolvedPrefix(), getMetricPredicate(), compressPackageNames);
+        }
+        catch(NoSuchMethodException ex)
+        {
+            Method enable = com.yammer.metrics.reporting.GangliaReporter.class.getDeclaredMethod(
+                    "enable", MetricsRegistry.class,
+                    Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class,
+                    MetricPredicate.class, Boolean.TYPE);
+            enable.invoke(null, Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
+                    hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
+                    getMetricPredicate(), compressPackageNames);
+        }
+    }
+
+    private void enableMetrics3(HostPort hostPort, MetricRegistry registry) throws IOException {
+        com.codahale.metrics.ganglia.GangliaReporter.forRegistry(registry)
+        .convertRatesTo(getRealRateunit())
+        .convertDurationsTo(getRealDurationunit())
+        .prefixedWith(groupPrefix)
+        .filter(getMetricFilter())
+        .build(new info.ganglia.gmetric4j.gmetric.GMetric(hostPort.getHost(), hostPort.getPort(),
+                info.ganglia.gmetric4j.gmetric.GMetric.UDPAddressingMode.MULTICAST, 1))
+        .start(getPeriod(), getRealTimeunit());
+    }
+
+    private boolean enable(MetricsVersion version, String className, MetricRegistry registry)
+    {
         if (!isClassAvailable(className))
         {
             log.error("Tried to enable GangliaReporter, but class {} was not found", className);
@@ -107,28 +149,14 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
             log.info("Enabling GangliaReporter to {}:{}", new Object[] {hostPort.getHost(), hostPort.getPort()});
             try
             {
-                try
+                switch (version)
                 {
-                    /**
-                     * This will only be invoked if using a fork of the 2.2.0 metrics library with support
-                     * for ganglia metric prefixes (in addition to the regular group prefixes):
-                     * http://github.com/mspiegel/metrics. Otherwise the regular ganglia reporter is enabled.
-                     */
-                    Method enable = GangliaReporter.class.getDeclaredMethod("enable", MetricsRegistry.class,
-                        Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class, String.class,
-                        MetricPredicate.class, Boolean.TYPE);
-                    enable.invoke(null, Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
-                            hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
-                            getResolvedPrefix(), getMetricPredicate(), compressPackageNames);
-                }
-                catch(NoSuchMethodException ex)
-                {
-                    Method enable = GangliaReporter.class.getDeclaredMethod("enable", MetricsRegistry.class,
-                            Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class,
-                            MetricPredicate.class, Boolean.TYPE);
-                    enable.invoke(null, Metrics.defaultRegistry(), getPeriod(), getRealTimeunit(),
-                            hostPort.getHost(), hostPort.getPort(), resolvePrefix(groupPrefix),
-                            getMetricPredicate(), compressPackageNames);
+                    case SERIES_2:
+                        enableMetrics2(hostPort);
+                        break;
+                    case SERIES_3:
+                        enableMetrics3(hostPort, registry);
+                        break;
                 }
             }
             catch (Exception e)
@@ -139,5 +167,20 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
 
         }
         return true;
+    }
+
+    @Override
+    public boolean enable()
+    {
+        return enable(MetricsVersion.SERIES_2,
+                "com.yammer.metrics.reporting.GangliaReporter", null);
+    }
+
+
+    @Override
+    public boolean enable(MetricRegistry registry)
+    {
+        return enable(MetricsVersion.SERIES_3,
+                "com.codahale.metrics.ganglia.GangliaReporter", registry);
     }
 }

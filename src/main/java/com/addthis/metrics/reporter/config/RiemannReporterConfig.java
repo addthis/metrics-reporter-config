@@ -14,6 +14,7 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.codahale.metrics.MetricRegistry;
 import com.yammer.metrics.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,4 +125,11 @@ public class RiemannReporterConfig extends AbstractHostPortReporterConfig
         }
         return true;
     }
+
+    @Override
+    public boolean enable(MetricRegistry registry)
+    {
+        throw new UnsupportedOperationException("RiemannReporter not yet implemented for metrics 3.x");
+    }
+
 }

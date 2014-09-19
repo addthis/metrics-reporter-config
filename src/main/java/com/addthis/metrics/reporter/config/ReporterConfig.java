@@ -29,6 +29,8 @@ import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 
+import com.codahale.metrics.MetricRegistry;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,8 +110,17 @@ public class ReporterConfig
         this.riemann = riemann;
     }
 
-
     public boolean enableConsole()
+    {
+        return enableConsole(MetricsVersion.SERIES_2, null);
+    }
+
+    public boolean enableConsole(MetricRegistry registry)
+    {
+        return enableConsole(MetricsVersion.SERIES_3, registry);
+    }
+
+    private boolean enableConsole(MetricsVersion version, MetricRegistry registry)
     {
         boolean failures = false;
         if (console == null)
@@ -119,7 +130,10 @@ public class ReporterConfig
         }
         for (ConsoleReporterConfig consoleConfig : console)
         {
-            if (!consoleConfig.enable())
+            boolean success = (version == MetricsVersion.SERIES_2) ?
+                              consoleConfig.enable() :
+                              consoleConfig.enable(registry);
+            if (!success)
             {
                 failures = true;
             }
@@ -129,6 +143,16 @@ public class ReporterConfig
 
     public boolean enableCsv()
     {
+        return enableCsv(MetricsVersion.SERIES_2, null);
+    }
+
+    public boolean enableCsv(MetricRegistry registry)
+    {
+        return enableCsv(MetricsVersion.SERIES_3, registry);
+    }
+
+    private boolean enableCsv(MetricsVersion version, MetricRegistry registry)
+    {
         boolean failures = false;
         if (csv == null)
         {
@@ -137,7 +161,10 @@ public class ReporterConfig
         }
         for (CsvReporterConfig csvConfig : csv)
         {
-            if (!csvConfig.enable())
+            boolean success = (version == MetricsVersion.SERIES_2) ?
+                              csvConfig.enable() :
+                              csvConfig.enable(registry);
+            if (!success)
             {
                 failures = true;
             }
@@ -147,6 +174,16 @@ public class ReporterConfig
 
     public boolean enableGanglia()
     {
+        return enableGanglia(MetricsVersion.SERIES_2, null);
+    }
+
+    public boolean enableGanglia(MetricRegistry registry)
+    {
+        return enableGanglia(MetricsVersion.SERIES_3, registry);
+    }
+
+    private boolean enableGanglia(MetricsVersion version, MetricRegistry registry)
+    {
         boolean failures = false;
         if (ganglia == null)
         {
@@ -155,7 +192,10 @@ public class ReporterConfig
         }
         for (GangliaReporterConfig gangliaConfig : ganglia)
         {
-            if (!gangliaConfig.enable())
+            boolean success = (version == MetricsVersion.SERIES_2) ?
+                              gangliaConfig.enable() :
+                              gangliaConfig.enable(registry);
+            if (!success)
             {
                 failures = true;
             }
@@ -165,6 +205,16 @@ public class ReporterConfig
 
     public boolean enableGraphite()
     {
+        return enableGraphite(MetricsVersion.SERIES_2, null);
+    }
+
+    public boolean enableGraphite(MetricRegistry registry)
+    {
+        return enableGraphite(MetricsVersion.SERIES_3, registry);
+    }
+
+    private boolean enableGraphite(MetricsVersion version, MetricRegistry registry)
+    {
         boolean failures = false;
         if (graphite == null)
         {
@@ -173,7 +223,10 @@ public class ReporterConfig
         }
         for (GraphiteReporterConfig graphiteConfig : graphite)
         {
-            if (!graphiteConfig.enable())
+            boolean success = (version == MetricsVersion.SERIES_2) ?
+                              graphiteConfig.enable() :
+                              graphiteConfig.enable(registry);
+            if (!success)
             {
                 failures = true;
             }
@@ -183,6 +236,16 @@ public class ReporterConfig
 
     public boolean enableRiemann()
     {
+        return enableRiemann(MetricsVersion.SERIES_2, null);
+    }
+
+    private boolean enableRiemann(MetricRegistry registry)
+    {
+        return enableRiemann(MetricsVersion.SERIES_3, registry);
+    }
+
+    private boolean enableRiemann(MetricsVersion version, MetricRegistry registry)
+    {
         boolean failures = false;
         if (riemann == null)
         {
@@ -191,7 +254,10 @@ public class ReporterConfig
         }
         for (RiemannReporterConfig riemannConfig : riemann)
         {
-            if (!riemannConfig.enable())
+            boolean success = (version == MetricsVersion.SERIES_2) ?
+                              riemannConfig.enable() :
+                              riemannConfig.enable(registry);
+            if (!success)
             {
                 failures = true;
             }
@@ -199,41 +265,50 @@ public class ReporterConfig
         return !failures;
     }
 
-
     public boolean enableAll()
+    {
+        return enableAll(MetricsVersion.SERIES_2, null);
+    }
+
+    public boolean enableAll(MetricRegistry registry)
+    {
+        return enableAll(MetricsVersion.SERIES_3, registry);
+    }
+
+    private boolean enableAll(MetricsVersion version, MetricRegistry registry)
     {
         boolean enabled = false;
         if (console != null)
         {
-            if (enableConsole())
+            if (enableConsole(version, registry))
             {
                 enabled = true;
             }
         }
         if (csv != null)
         {
-            if (enableCsv())
+            if (enableCsv(version, registry))
             {
                 enabled = true;
             }
         }
         if (ganglia != null)
         {
-            if (enableGanglia())
+            if (enableGanglia(version, registry))
             {
                 enabled = true;
             }
         }
         if (graphite != null)
         {
-            if (enableGraphite())
+            if (enableGraphite(version, registry))
             {
                 enabled = true;
             }
         }
         if (riemann != null)
         {
-            if (enableRiemann())
+            if (enableRiemann(version, registry))
             {
                 enabled = true;
             }

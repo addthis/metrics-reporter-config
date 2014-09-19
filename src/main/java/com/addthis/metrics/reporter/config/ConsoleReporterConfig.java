@@ -14,9 +14,10 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.codahale.metrics.MetricRegistry;
 import com.yammer.metrics.Metrics;
-import com.yammer.metrics.reporting.ConsoleReporter;
 
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 import org.slf4j.Logger;
@@ -39,30 +40,61 @@ public class ConsoleReporterConfig extends AbstractReporterConfig
         this.outfile = outfile;
     }
 
+    private PrintStream createPrintStream() throws FileNotFoundException
+    {
+        if (outfile != null)
+        {
+            log.info("console reporting will be redirected to {} instead of stdout", outfile);
+            return new PrintStream(outfile);
+        }
+        else
+        {
+            return System.out;
+        }
+    }
+
+    @Override
+    public boolean enable(MetricRegistry registry)
+    {
+        try
+        {
+            PrintStream stream = createPrintStream();
+
+            final com.codahale.metrics.ConsoleReporter reporter =
+                    com.codahale.metrics.ConsoleReporter.forRegistry(registry)
+                .convertRatesTo(getRealRateunit())
+                .convertDurationsTo(getRealDurationunit())
+                .filter(getMetricFilter())
+                .outputTo(stream)
+                .build();
+
+            reporter.start(getPeriod(), getRealTimeunit());
+        }
+        catch (Exception e)
+        {
+            log.error("Failure while enabling console reporter", e);
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public boolean enable()
     {
         try
         {
-            PrintStream stream = null;
-            if (outfile != null)
-            {
-                log.info("console reporting will be redirected to {} instead of stdout", outfile);
-                stream = new PrintStream(outfile);
-            }
-            else
-            {
-                stream = System.out;
-            }
+            PrintStream stream = createPrintStream();
 
             // static enable() methods omit the option of specifying a
             // predicate.  Calling constructor and starting manually
             // instead
-            final ConsoleReporter reporter = new ConsoleReporter(Metrics.defaultRegistry(),
-                                                                 stream,
-                                                                 getMetricPredicate());
-            reporter.start(getPeriod(), getRealTimeunit());
+            final com.yammer.metrics.reporting.ConsoleReporter reporter =
+                    new com.yammer.metrics.reporting.ConsoleReporter(
+                            Metrics.defaultRegistry(),
+                            stream,
+                            getMetricPredicate());
 
+            reporter.start(getPeriod(), getRealTimeunit());
         }
         catch (Exception e)
         {

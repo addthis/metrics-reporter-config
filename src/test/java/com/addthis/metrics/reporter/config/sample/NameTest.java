@@ -14,13 +14,18 @@
 
 package com.addthis.metrics.reporter.config.sample;
 
+import java.io.IOException;
+
 import com.addthis.metrics.reporter.config.ReporterConfig;
 
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Counter;
-import com.yammer.metrics.core.Meter;
+import com.codahale.metrics.MetricRegistry;
 
-import java.util.concurrent.TimeUnit;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 
 import org.junit.Test;
 
@@ -38,17 +43,52 @@ public class NameTest
 
     private static final Yaml yaml = new Yaml(new Constructor(ReporterConfig.class));
 
+    private void recursiveDelete(Path directory) throws IOException
+    {
+        Files.walkFileTree(directory, new SimpleFileVisitor<Path>()
+        {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException
+            {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException
+            {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+
+        });
+    }
+
     // Without mocking up a full repoter & registry it's surprisingly
     // difficult to get the MetricName of a metric, or trace the
     // application of predicates.  This is a hacky test for visual
     // inspection.
     @Test
-    public void csvNamePrinting() throws Exception
+    public void csvNamePrintingMetrics2() throws Exception
     {
-        log.debug("name test");
-        Counter counter = Metrics.newCounter(getClass(), "mycounter");
+        log.debug("name test metrics 2.x");
+        com.yammer.metrics.core.Counter counter = com.yammer.metrics.Metrics.newCounter(getClass(), "mycounter");
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv-predicate.yaml");
+        recursiveDelete(Paths.get(config.getCsv().get(0).getOutdir()));
         config.enableAll();
+        counter.inc();
+        Thread.sleep(10000);
+    }
+
+    @Test
+    public void csvNamePrintingMetrics3() throws Exception
+    {
+        log.debug("name test metrics 3.x");
+        final MetricRegistry metrics = new MetricRegistry();
+        com.codahale.metrics.Counter counter = metrics.counter("mycounter");
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv-predicate.yaml");
+        recursiveDelete(Paths.get(config.getCsv().get(0).getOutdir()));
+        config.enableAll(metrics);
         counter.inc();
         Thread.sleep(10000);
     }

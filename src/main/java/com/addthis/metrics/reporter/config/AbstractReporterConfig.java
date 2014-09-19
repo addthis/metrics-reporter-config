@@ -14,6 +14,8 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.MetricRegistry;
 import com.yammer.metrics.core.MetricPredicate;
 
 import java.util.concurrent.TimeUnit;
@@ -28,15 +30,24 @@ public abstract class AbstractReporterConfig
     @NotNull
     @Min(1)
     private long period;
-    @NotNull
+    // FIXME this should be not-null for metrics2 but null for metrics3
     @Pattern(
         regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
         message = "must be a valid java.util.concurrent.TimeUnit"
     )
     private String timeunit;
+    @Pattern(
+            regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
+            message = "must be a valid java.util.concurrent.TimeUnit"
+    )
+    private String rateunit = "SECONDS";
+    @Pattern(
+            regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
+            message = "must be a valid java.util.concurrent.TimeUnit"
+    )
+    private String durationunit = "MILLISECONDS";
     @Valid
     private PredicateConfig predicate;
-
 
     public long getPeriod()
     {
@@ -58,9 +69,39 @@ public abstract class AbstractReporterConfig
         this.timeunit = timeunit;
     }
 
+    public String getRateunit()
+    {
+        return rateunit;
+    }
+
+    public void setRateunit(String rateunit)
+    {
+        this.rateunit = rateunit;
+    }
+
+    public String getDurationunit()
+    {
+        return durationunit;
+    }
+
+    public void setDurationunit(String durationunit)
+    {
+        this.durationunit = durationunit;
+    }
+
     public TimeUnit getRealTimeunit()
     {
         return TimeUnit.valueOf(timeunit);
+    }
+
+    public TimeUnit getRealRateunit()
+    {
+        return TimeUnit.valueOf(rateunit);
+    }
+
+    public TimeUnit getRealDurationunit()
+    {
+        return TimeUnit.valueOf(durationunit);
     }
 
     public PredicateConfig getPredicate()
@@ -98,5 +139,19 @@ public abstract class AbstractReporterConfig
         }
     }
 
+    public MetricFilter getMetricFilter()
+    {
+        if (predicate == null)
+        {
+            return MetricFilter.ALL;
+        }
+        else
+        {
+            return predicate;
+        }
+    }
+
     public abstract boolean enable();
+
+    public abstract boolean enable(MetricRegistry registry);
 }

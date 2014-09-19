@@ -14,6 +14,7 @@
 
 package com.addthis.metrics.reporter.config;
 
+import com.codahale.metrics.MetricFilter;
 import com.yammer.metrics.core.Histogram;
 import com.yammer.metrics.core.Meter;
 import com.yammer.metrics.core.Metric;
@@ -32,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PredicateConfig implements MetricPredicate
+public class PredicateConfig implements MetricPredicate, MetricFilter
 {
     private static final Logger log = LoggerFactory.getLogger(PredicateConfig.class);
 
@@ -254,6 +255,21 @@ public class PredicateConfig implements MetricPredicate
         return qualifiedTypeName;
     }
 
+    public String unqualifyMetricName(String name) {
+        int location = name.lastIndexOf('.');
+        if (location < 0)
+        {
+            return name;
+        }
+        else
+        {
+            return name.substring(location + 1);
+        }
+    }
+
+    /**
+     * Metrics 2.x support
+     */
     @Override
     public boolean matches(MetricName name, Metric metric)
     {
@@ -265,6 +281,23 @@ public class PredicateConfig implements MetricPredicate
         else
         {
             return allowString(name.getName());
+        }
+    }
+
+    /**
+     * Metrics 3.x support
+     */
+    @Override
+    public boolean matches(String name, com.codahale.metrics.Metric metric)
+    {
+        log.trace("Checking Metric name: {} {}", new Object[] {name, unqualifyMetricName(name)});
+        if (useQualifiedName)
+        {
+            return allowString(name);
+        }
+        else
+        {
+            return allowString(unqualifyMetricName(name));
         }
     }
 
