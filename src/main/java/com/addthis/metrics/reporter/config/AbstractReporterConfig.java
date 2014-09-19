@@ -30,7 +30,6 @@ public abstract class AbstractReporterConfig
     @NotNull
     @Min(1)
     private long period;
-    // FIXME this should be not-null for metrics2 but null for metrics3
     @Pattern(
         regexp = "^(DAYS|HOURS|MICROSECONDS|MILLISECONDS|MINUTES|NANOSECONDS|SECONDS)$",
         message = "must be a valid java.util.concurrent.TimeUnit"
@@ -151,7 +150,19 @@ public abstract class AbstractReporterConfig
         }
     }
 
-    public abstract boolean enable();
+    /**
+     * This enables Metrics 2.x reporting.
+     *
+     * @deprecated use {@link #enable2()} for Metrics 2.x
+     * or {@link #enable3(com.codahale.metrics.MetricRegistry)}
+     * for Metrics 3.x.
+     */
+    public final boolean enable()
+    {
+        return enable2();
+    }
 
-    public abstract boolean enable(MetricRegistry registry);
+    public abstract boolean enable2();
+
+    public abstract boolean enable3(MetricRegistry registry);
 }

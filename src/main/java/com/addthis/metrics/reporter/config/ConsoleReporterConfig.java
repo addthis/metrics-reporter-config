@@ -54,7 +54,7 @@ public class ConsoleReporterConfig extends AbstractReporterConfig
     }
 
     @Override
-    public boolean enable(MetricRegistry registry)
+    public boolean enable3(MetricRegistry registry)
     {
         try
         {
@@ -79,7 +79,7 @@ public class ConsoleReporterConfig extends AbstractReporterConfig
     }
 
     @Override
-    public boolean enable()
+    public boolean enable2()
     {
         try
         {

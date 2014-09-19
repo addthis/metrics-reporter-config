@@ -72,7 +72,7 @@ public class RiemannReporterConfig extends AbstractHostPortReporterConfig
 
 
     @Override
-    public boolean enable()
+    public boolean enable2()
     {
         String className = "com.yammer.metrics.reporting.RiemannReporter";
         if (!isClassAvailable(className))
@@ -127,7 +127,7 @@ public class RiemannReporterConfig extends AbstractHostPortReporterConfig
     }
 
     @Override
-    public boolean enable(MetricRegistry registry)
+    public boolean enable3(MetricRegistry registry)
     {
         throw new UnsupportedOperationException("RiemannReporter not yet implemented for metrics 3.x");
     }

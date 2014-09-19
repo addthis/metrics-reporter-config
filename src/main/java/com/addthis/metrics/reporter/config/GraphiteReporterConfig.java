@@ -106,13 +106,13 @@ public class GraphiteReporterConfig extends AbstractHostPortReporterConfig
     }
 
     @Override
-    public boolean enable() {
+    public boolean enable2() {
         return enable(MetricsVersion.SERIES_2,
                 "com.yammer.metrics.reporting.GraphiteReporter", null);
     }
 
     @Override
-    public boolean enable(MetricRegistry registry) {
+    public boolean enable3(MetricRegistry registry) {
         return enable(MetricsVersion.SERIES_3,
                 "com.codahale.metrics.graphite.GraphiteReporter", registry);
     }

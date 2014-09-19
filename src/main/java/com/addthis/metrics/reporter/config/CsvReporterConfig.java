@@ -55,7 +55,7 @@ public class CsvReporterConfig extends AbstractReporterConfig
     }
 
     @Override
-    public boolean enable(MetricRegistry registry)
+    public boolean enable3(MetricRegistry registry)
     {
         log.info("Enabling CsvReporter to {}", outdir);
         try
@@ -86,7 +86,7 @@ public class CsvReporterConfig extends AbstractReporterConfig
     }
 
     @Override
-    public boolean enable()
+    public boolean enable2()
     {
         log.info("Enabling CsvReporter to {}", outdir);
         try

@@ -170,7 +170,7 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
     }
 
     @Override
-    public boolean enable()
+    public boolean enable2()
     {
         return enable(MetricsVersion.SERIES_2,
                 "com.yammer.metrics.reporting.GangliaReporter", null);
@@ -178,7 +178,7 @@ public class GangliaReporterConfig extends AbstractHostPortReporterConfig
 
 
     @Override
-    public boolean enable(MetricRegistry registry)
+    public boolean enable3(MetricRegistry registry)
     {
         return enable(MetricsVersion.SERIES_3,
                 "com.codahale.metrics.ganglia.GangliaReporter", registry);

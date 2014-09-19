@@ -43,7 +43,7 @@ public class SampleTest
     {
         Counter counter = Metrics.newCounter(getClass(), "counter");
         Meter meter = Metrics.newMeter(getClass(), "meter", "foo", TimeUnit.SECONDS);
-        config.enableConsole();
+        config.enableConsole2();
         for (int i=0; i< loops; i++)
         {
             counter.inc();

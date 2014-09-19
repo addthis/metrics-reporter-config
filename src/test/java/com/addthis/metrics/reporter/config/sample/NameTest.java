@@ -75,7 +75,7 @@ public class NameTest
         com.yammer.metrics.core.Counter counter = com.yammer.metrics.Metrics.newCounter(getClass(), "mycounter");
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv-predicate.yaml");
         recursiveDelete(Paths.get(config.getCsv().get(0).getOutdir()));
-        config.enableAll();
+        config.enableAll2();
         counter.inc();
         Thread.sleep(10000);
     }
@@ -88,7 +88,7 @@ public class NameTest
         com.codahale.metrics.Counter counter = metrics.counter("mycounter");
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv-predicate.yaml");
         recursiveDelete(Paths.get(config.getCsv().get(0).getOutdir()));
-        config.enableAll(metrics);
+        config.enableAll3(metrics);
         counter.inc();
         Thread.sleep(10000);
     }

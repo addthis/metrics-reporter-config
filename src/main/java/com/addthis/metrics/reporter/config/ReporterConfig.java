@@ -110,12 +110,12 @@ public class ReporterConfig
         this.riemann = riemann;
     }
 
-    public boolean enableConsole()
+    public boolean enableConsole2()
     {
         return enableConsole(MetricsVersion.SERIES_2, null);
     }
 
-    public boolean enableConsole(MetricRegistry registry)
+    public boolean enableConsole3(MetricRegistry registry)
     {
         return enableConsole(MetricsVersion.SERIES_3, registry);
     }
@@ -131,8 +131,8 @@ public class ReporterConfig
         for (ConsoleReporterConfig consoleConfig : console)
         {
             boolean success = (version == MetricsVersion.SERIES_2) ?
-                              consoleConfig.enable() :
-                              consoleConfig.enable(registry);
+                              consoleConfig.enable2() :
+                              consoleConfig.enable3(registry);
             if (!success)
             {
                 failures = true;
@@ -141,12 +141,12 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableCsv()
+    public boolean enableCsv2()
     {
         return enableCsv(MetricsVersion.SERIES_2, null);
     }
 
-    public boolean enableCsv(MetricRegistry registry)
+    public boolean enableCsv3(MetricRegistry registry)
     {
         return enableCsv(MetricsVersion.SERIES_3, registry);
     }
@@ -162,8 +162,8 @@ public class ReporterConfig
         for (CsvReporterConfig csvConfig : csv)
         {
             boolean success = (version == MetricsVersion.SERIES_2) ?
-                              csvConfig.enable() :
-                              csvConfig.enable(registry);
+                              csvConfig.enable2() :
+                              csvConfig.enable3(registry);
             if (!success)
             {
                 failures = true;
@@ -172,12 +172,12 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableGanglia()
+    public boolean enableGanglia2()
     {
         return enableGanglia(MetricsVersion.SERIES_2, null);
     }
 
-    public boolean enableGanglia(MetricRegistry registry)
+    public boolean enableGanglia3(MetricRegistry registry)
     {
         return enableGanglia(MetricsVersion.SERIES_3, registry);
     }
@@ -193,8 +193,8 @@ public class ReporterConfig
         for (GangliaReporterConfig gangliaConfig : ganglia)
         {
             boolean success = (version == MetricsVersion.SERIES_2) ?
-                              gangliaConfig.enable() :
-                              gangliaConfig.enable(registry);
+                              gangliaConfig.enable2() :
+                              gangliaConfig.enable3(registry);
             if (!success)
             {
                 failures = true;
@@ -203,12 +203,12 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableGraphite()
+    public boolean enableGraphite2()
     {
         return enableGraphite(MetricsVersion.SERIES_2, null);
     }
 
-    public boolean enableGraphite(MetricRegistry registry)
+    public boolean enableGraphite3(MetricRegistry registry)
     {
         return enableGraphite(MetricsVersion.SERIES_3, registry);
     }
@@ -224,8 +224,8 @@ public class ReporterConfig
         for (GraphiteReporterConfig graphiteConfig : graphite)
         {
             boolean success = (version == MetricsVersion.SERIES_2) ?
-                              graphiteConfig.enable() :
-                              graphiteConfig.enable(registry);
+                              graphiteConfig.enable2() :
+                              graphiteConfig.enable3(registry);
             if (!success)
             {
                 failures = true;
@@ -234,12 +234,12 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableRiemann()
+    public boolean enableRiemann2()
     {
         return enableRiemann(MetricsVersion.SERIES_2, null);
     }
 
-    private boolean enableRiemann(MetricRegistry registry)
+    private boolean enableRiemann3(MetricRegistry registry)
     {
         return enableRiemann(MetricsVersion.SERIES_3, registry);
     }
@@ -255,8 +255,8 @@ public class ReporterConfig
         for (RiemannReporterConfig riemannConfig : riemann)
         {
             boolean success = (version == MetricsVersion.SERIES_2) ?
-                              riemannConfig.enable() :
-                              riemannConfig.enable(registry);
+                              riemannConfig.enable2() :
+                              riemannConfig.enable3(registry);
             if (!success)
             {
                 failures = true;
@@ -265,12 +265,12 @@ public class ReporterConfig
         return !failures;
     }
 
-    public boolean enableAll()
+    public boolean enableAll2()
     {
         return enableAll(MetricsVersion.SERIES_2, null);
     }
 
-    public boolean enableAll(MetricRegistry registry)
+    public boolean enableAll3(MetricRegistry registry)
     {
         return enableAll(MetricsVersion.SERIES_3, registry);
     }
@@ -375,4 +375,79 @@ public class ReporterConfig
             super(msg);
         }
     }
+
+
+    /**
+     * This enable Metrics 2.x reporting.
+     *
+     * @deprecated Use {@link #enableConsole2()} for Metrics 2.x
+     * or {@link #enableConsole3(com.codahale.metrics.MetricRegistry)}
+     * for Metrics 3.x.
+     */
+    public boolean enableConsole()
+    {
+        return enableConsole2();
+    }
+
+    /**
+     * This enable Metrics 2.x reporting.
+     *
+     * @deprecated Use {@link #enableCsv2()} for Metrics 2.x
+     * or {@link #enableCsv3(com.codahale.metrics.MetricRegistry)}
+     * for Metrics 3.x.
+     */
+    public boolean enableCsv()
+    {
+        return enableCsv2();
+    }
+
+    /**
+     * This enable Metrics 2.x reporting.
+     *
+     * @deprecated Use {@link #enableGanglia2()} for Metrics 2.x
+     * or {@link #enableGanglia3(com.codahale.metrics.MetricRegistry)}
+     * for Metrics 3.x.
+     */
+    public boolean enableGanglia()
+    {
+        return enableGanglia2();
+    }
+
+    /**
+     * This enable Metrics 2.x reporting.
+     *
+     * @deprecated Use {@link #enableGraphite2()} for Metrics 2.x
+     * or {@link #enableGraphite3(com.codahale.metrics.MetricRegistry)}
+     * for Metrics 3.x.
+     */
+    public boolean enableGraphite()
+    {
+        return enableGraphite2();
+    }
+
+    /**
+     * This enable Metrics 2.x reporting.
+     *
+     * @deprecated Use {@link #enableRiemann2()} for Metrics 2.x
+     * or {@link #enableRiemann3(com.codahale.metrics.MetricRegistry)}
+     * for Metrics 3.x.
+     */
+    public boolean enableRiemann()
+    {
+        return enableRiemann2();
+    }
+
+
+    /**
+     * This enable Metrics 2.x reporting.
+     *
+     * @deprecated Use {@link #enableAll2()} for Metrics 2.x
+     * or {@link #enableAll3(com.codahale.metrics.MetricRegistry)}
+     * for Metrics 3.x.
+     */
+    public boolean enableAll()
+    {
+        return enableAll2();
+    }
+
 }
