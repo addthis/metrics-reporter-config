@@ -1,0 +1,6 @@
+other:
+  - 
+    !!com.addthis.metrics.reporter.config.CsvReporterConfig
+    outdir: '/tmp/metrics/csv-dir'
+    period: 3
+    timeunit: 'SECONDS'
