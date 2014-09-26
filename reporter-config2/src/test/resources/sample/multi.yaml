@@ -1,0 +1,23 @@
+console:
+  - 
+    period: 2
+    timeunit: 'SECONDS'
+csv:
+  - 
+    outdir: '/tmp/metrics/csv-dir2'
+    period: 2
+    timeunit: 'SECONDS'
+ganglia:
+  - 
+    period: 2
+    timeunit: 'SECONDS'
+    hosts:
+      - host: 'localhost'
+        port: 8649
+graphite:
+  - 
+    period: 2
+    timeunit: 'SECONDS'
+    hosts:
+      - host: 'localhost'
+        port: 2003

@@ -1,0 +1,10 @@
+graphite:
+  - 
+    period: 2
+    timeunit: 'SECONDS'
+    hostsString: 'localhost:2003,localhost:2004'
+    hosts:
+      - host: 'localhost'
+        port: 2004
+      - host: 'localhost'
+        port: 2005

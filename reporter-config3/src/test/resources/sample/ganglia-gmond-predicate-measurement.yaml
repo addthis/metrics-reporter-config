@@ -1,0 +1,16 @@
+ganglia:
+  -
+    period: 60
+    timeunit: 'SECONDS'
+    gmondConf: '/etc/ganglia/gmond.conf'
+    predicate:
+       color: "black"
+       patterns:
+       - ".*JMXONLY$"
+       histogram:
+         color: "white"
+         patterns:
+           - metric: ".*WidgetRunner$"
+             measure: "[mean|stddev]"
+           - metric: ".*SprocketRunner$"
+             measure: ".*percentile"
