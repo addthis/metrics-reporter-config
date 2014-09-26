@@ -68,7 +68,7 @@ public class GraphiteReporterConfig extends AbstractGraphiteReporterConfig imple
             }
             catch (Exception e)
             {
-                log.error("Faliure while enabling GraphiteReporter", e);
+                log.error("Failed to enable GraphiteReporter", e);
                 return false;
             }
         }

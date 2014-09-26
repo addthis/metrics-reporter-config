@@ -232,18 +232,6 @@ public class PredicateConfig
         return false; // trusting validator
     }
 
-    public static String unqualifyMetricName(String name) {
-        int location = name.lastIndexOf('.');
-        if (location < 0)
-        {
-            return name;
-        }
-        else
-        {
-            return name.substring(location + 1);
-        }
-    }
-
     public static boolean allowMeasurement(String name, String measurement,
                                            Measurement type, List<MeasurementPattern> patterns)
     {

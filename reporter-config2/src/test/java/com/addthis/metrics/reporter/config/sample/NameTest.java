@@ -65,7 +65,7 @@ public class NameTest
     // application of predicates.  This is a hacky test for visual
     // inspection.
     @Test
-    public void csvNamePrintingMetrics() throws Exception
+    public void csvNamePrinting() throws Exception
     {
         log.debug("name test metrics 2.x");
         com.yammer.metrics.core.Counter counter = com.yammer.metrics.Metrics.newCounter(getClass(), "mycounter");

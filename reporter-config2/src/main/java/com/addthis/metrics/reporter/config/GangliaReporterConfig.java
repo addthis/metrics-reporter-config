@@ -24,6 +24,7 @@ import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.MetricPredicate;
 import com.yammer.metrics.core.MetricsRegistry;
 
+import com.yammer.metrics.reporting.GangliaReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +43,7 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
              * for ganglia metric prefixes (in addition to the regular group prefixes):
              * http://github.com/mspiegel/metrics. Otherwise the regular ganglia reporter is enabled.
              */
-            Method enable = com.yammer.metrics.reporting.GangliaReporter.class.getDeclaredMethod(
+            Method enable = GangliaReporter.class.getDeclaredMethod(
                     "enable", MetricsRegistry.class,
                     Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class, String.class,
                     MetricPredicate.class, Boolean.TYPE);
@@ -53,7 +54,7 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
         }
         catch(NoSuchMethodException ex)
         {
-            Method enable = com.yammer.metrics.reporting.GangliaReporter.class.getDeclaredMethod(
+            Method enable = GangliaReporter.class.getDeclaredMethod(
                     "enable", MetricsRegistry.class,
                     Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class,
                     MetricPredicate.class, Boolean.TYPE);

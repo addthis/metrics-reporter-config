@@ -36,6 +36,7 @@ public class CsvReporterConfig extends AbstractCsvReporterConfig implements Metr
             File foutDir = createFile();
             if (foutDir == null)
             {
+                log.error("Failed to create directory {} for CsvReporter", outdir);
                 return false;
             }
             // static enable() methods omit the option of specifying a

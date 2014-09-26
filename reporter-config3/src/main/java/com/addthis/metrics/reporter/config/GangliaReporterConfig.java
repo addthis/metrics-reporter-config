@@ -21,6 +21,7 @@ import java.util.List;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ganglia.GangliaReporter;
 
+import info.ganglia.gmetric4j.gmetric.GMetric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +35,8 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
         .convertDurationsTo(getRealDurationunit())
         .prefixedWith(groupPrefix)
         .filter(MetricFilterTransformer.generateFilter(getPredicate()))
-        .build(new info.ganglia.gmetric4j.gmetric.GMetric(hostPort.getHost(), hostPort.getPort(),
-                info.ganglia.gmetric4j.gmetric.GMetric.UDPAddressingMode.MULTICAST, 1))
+        .build(new GMetric(hostPort.getHost(), hostPort.getPort(),
+                GMetric.UDPAddressingMode.MULTICAST, 1))
         .start(getPeriod(), getRealTimeunit());
     }
 

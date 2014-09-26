@@ -116,8 +116,7 @@ public class ReporterConfig
         }
         for (ConsoleReporterConfig consoleConfig : console)
         {
-            boolean success = consoleConfig.enable(registry);
-            if (!success)
+            if (!consoleConfig.enable(registry))
             {
                 failures = true;
             }
@@ -135,8 +134,7 @@ public class ReporterConfig
         }
         for (CsvReporterConfig csvConfig : csv)
         {
-            boolean success = csvConfig.enable(registry);
-            if (!success)
+            if (!csvConfig.enable(registry))
             {
                 failures = true;
             }
@@ -154,8 +152,7 @@ public class ReporterConfig
         }
         for (GangliaReporterConfig gangliaConfig : ganglia)
         {
-            boolean success = gangliaConfig.enable(registry);
-            if (!success)
+            if (!gangliaConfig.enable(registry))
             {
                 failures = true;
             }
@@ -173,8 +170,7 @@ public class ReporterConfig
         }
         for (GraphiteReporterConfig graphiteConfig : graphite)
         {
-            boolean success = graphiteConfig.enable(registry);
-            if (!success)
+            if (!graphiteConfig.enable(registry))
             {
                 failures = true;
             }
@@ -192,8 +188,7 @@ public class ReporterConfig
         }
         for (RiemannReporterConfig riemannConfig : riemann)
         {
-            boolean success = riemannConfig.enable(registry);
-            if (!success)
+            if (!riemannConfig.enable(registry))
             {
                 failures = true;
             }

@@ -19,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class GraphiteReporterConfig extends AbstractGraphiteReporterConfig imple
                 .convertDurationsTo(getRealDurationunit())
                 .prefixedWith(getResolvedPrefix())
                 .filter(MetricFilterTransformer.generateFilter(getPredicate()))
-                .build(new com.codahale.metrics.graphite.Graphite(new InetSocketAddress(hostPort.getHost(),
+                .build(new Graphite(new InetSocketAddress(hostPort.getHost(),
                         hostPort.getPort())))
                 .start(getPeriod(), getRealTimeunit());
     }
@@ -58,7 +59,7 @@ public class GraphiteReporterConfig extends AbstractGraphiteReporterConfig imple
             }
             catch (Exception e)
             {
-                log.error("Faliure while enabling GraphiteReporter", e);
+                log.error("Failed to enable GraphiteReporter", e);
                 return false;
             }
         }

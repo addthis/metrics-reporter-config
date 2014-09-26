@@ -23,15 +23,28 @@ public class MetricFilterTransformer
         @Override
         public boolean matches(String name, Metric metric)
         {
-            log.trace("Checking Metric name: {} {}", new Object[] {name, PredicateConfig.unqualifyMetricName(name)});
+            log.trace("Checking Metric name: {} {}", new Object[] {name, unqualifyMetricName(name)});
             if (predicate.getUseQualifiedName())
             {
                 return predicate.allowString(name);
             }
             else
             {
-                return predicate.allowString(PredicateConfig.unqualifyMetricName(name));
+                return predicate.allowString(unqualifyMetricName(name));
             }
+        }
+    }
+
+    private static String unqualifyMetricName(String name)
+    {
+        int location = name.lastIndexOf('.');
+        if (location < 0)
+        {
+            return name;
+        }
+        else
+        {
+            return name.substring(location + 1);
         }
     }
 
