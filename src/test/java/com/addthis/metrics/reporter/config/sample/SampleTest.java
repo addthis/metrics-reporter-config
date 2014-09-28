@@ -14,8 +14,6 @@
 
 package com.addthis.metrics.reporter.config.sample;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
@@ -24,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import com.addthis.metrics.reporter.config.CsvReporterConfig;
 import com.addthis.metrics.reporter.config.ReporterConfig;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Counter;
@@ -126,19 +123,6 @@ public class SampleTest
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/multi.yaml");
         System.out.println(yaml.dump(config));
         log.info("Multi Reporter");
-        runLoop(config);
-    }
-
-    @Test
-    public void sampleOther() throws Exception
-    {
-        //ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/other.yaml");
-        ReporterConfig config = ReporterConfig.loadFromFile("/Users/tom/cassandra-metrics.yaml");
-        config.enableAll();
-        System.out.println(yaml.dump(config));
-        assertEquals(1, config.getOther().size());
-        assertEquals(CsvReporterConfig.class, config.getOther().iterator().next().getClass());
-        log.info("Sample other Reporter");
         runLoop(config);
     }
 }
