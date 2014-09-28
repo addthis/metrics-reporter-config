@@ -23,7 +23,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public abstract class AbstractReporterConfig
+public abstract class AbstractReporterConfig implements ConfiguredReporter
 {
     @NotNull
     @Min(1)
@@ -97,6 +97,4 @@ public abstract class AbstractReporterConfig
             return predicate;
         }
     }
-
-    public abstract boolean enable();
 }
