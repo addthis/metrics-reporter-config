@@ -112,14 +112,14 @@ public class ReporterConfig
 
     public List<? extends ConfiguredReporter> getReporters()
     {
-    	return reporters;
+        return reporters;
     }
-    
+
     public void setReporters(List<? extends ConfiguredReporter> reporters)
     {
-    	this.reporters = reporters;
+        this.reporters = reporters;
     }
-    
+
     public boolean enableConsole()
     {
         boolean failures = false;
@@ -212,20 +212,20 @@ public class ReporterConfig
 
     public boolean enableReporters()
     {
-    	boolean failures = false;
-    	if (reporters == null)
-    	{
-    		log.debug("Asked to enable other, but it was not configured");
-    		return false;
-    	}
-    	for (ConfiguredReporter reporter : reporters)
-    	{
-    		if (!reporter.enable())
-    		{
-    			failures = true;
-    		}
-    	}
-    	return !failures;
+        boolean failures = false;
+        if (reporters == null)
+        {
+            log.debug("Asked to enable other, but it was not configured");
+            return false;
+        }
+        for (ConfiguredReporter reporter : reporters)
+        {
+            if (!reporter.enable())
+            {
+                failures = true;
+            }
+        }
+        return !failures;
     }
 
 
@@ -269,10 +269,10 @@ public class ReporterConfig
         }
         if (reporters != null)
         {
-        	if (enableReporters())
-        	{
-        		enabled = true;
-        	}
+            if (enableReporters())
+            {
+                enabled = true;
+            }
         }
         if (!enabled)
         {

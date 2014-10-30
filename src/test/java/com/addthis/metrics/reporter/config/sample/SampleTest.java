@@ -129,7 +129,7 @@ public class SampleTest
         log.info("Multi Reporter");
         runLoop(config);
     }
-    
+
 
     @Test
     public void sampleGeneric() throws Exception

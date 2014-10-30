@@ -22,16 +22,14 @@ package com.addthis.metrics.reporter.config;
  * interface, and use {@link java.util.function.Supplier} instead, which is
  * functionally identical to this one. This eliminates the mandatory dependency
  * of the implementor on this project.
- * 
- * @author Tom van den Berge
  */
 public interface ConfiguredReporter {
 
-	/**
-	 * Starts the configured metrics reporter.
-	 * 
-	 * @return {@code true} if the reporter was successfully started, otherwise
-	 *         {@code false}.
-	 */
-	boolean enable();
+    /**
+     * Starts the configured metrics reporter.
+     *
+     * @return {@code true} if the reporter was successfully started, otherwise
+     *         {@code false}.
+     */
+    boolean enable();
 }
