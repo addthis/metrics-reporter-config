@@ -14,21 +14,22 @@
 
 package com.addthis.metrics.reporter.config.sample;
 
-import com.addthis.metrics.reporter.config.ReporterConfig;
-
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Counter;
-import com.yammer.metrics.core.Meter;
+import static org.junit.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Assert;
 import org.junit.Test;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+
+import com.addthis.metrics.reporter.config.CsvReporterConfig;
+import com.addthis.metrics.reporter.config.ReporterConfig;
+import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.Counter;
+import com.yammer.metrics.core.Meter;
 
 
 // TODO: Make this an integration test
@@ -128,5 +129,17 @@ public class SampleTest
         log.info("Multi Reporter");
         runLoop(config);
     }
+    
 
+    @Test
+    public void sampleGeneric() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/generic.yaml");
+        config.enableAll();
+        System.out.println(yaml.dump(config));
+        assertEquals(1, config.getReporters().size());
+        assertEquals(CsvReporterConfig.class, config.getReporters().iterator().next().getClass());
+        log.info("Sample generic Reporter");
+        runLoop(config);
+    }
 }
