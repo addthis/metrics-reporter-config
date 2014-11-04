@@ -1,0 +1,6 @@
+console:
+  - 
+    period: 2
+    timeunit: 'SECONDS'
+    rateunit: 'MILLISECONDS'
+    durationunit: 'MICROSECONDS'
