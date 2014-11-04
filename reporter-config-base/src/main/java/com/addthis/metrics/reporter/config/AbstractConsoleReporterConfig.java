@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-class AbstractConsoleReporterConfig extends AbstractReporterConfig
+class AbstractConsoleReporterConfig extends AbstractMetricReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(AbstractConsoleReporterConfig.class);
 

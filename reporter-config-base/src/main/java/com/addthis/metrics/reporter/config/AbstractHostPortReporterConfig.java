@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public abstract class AbstractHostPortReporterConfig extends AbstractReporterConfig
+public abstract class AbstractHostPortReporterConfig extends AbstractMetricReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(AbstractHostPortReporterConfig.class);
 
