@@ -1,6 +1,0 @@
-ganglia:
-  - 
-    timeunit: 'SECONDS'
-    hosts:
-      - host: 'localhost'
-        port: 8649

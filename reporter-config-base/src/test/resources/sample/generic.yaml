@@ -1,5 +1,5 @@
-reporters:
-  -
+reporters:  
+  - 
     !!com.addthis.metrics.reporter.config.CsvReporterConfig
     outdir: '/tmp/metrics/csv-dir'
     period: 2

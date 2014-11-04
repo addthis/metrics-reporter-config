@@ -1,8 +1,0 @@
-console:
-  - 
-    period: 2
-    timeunit: 'SECONDS'
-    predicate:
-      color: "black"
-      patterns:
-        - ".*JMXONLY$"

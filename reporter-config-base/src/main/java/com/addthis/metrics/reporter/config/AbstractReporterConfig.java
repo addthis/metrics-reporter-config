@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-abstract class AbstractReporterConfig
+public abstract class AbstractReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(AbstractReporterConfig.class);
 
@@ -43,7 +43,7 @@ abstract class AbstractReporterConfig
     }
 
     // Based on com.yammer.dropwizard.validation.Validator
-    protected static <T> boolean validate(T obj)
+    public static <T> boolean validate(T obj)
     {
         final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         final Set<ConstraintViolation<T>> violations = factory.getValidator().validate(obj);

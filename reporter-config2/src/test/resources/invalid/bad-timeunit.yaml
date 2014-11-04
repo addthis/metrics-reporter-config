@@ -1,7 +1,0 @@
-ganglia:
-  - 
-    timeunit: 'next-week'
-    period: 10
-    hosts:
-      - host: 'localhost'
-        port: 8649
