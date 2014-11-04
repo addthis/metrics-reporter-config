@@ -15,15 +15,11 @@
 package com.addthis.metrics.reporter.config;
 
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.codahale.metrics.MetricRegistry;
-import com.yammer.metrics.Metrics;
 
 public class AbstractGraphiteReporterConfig extends AbstractHostPortReporterConfig
 {

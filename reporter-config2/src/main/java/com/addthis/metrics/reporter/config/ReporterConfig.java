@@ -53,6 +53,8 @@ public class ReporterConfig
     private List<GraphiteReporterConfig> graphite;
     @Valid
     private List<RiemannReporterConfig> riemann;
+    @Valid
+    private List<? extends MetricsReporterConfigTwo> reporters;
 
     public List<ConsoleReporterConfig> getConsole()
     {
@@ -102,6 +104,16 @@ public class ReporterConfig
     public void setRiemann(List<RiemannReporterConfig> riemann)
     {
         this.riemann = riemann;
+    }
+
+    public List<? extends MetricsReporterConfigTwo> getReporters()
+    {
+        return reporters;
+    }
+
+    public void setReporters(List<? extends MetricsReporterConfigTwo> reporters)
+    {
+        this.reporters = reporters;
     }
 
     public boolean enableConsole()
@@ -194,6 +206,24 @@ public class ReporterConfig
         return !failures;
     }
 
+    public boolean enableReporters()
+    {
+        boolean failures = false;
+        if (reporters == null)
+        {
+            log.debug("Asked to enable other, but it was not configured");
+            return false;
+        }
+        for (MetricsReporterConfigTwo reporter : reporters)
+        {
+            if (!reporter.enable())
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableAll()
     {
         boolean enabled = false;
@@ -228,6 +258,13 @@ public class ReporterConfig
         if (riemann != null)
         {
             if (enableRiemann())
+            {
+                enabled = true;
+            }
+        }
+        if (reporters != null)
+        {
+            if (enableReporters())
             {
                 enabled = true;
             }

@@ -16,6 +16,7 @@ package com.addthis.metrics.reporter.config.sample;
 
 import java.util.concurrent.TimeUnit;
 
+import com.addthis.metrics.reporter.config.CsvReporterConfig;
 import com.addthis.metrics.reporter.config.ReporterConfig;
 
 import com.yammer.metrics.Metrics;
@@ -27,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+
+import static org.junit.Assert.assertEquals;
 
 
 // TODO: Make this an integration test
@@ -88,7 +91,6 @@ public class SampleTest
         runLoop(config);
     }
 
-
     @Test
     public void sampleGraphite() throws Exception
     {
@@ -116,14 +118,24 @@ public class SampleTest
         runLoop(config);
     }
 
-
-
     @Test
     public void sampleMulti() throws Exception
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/multi.yaml");
         System.out.println(yaml.dump(config));
         log.info("Multi Reporter");
+        runLoop(config);
+    }
+
+    @Test
+    public void sampleGeneric() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/generic.yaml");
+        config.enableAll();
+        System.out.println(yaml.dump(config));
+        assertEquals(1, config.getReporters().size());
+        assertEquals(CsvReporterConfig.class, config.getReporters().iterator().next().getClass());
+        log.info("Sample generic Reporter");
         runLoop(config);
     }
 

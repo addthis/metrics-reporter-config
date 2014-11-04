@@ -14,8 +14,6 @@
 
 package com.addthis.metrics.reporter.config;
 
-import com.codahale.metrics.MetricRegistry;
-import com.yammer.metrics.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
