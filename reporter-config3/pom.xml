@@ -36,7 +36,6 @@
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
             <version>${dep.metrics3.version}</version>
-            <optional>true</optional>
         </dependency>
         <!-- reporters -->
         <!-- console, csv, jmx included in core -->
