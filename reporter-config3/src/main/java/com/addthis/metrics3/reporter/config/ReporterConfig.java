@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
 import javax.validation.Valid;
 
@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import java.util.List;
 
+import com.addthis.metrics.reporter.config.AbstractReporterConfig;
 import com.codahale.metrics.MetricRegistry;
 
 import org.slf4j.Logger;

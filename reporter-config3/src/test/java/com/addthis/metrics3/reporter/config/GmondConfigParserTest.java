@@ -13,7 +13,7 @@
  */
 
 
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
 import java.util.List;
 import java.util.Map;

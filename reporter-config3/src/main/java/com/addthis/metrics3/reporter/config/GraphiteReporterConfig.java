@@ -12,12 +12,14 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
 import java.net.InetSocketAddress;
 
 import java.util.List;
 
+import com.addthis.metrics.reporter.config.AbstractGraphiteReporterConfig;
+import com.addthis.metrics.reporter.config.HostPort;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;

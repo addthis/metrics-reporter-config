@@ -88,7 +88,7 @@ public class GmondConfigParser
     }
 
 
-    protected String stripComments(String conf)
+    public String stripComments(String conf)
     {
         String cFree = conf.replaceAll(cCommentPattern, "\n");
         String cppFree = cFree.replaceAll(cppCommentPattern, "");
@@ -96,13 +96,13 @@ public class GmondConfigParser
     }
 
 
-    protected String removeEmptyLines(String conf)
+    public String removeEmptyLines(String conf)
     {
         return conf.replaceAll(emptyLinePattern, "");
     }
 
 
-    protected List<String> findSendChannels(String conf)
+    public List<String> findSendChannels(String conf)
     {
         List<String> channelBlobs = new ArrayList<String>();
 
@@ -115,7 +115,7 @@ public class GmondConfigParser
         return channelBlobs;
     }
 
-    protected Map<String,String> mapifyChannelString(String sChannel)
+    public Map<String,String> mapifyChannelString(String sChannel)
     {
         String[] arr = sChannel.split("\n");
         Map<String,String> chan = new HashMap<String,String>();
@@ -141,7 +141,7 @@ static cfg_opt_t udp_send_channel_opts[] = {
   CFG_END()
 };
     */
-    protected HostPort makeHostPort(Map<String,String> chan)
+    public HostPort makeHostPort(Map<String,String> chan)
     {
         if (chan.containsKey("mcast_join") || chan.containsKey("mcast_if"))
         {
@@ -163,7 +163,7 @@ static cfg_opt_t udp_send_channel_opts[] = {
 
 
     // java is ridiculous
-    protected String readFile(String fileName) throws IOException
+    public String readFile(String fileName) throws IOException
     {
         FileReader fr = null;
         BufferedReader br = null;

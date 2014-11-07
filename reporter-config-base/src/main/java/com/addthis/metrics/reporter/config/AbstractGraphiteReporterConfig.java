@@ -31,7 +31,7 @@ public class AbstractGraphiteReporterConfig extends AbstractHostPortReporterConf
      * @param localhost
      *            localhost
      */
-    AbstractGraphiteReporterConfig(InetAddress localhost) {
+    public AbstractGraphiteReporterConfig(InetAddress localhost) {
         super(localhost);
     }
 

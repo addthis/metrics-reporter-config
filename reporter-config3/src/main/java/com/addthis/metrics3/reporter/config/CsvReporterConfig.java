@@ -12,10 +12,11 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
 import java.io.File;
 
+import com.addthis.metrics.reporter.config.AbstractCsvReporterConfig;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
 

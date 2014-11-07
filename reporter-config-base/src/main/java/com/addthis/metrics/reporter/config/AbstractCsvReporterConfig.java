@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-class AbstractCsvReporterConfig extends AbstractMetricReporterConfig
+public class AbstractCsvReporterConfig extends AbstractMetricReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(AbstractCsvReporterConfig.class);
 

@@ -12,12 +12,14 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
 import java.io.IOException;
 
 import java.util.List;
 
+import com.addthis.metrics.reporter.config.AbstractGangliaReporterConfig;
+import com.addthis.metrics.reporter.config.HostPort;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ganglia.GangliaReporter;
 

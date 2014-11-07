@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config.sample;
+package com.addthis.metrics3.reporter.config.sample;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import com.addthis.metrics.reporter.config.ReporterConfig;
+import com.addthis.metrics3.reporter.config.ReporterConfig;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.MetricRegistry;

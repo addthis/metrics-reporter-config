@@ -12,12 +12,12 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config.sample;
+package com.addthis.metrics3.reporter.config.sample;
 
 import java.io.IOException;
 
 import com.addthis.metrics.reporter.config.HostPort;
-import com.addthis.metrics.reporter.config.ReporterConfig;
+import com.addthis.metrics3.reporter.config.ReporterConfig;
 
 import org.junit.Rule;
 import org.junit.Test;

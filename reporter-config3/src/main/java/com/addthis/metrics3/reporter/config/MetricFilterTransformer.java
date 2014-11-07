@@ -1,5 +1,6 @@
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
+import com.addthis.metrics.reporter.config.PredicateConfig;
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricFilter;
 

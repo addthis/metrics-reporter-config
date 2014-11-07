@@ -1,4 +1,4 @@
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
 import java.net.InetAddress;
 

@@ -12,10 +12,11 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
 import java.io.PrintStream;
 
+import com.addthis.metrics.reporter.config.AbstractConsoleReporterConfig;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 

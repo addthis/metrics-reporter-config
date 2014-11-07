@@ -12,11 +12,17 @@
  * limitations under the License.
  */
 
-package com.addthis.metrics.reporter.config;
+package com.addthis.metrics3.reporter.config;
 
+import com.addthis.metrics.reporter.config.AbstractRiemannReporterConfig;
 import com.codahale.metrics.MetricRegistry;
 
-public interface MetricsReporterConfigThree
+public class RiemannReporterConfig extends AbstractRiemannReporterConfig implements MetricsReporterConfigThree
 {
-    public boolean enable(MetricRegistry registry);
+    @Override
+    public boolean enable(MetricRegistry registry)
+    {
+        throw new UnsupportedOperationException("RiemannReporter not yet implemented for metrics 3.x");
+    }
+
 }
