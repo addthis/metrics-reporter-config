@@ -1,0 +1,10 @@
+reporters:  
+  - 
+    !!com.addthis.metrics.reporter.config.CsvReporterConfig
+    outdir: '/tmp/metrics/csv-dir'
+    period: 2
+    timeunit: 'SECONDS'
+    predicate:
+      color: "black"
+      patterns:
+        - ".*JMXONLY$"
