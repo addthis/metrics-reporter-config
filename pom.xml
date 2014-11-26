@@ -44,9 +44,17 @@
   </modules>
 
   <properties>
+    <project.build.targetJdk>1.6</project.build.targetJdk>
+    <!-- dependencies -->
     <dep.metrics2.version>2.2.0</dep.metrics2.version>
     <dep.metrics3.version>3.1.0</dep.metrics3.version>
-    <project.build.targetJdk>1.6</project.build.targetJdk>
+    <dep.snakeyaml.version>1.14</dep.snakeyaml.version>
+    <dep.hibernate.validator.version>5.1.3.Final</dep.hibernate.validator.version>
+    <dep.apache.commons.lang.version>3.3.2</dep.apache.commons.lang.version>
+    <!-- test dependencies -->
+    <dep.glassfish.javax.el.version>3.0.0</dep.glassfish.javax.el.version>
+    <dep.hamcrest.version>1.3</dep.hamcrest.version>
+    <dep.mockito.version>1.10.8</dep.mockito.version>
   </properties>
 
   <dependencies>
@@ -58,14 +66,25 @@
     <dependency>
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
-      <version>1.12</version>
+      <version>${dep.snakeyaml.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>4.3.0.Final</version>
+      <version>${dep.hibernate.validator.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${dep.apache.commons.lang.version}</version>
     </dependency>
     <!-- testing -->
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>${dep.glassfish.javax.el.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
@@ -78,24 +97,17 @@
       <version>${dep.guava.version}</version>
       <scope>test</scope>
     </dependency>
-    <!--
-        <dependency>
+    <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-all</artifactId>
-        <version>1.1</version>
-        <scope>test</scope>
-        </dependency>
-    -->
-    <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>1.9.0</version>
+        <version>${dep.hamcrest.version}</version>
         <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.1</version>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>${dep.mockito.version}</version>
+        <scope>test</scope>
     </dependency>
   </dependencies>
 
