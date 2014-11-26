@@ -24,10 +24,14 @@ import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.MetricPredicate;
 import com.yammer.metrics.core.MetricsRegistry;
 
-import com.yammer.metrics.reporting.GangliaReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A bug in jackson-databind will attempt to load this class even when no ganglia
+ * reporter configurations have been specified. We must use reflection to interact
+ * with the optional libraries. Otherwise we receive ClassNotFoundExceptions.
+ */
 public class GangliaReporterConfig extends AbstractGangliaReporterConfig implements MetricsReporterConfigTwo
 {
     private static final Logger log = LoggerFactory.getLogger(GangliaReporterConfig.class);
@@ -36,6 +40,16 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
                                                           IllegalAccessException,
                                                           NoSuchMethodException
     {
+        Class gangliaClass;
+        try
+        {
+            gangliaClass = Class.forName("com.yammer.metrics.reporting.GangliaReporter");
+        }
+        catch (ClassNotFoundException e)
+        {
+            log.error("Faliure while enabling GangliaReporter", e);
+            return;
+        }
         try
         {
             /**
@@ -43,7 +57,7 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
              * for ganglia metric prefixes (in addition to the regular group prefixes):
              * http://github.com/mspiegel/metrics. Otherwise the regular ganglia reporter is enabled.
              */
-            Method enable = GangliaReporter.class.getDeclaredMethod(
+            Method enable = gangliaClass.getDeclaredMethod(
                     "enable", MetricsRegistry.class,
                     Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class, String.class,
                     MetricPredicate.class, Boolean.TYPE);
@@ -54,7 +68,7 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
         }
         catch(NoSuchMethodException ex)
         {
-            Method enable = GangliaReporter.class.getDeclaredMethod(
+            Method enable = gangliaClass.getDeclaredMethod(
                     "enable", MetricsRegistry.class,
                     Long.TYPE, TimeUnit.class, String.class, Integer.TYPE, String.class,
                     MetricPredicate.class, Boolean.TYPE);
