@@ -21,7 +21,7 @@
   <parent>
     <groupId>com.addthis.common.build.maven.pom</groupId>
     <artifactId>jar-pom</artifactId>
-    <version>3.3.0</version>
+    <version>3.4.0</version>
   </parent>
 
   <groupId>com.addthis.metrics</groupId>
