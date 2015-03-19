@@ -26,7 +26,7 @@
 
   <groupId>com.addthis.metrics</groupId>
   <artifactId>reporter-config-parent</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Metrics Reporter Config</name>
   <url>https://github.com/addthis/metrics-reporter-config</url>
@@ -110,7 +110,7 @@
     <connection>scm:git:git@github.com:addthis/metrics-reporter-config.git</connection>
     <developerConnection>scm:git:git@github.com:addthis/metrics-reporter-config.git</developerConnection>
     <url>https://github.com/addthis/metrics-reporter-config</url>
-    <tag>v3.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
