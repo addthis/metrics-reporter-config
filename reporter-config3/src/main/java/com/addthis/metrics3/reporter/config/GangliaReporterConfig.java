@@ -31,19 +31,22 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
 {
     private static final Logger log = LoggerFactory.getLogger(GangliaReporterConfig.class);
 
+    private GangliaReporter reporter;
+
     private void enableMetrics3(HostPort hostPort, MetricRegistry registry) throws IOException {
         /**
          * browsing through https://github.com/ganglia/gmetric4j it appears that the
          * "ttl" parameter is ignored for GMetric.UDPAddressingMode.UNICAST
          */
-        GangliaReporter.forRegistry(registry)
+        reporter = GangliaReporter.forRegistry(registry)
         .convertRatesTo(getRealRateunit())
         .convertDurationsTo(getRealDurationunit())
         .prefixedWith(groupPrefix)
         .filter(MetricFilterTransformer.generateFilter(getPredicate()))
         .build(new GMetric(hostPort.getHost(), hostPort.getPort(),
-                GMetric.UDPAddressingMode.UNICAST, 1))
-        .start(getPeriod(), getRealTimeunit());
+                GMetric.UDPAddressingMode.UNICAST, 1));
+
+        reporter.start(getPeriod(), getRealTimeunit());
     }
 
     @Override
@@ -70,5 +73,12 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
         }
         return true;
     }
+
+    @Override public void report() {
+        if (reporter != null) {
+            reporter.report();
+        }
+    }
+
 
 }

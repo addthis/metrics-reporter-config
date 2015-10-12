@@ -25,4 +25,8 @@ public class RiemannReporterConfig extends AbstractRiemannReporterConfig impleme
         throw new UnsupportedOperationException("RiemannReporter not yet implemented for metrics 3.x");
     }
 
+    @Override public void report() {
+        throw new UnsupportedOperationException("RiemannReporter not yet implemented for metrics 3.x");
+    }
+
 }

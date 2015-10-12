@@ -31,16 +31,25 @@ public class GraphiteReporterConfig extends AbstractGraphiteReporterConfig imple
 {
     private static final Logger log = LoggerFactory.getLogger(GraphiteReporterConfig.class);
 
+    private GraphiteReporter reporter;
+
     private void enableMetrics3(HostPort hostPort, MetricRegistry registry)
     {
-        GraphiteReporter.forRegistry(registry)
+        reporter = GraphiteReporter.forRegistry(registry)
                 .convertRatesTo(getRealRateunit())
                 .convertDurationsTo(getRealDurationunit())
                 .prefixedWith(getResolvedPrefix())
                 .filter(MetricFilterTransformer.generateFilter(getPredicate()))
                 .build(new Graphite(new InetSocketAddress(hostPort.getHost(),
-                        hostPort.getPort())))
-                .start(getPeriod(), getRealTimeunit());
+                        hostPort.getPort())));
+        reporter.start(getPeriod(), getRealTimeunit());
+    }
+
+    @Override
+    public void report() {
+        if (reporter != null) {
+            reporter.report();
+        }
     }
 
     @Override

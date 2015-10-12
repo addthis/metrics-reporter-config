@@ -28,6 +28,8 @@ public class CsvReporterConfig extends AbstractCsvReporterConfig implements Metr
 {
     private static final Logger log = LoggerFactory.getLogger(CsvReporterConfig.class);
 
+    private CsvReporter reporter;
+
     @Override
     public boolean enable(MetricRegistry registry)
     {
@@ -43,8 +45,7 @@ public class CsvReporterConfig extends AbstractCsvReporterConfig implements Metr
             // static enable() methods omit the option of specifying a
             // predicate.  Calling constructor and starting manually
             // instead
-            final CsvReporter reporter =
-                    CsvReporter.forRegistry(registry)
+           reporter = CsvReporter.forRegistry(registry)
                             .convertRatesTo(getRealRateunit())
                             .convertDurationsTo(getRealDurationunit())
                             .filter(MetricFilterTransformer.generateFilter(getPredicate()))
@@ -58,6 +59,12 @@ public class CsvReporterConfig extends AbstractCsvReporterConfig implements Metr
             return false;
         }
         return true;
+    }
+
+    @Override public void report() {
+        if (reporter != null) {
+            reporter.report();
+        }
     }
 
 

@@ -19,6 +19,7 @@ import java.io.PrintStream;
 import com.addthis.metrics.reporter.config.AbstractConsoleReporterConfig;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.graphite.GraphiteReporter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,8 @@ public class ConsoleReporterConfig extends AbstractConsoleReporterConfig impleme
 {
     private static final Logger log = LoggerFactory.getLogger(ConsoleReporterConfig.class);
 
+    private ConsoleReporter reporter;
+
     @Override
     public boolean enable(MetricRegistry registry)
     {
@@ -35,8 +38,7 @@ public class ConsoleReporterConfig extends AbstractConsoleReporterConfig impleme
         {
             PrintStream stream = createPrintStream();
 
-            final ConsoleReporter reporter =
-                    ConsoleReporter.forRegistry(registry)
+            reporter = ConsoleReporter.forRegistry(registry)
                             .convertRatesTo(getRealRateunit())
                             .convertDurationsTo(getRealDurationunit())
                             .filter(MetricFilterTransformer.generateFilter(getPredicate()))
@@ -52,5 +54,12 @@ public class ConsoleReporterConfig extends AbstractConsoleReporterConfig impleme
         }
         return true;
     }
+
+    @Override public void report() {
+        if (reporter != null) {
+            reporter.report();
+        }
+    }
+
 
 }

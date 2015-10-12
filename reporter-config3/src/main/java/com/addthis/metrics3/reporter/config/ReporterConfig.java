@@ -231,6 +231,23 @@ public class ReporterConfig extends AbstractReporterConfig
         return enabled;
     }
 
+    private void report(List<? extends MetricsReporterConfigThree> reporters) {
+        if (reporters != null) {
+            for (MetricsReporterConfigThree reporter : reporters) {
+                reporter.report();
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public void report() {
+        report(console);
+        report(csv);
+        report(ganglia);
+        report(graphite);
+        report(riemann);
+    }
+
     public static ReporterConfig loadFromFileAndValidate(String fileName) throws IOException
     {
         ReporterConfig config = loadFromFile(fileName);
