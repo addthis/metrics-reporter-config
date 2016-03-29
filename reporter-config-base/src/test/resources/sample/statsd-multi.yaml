@@ -1,0 +1,18 @@
+statsd:
+  -
+    period: 2
+    timeunit: 'SECONDS'
+    prefix: 'hello'
+    hosts:
+      - host: 'localhost'
+        port: 8125
+      - host: 'localhost6'
+        port: 8126
+  -
+    period: 5
+    timeunit: 'SECONDS'
+    prefix: 'hi'
+    hosts:
+      - host: '127.0.0.1'
+        port: 8127
+

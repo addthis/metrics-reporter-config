@@ -43,6 +43,8 @@ public class ReporterConfig extends AbstractReporterConfig
     @Valid
     private List<RiemannReporterConfig> riemann;
     @Valid
+    private List<StatsDReporterConfig> statsd;
+    @Valid
     private List<? extends MetricsReporterConfigTwo> reporters;
 
     public List<ConsoleReporterConfig> getConsole()
@@ -93,6 +95,16 @@ public class ReporterConfig extends AbstractReporterConfig
     public void setRiemann(List<RiemannReporterConfig> riemann)
     {
         this.riemann = riemann;
+    }
+
+    public List<StatsDReporterConfig> getStatsd()
+    {
+        return statsd;
+    }
+
+    public void setStatsd(List<StatsDReporterConfig> statsd)
+    {
+        this.statsd = statsd;
     }
 
     public List<? extends MetricsReporterConfigTwo> getReporters()
@@ -213,6 +225,24 @@ public class ReporterConfig extends AbstractReporterConfig
         return !failures;
     }
 
+    public boolean enableStatsd()
+    {
+        boolean failures = false;
+        if (statsd == null)
+        {
+            log.debug("Asked to enable statsd, but it was not configured");
+            return false;
+        }
+        for (StatsDReporterConfig statsdConfig : statsd)
+        {
+            if (!statsdConfig.enable())
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableAll()
     {
         boolean enabled = false;
@@ -247,6 +277,13 @@ public class ReporterConfig extends AbstractReporterConfig
         if (riemann != null)
         {
             if (enableRiemann())
+            {
+                enabled = true;
+            }
+        }
+        if (statsd != null)
+        {
+            if (enableStatsd())
             {
                 enabled = true;
             }

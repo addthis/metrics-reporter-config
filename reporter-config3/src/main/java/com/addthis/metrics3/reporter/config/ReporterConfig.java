@@ -45,6 +45,8 @@ public class ReporterConfig extends AbstractReporterConfig
     private List<GraphiteReporterConfig> graphite;
     @Valid
     private List<RiemannReporterConfig> riemann;
+    @Valid
+    private List<StatsDReporterConfig> statsd;
 
     public List<ConsoleReporterConfig> getConsole()
     {
@@ -94,6 +96,16 @@ public class ReporterConfig extends AbstractReporterConfig
     public void setRiemann(List<RiemannReporterConfig> riemann)
     {
         this.riemann = riemann;
+    }
+
+    public List<StatsDReporterConfig> getStatsd()
+    {
+        return statsd;
+    }
+
+    public void setStatsd(List<StatsDReporterConfig> statsd)
+    {
+        this.statsd = statsd;
     }
 
     public boolean enableConsole(MetricRegistry registry)
@@ -186,6 +198,24 @@ public class ReporterConfig extends AbstractReporterConfig
         return !failures;
     }
 
+    public boolean enableStatsd(MetricRegistry registry)
+    {
+        boolean failures = false;
+        if (statsd == null)
+        {
+            log.debug("Asked to enable statsd, but it was not configured");
+            return false;
+        }
+        for (StatsDReporterConfig statsdConfig : statsd)
+        {
+            if (!statsdConfig.enable(registry))
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableAll(MetricRegistry registry)
     {
         boolean enabled = false;
@@ -220,6 +250,13 @@ public class ReporterConfig extends AbstractReporterConfig
         if (riemann != null)
         {
             if (enableRiemann(registry))
+            {
+                enabled = true;
+            }
+        }
+        if (statsd != null)
+        {
+            if (enableStatsd(registry))
             {
                 enabled = true;
             }

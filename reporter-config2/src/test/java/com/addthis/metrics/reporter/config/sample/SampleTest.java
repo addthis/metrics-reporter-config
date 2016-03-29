@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.addthis.metrics.reporter.config.CsvReporterConfig;
 import com.addthis.metrics.reporter.config.ReporterConfig;
-
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Counter;
 import com.yammer.metrics.core.Meter;
@@ -115,6 +114,24 @@ public class SampleTest
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string-dupe.yaml");
         System.out.println(yaml.dump(config));
         log.info("Graphite String Dupe");
+        runLoop(config);
+    }
+
+    @Test
+    public void sampleStatsD() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("Sample StatsD");
+        runLoop(config);
+    }
+
+    @Test
+    public void sampleStatsDMulti() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd-multi.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("StatsD Multi");
         runLoop(config);
     }
 
