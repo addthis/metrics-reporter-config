@@ -44,5 +44,4 @@ public class AbstractStatsDReporterConfig extends AbstractHostPortReporterConfig
         }
         return true;
     }
-
 }

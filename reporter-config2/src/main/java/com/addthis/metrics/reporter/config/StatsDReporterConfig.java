@@ -19,6 +19,9 @@ import com.readytalk.metrics.StatsDReporter;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Clock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +29,8 @@ public class StatsDReporterConfig extends AbstractStatsDReporterConfig implement
 {
     private static final String REPORTER_CLASS = "com.readytalk.metrics.StatsDReporter";
     private static final Logger log = LoggerFactory.getLogger(StatsDReporterConfig.class);
+
+    private List<StatsDReporter> reporters = new ArrayList<StatsDReporter>();
 
     @Override
     public boolean enable()
@@ -48,6 +53,7 @@ public class StatsDReporterConfig extends AbstractStatsDReporterConfig implement
                     Clock.defaultClock(),
                     new StatsDConstructorHack(hostPort.getHost(), hostPort.getPort()));
                 reporter.start(getPeriod(), getRealTimeunit());
+                reporters.add(reporter);
             }
             catch (Exception e)
             {
@@ -57,5 +63,12 @@ public class StatsDReporterConfig extends AbstractStatsDReporterConfig implement
             }
         }
         return !failures;
+    }
+
+    public void stopForTests() {
+        for (StatsDReporter reporter : reporters)
+        {
+            reporter.shutdown();
+        }
     }
 }

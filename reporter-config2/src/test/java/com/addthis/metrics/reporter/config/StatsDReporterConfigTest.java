@@ -24,8 +24,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class StatsDReporterConfigTest {
-    private static final HostPort testHostPort1 = new HostPort("test_host1", 1234);
-    private static final HostPort testHostPort2 = new HostPort("test_host2", 2345);
+    private static final HostPort testHostPort1 = new HostPort("test-host1", 1234);
+    private static final HostPort testHostPort2 = new HostPort("test-host2", 2345);
 
     private static final TimeUnit testRateunit = TimeUnit.DAYS;
     private static final TimeUnit testDurationunit = TimeUnit.MICROSECONDS;
@@ -37,54 +37,59 @@ public class StatsDReporterConfigTest {
 
     @Test
     public void startEmptyHosts() {
-        StatsDReporterConfig reporter = new StatsDReporterConfig();
-        assertFalse(reporter.enable());
+        StatsDReporterConfig config = new StatsDReporterConfig();
+        assertFalse(config.enable());
+        config.stopForTests();
     }
 
     @Test
     public void startOneHost() {
-        StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1),
             testTimeunit.toString());
-        assertTrue(reporter.enable());
+        assertTrue(config.enable());
+        config.stopForTests();
     }
 
     @Test
     public void startOneHostBadField() {
-        StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1),
             testBadTimeunit);
-        assertFalse(reporter.enable());
+        assertFalse(config.enable());
+        config.stopForTests();
     }
 
     @Test
     public void startManyHosts() {
-      StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1, testHostPort2),
             testTimeunit.toString());
-        assertTrue(reporter.enable());
+        assertTrue(config.enable());
+        config.stopForTests();
     }
 
     @Test
     public void startManyHostsBadField() {
-        StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1, testHostPort2),
             testBadTimeunit);
-        assertFalse(reporter.enable());
+        assertFalse(config.enable());
+        config.stopForTests();
     }
 
     private static StatsDReporterConfig buildConfig(List<HostPort> hosts, String timeUnit) {
-      StatsDReporterConfig reporter = new StatsDReporterConfig();
+        StatsDReporterConfig reporter = new StatsDReporterConfig();
 
-      reporter.setHosts(hosts);
+        reporter.setHosts(hosts);
 
-      reporter.setRateunit(testRateunit.toString());
-      reporter.setDurationunit(testDurationunit.toString());
-      reporter.setPrefix(testPrefix);
-      reporter.setPredicate(testPredicate);
-      reporter.setPeriod(testPeriod);
-      reporter.setTimeunit(timeUnit);
+        reporter.setRateunit(testRateunit.toString());
+        reporter.setDurationunit(testDurationunit.toString());
+        reporter.setPrefix(testPrefix);
+        reporter.setPredicate(testPredicate);
+        reporter.setPeriod(testPeriod);
+        reporter.setTimeunit(timeUnit);
 
-      return reporter;
+        return reporter;
     }
 }

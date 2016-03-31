@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class StatsDReporterConfigTest {
-    private static final HostPort testHostPort1 = new HostPort("test_host1", 1234);
-    private static final HostPort testHostPort2 = new HostPort("test_host2", 2345);
+    private static final HostPort testHostPort1 = new HostPort("test-host1", 1234);
+    private static final HostPort testHostPort2 = new HostPort("test-host2", 2345);
 
     private static final TimeUnit testRateunit = TimeUnit.DAYS;
     private static final TimeUnit testDurationunit = TimeUnit.MICROSECONDS;
@@ -47,58 +47,58 @@ public class StatsDReporterConfigTest {
     @Test
     public void startEmptyHosts() {
         MetricRegistry mockMetricRegistry = mock(MetricRegistry.class);
-        StatsDReporterConfig reporter = new StatsDReporterConfig();
-        assertFalse(reporter.enable(mockMetricRegistry));
+        StatsDReporterConfig config = new StatsDReporterConfig();
+        assertFalse(config.enable(mockMetricRegistry));
         verifyZeroInteractions(mockMetricRegistry);
-        reporter.stopForTests();
+        config.stopForTests();
     }
 
     @Test
     public void startOneHost() {
         MetricRegistry mockMetricRegistry = mock(MetricRegistry.class);
-        StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1),
             testTimeunit.toString());
-        assertTrue(reporter.enable(mockMetricRegistry));
-        reporter.report();
+        assertTrue(config.enable(mockMetricRegistry));
+        config.report();
         verifyReportEffects(mockMetricRegistry, 1);
-        reporter.stopForTests();
+        config.stopForTests();
     }
 
     @Test
     public void startOneHostBadField() {
         MetricRegistry mockMetricRegistry = mock(MetricRegistry.class);
-        StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1),
             testBadTimeunit);
-        assertFalse(reporter.enable(mockMetricRegistry));
-        reporter.report();
+        assertFalse(config.enable(mockMetricRegistry));
+        config.report();
         verifyZeroInteractions(mockMetricRegistry);
-        reporter.stopForTests();
+        config.stopForTests();
     }
 
     @Test
     public void startManyHosts() {
         MetricRegistry mockMetricRegistry = mock(MetricRegistry.class);
-        StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1, testHostPort2),
             testTimeunit.toString());
-        assertTrue(reporter.enable(mockMetricRegistry));
-        reporter.report();
+        assertTrue(config.enable(mockMetricRegistry));
+        config.report();
         verifyReportEffects(mockMetricRegistry, 2);
-        reporter.stopForTests();
+        config.stopForTests();
     }
 
     @Test
     public void startManyHostsBadField() {
         MetricRegistry mockMetricRegistry = mock(MetricRegistry.class);
-        StatsDReporterConfig reporter = buildConfig(
+        StatsDReporterConfig config = buildConfig(
             Arrays.asList(testHostPort1, testHostPort2),
             testBadTimeunit);
-        assertFalse(reporter.enable(mockMetricRegistry));
-        reporter.report();
+        assertFalse(config.enable(mockMetricRegistry));
+        config.report();
         verifyZeroInteractions(mockMetricRegistry);
-        reporter.stopForTests();
+        config.stopForTests();
     }
 
     private static StatsDReporterConfig buildConfig(List<HostPort> hosts, String timeUnit) {
