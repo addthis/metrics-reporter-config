@@ -65,7 +65,7 @@ public class StatsDReporterConfig extends AbstractStatsDReporterConfig implement
         return !failures;
     }
 
-    public void stopForTests() {
+    void stopForTests() {
         for (StatsDReporter reporter : reporters)
         {
             reporter.shutdown();

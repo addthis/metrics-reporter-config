@@ -73,7 +73,7 @@ public class StatsDReporterConfig extends AbstractStatsDReporterConfig implement
         }
     }
 
-    public void stopForTests() {
+    void stopForTests() {
         for (StatsDReporter reporter : reporters)
         {
             reporter.stop();
