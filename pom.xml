@@ -46,6 +46,7 @@
   <properties>
     <dep.metrics2.version>2.2.0</dep.metrics2.version>
     <dep.metrics3.version>3.1.0</dep.metrics3.version>
+    <dep.metrics-statsd.version>4.1.2</dep.metrics-statsd.version>
     <project.build.targetJdk>1.6</project.build.targetJdk>
   </properties>
 
@@ -100,9 +101,29 @@
   </dependencies>
 
   <repositories>
+    <!-- re-specify central repo to ensure it's the default -->
+    <repository>
+      <id>central-force</id>
+      <name>Maven Repository Switchboard</name>
+      <layout>default</layout>
+      <url>http://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <!-- riemann reporter -->
     <repository>
       <id>clojars.org</id>
       <url>http://clojars.org/repo</url>
+    </repository>
+    <!-- statsd reporter -->
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-readytalk-maven</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/readytalk/maven</url>
     </repository>
   </repositories>
 

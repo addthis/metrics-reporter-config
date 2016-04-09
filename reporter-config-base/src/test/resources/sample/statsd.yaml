@@ -1,0 +1,8 @@
+statsd:
+  -
+    period: 2
+    timeunit: 'SECONDS'
+    prefix: 'hello'
+    hosts:
+      - host: 'localhost'
+        port: 8125

@@ -49,6 +49,25 @@
             <version>${dep.metrics3.version}</version>
             <optional>true</optional>
         </dependency>
+        <!-- statsd -->
+        <dependency>
+            <groupId>com.readytalk</groupId>
+            <artifactId>metrics-statsd-common</artifactId>
+            <version>${dep.metrics-statsd.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.readytalk</groupId>
+            <artifactId>metrics3-statsd</artifactId>
+            <version>${dep.metrics-statsd.version}</version>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.codahale.metrics</groupId>
+                    <artifactId>metrics-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
 </project>

@@ -20,6 +20,9 @@ import com.codahale.metrics.Counter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +118,27 @@ public class SampleTest
         runLoop(config);
     }
 
+    @Test
+    public void sampleStatsD() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("Sample StatsD");
+        assertNotNull(config.getStatsd());
+        assertEquals(1, config.getStatsd().size());
+        runLoop(config);
+    }
 
+    @Test
+    public void sampleStatsDMulti() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd-multi.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("StatsD Multi");
+        assertNotNull(config.getStatsd());
+        assertEquals(2, config.getStatsd().size());
+        runLoop(config);
+    }
 
     @Test
     public void sampleMulti() throws Exception
