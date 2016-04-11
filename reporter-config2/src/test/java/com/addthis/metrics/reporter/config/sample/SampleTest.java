@@ -48,7 +48,6 @@ public class SampleTest
         {
             counter.inc();
             meter.mark();
-            Thread.sleep(1000);
             log.debug("runLoop tick");
         }
         log.info("Done with sample data loop");

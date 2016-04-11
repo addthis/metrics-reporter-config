@@ -12,6 +12,8 @@ public class MetricFilterTransformer
 
     private static final Logger log = LoggerFactory.getLogger(MetricFilterTransformer.class);
 
+    private MetricFilterTransformer() {}
+
     private static class PredicateConfigFilter implements MetricFilter
     {
         final PredicateConfig predicate;
