@@ -21,7 +21,6 @@ import java.util.List;
 
 public class AbstractRiemannReporterConfig extends AbstractHostPortReporterConfig
 {
-    private static final Logger log = LoggerFactory.getLogger(AbstractRiemannReporterConfig.class);
 
     protected String localHost;
     protected String prefix;

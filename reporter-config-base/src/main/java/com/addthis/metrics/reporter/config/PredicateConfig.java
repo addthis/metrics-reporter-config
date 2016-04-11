@@ -27,7 +27,6 @@ import javax.validation.constraints.Size;
 
 public class PredicateConfig
 {
-    private static final Logger log = LoggerFactory.getLogger(PredicateConfig.class);
 
     // white ||, black &&
     @NotNull

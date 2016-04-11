@@ -38,8 +38,7 @@ public abstract class AbstractReporterConfig
     {
         Yaml yaml = new Yaml(new Constructor(clazz));
         InputStream input = new FileInputStream(new File(fileName));
-        T config = (T) yaml.load(input);
-        return config;
+        return (T) yaml.load(input);
     }
 
     // Based on com.yammer.dropwizard.validation.Validator

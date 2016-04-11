@@ -219,47 +219,29 @@ public class ReporterConfig extends AbstractReporterConfig
     public boolean enableAll(MetricRegistry registry)
     {
         boolean enabled = false;
-        if (console != null)
+        if (console != null && enableConsole(registry))
         {
-            if (enableConsole(registry))
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (csv != null)
+        if (csv != null && enableCsv(registry))
         {
-            if (enableCsv(registry))
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (ganglia != null)
+        if (ganglia != null && enableGanglia(registry))
         {
-            if (enableGanglia(registry))
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (graphite != null)
+        if (graphite != null && enableGraphite(registry))
         {
-            if (enableGraphite(registry))
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (riemann != null)
+        if (riemann != null && enableRiemann(registry))
         {
-            if (enableRiemann(registry))
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (statsd != null)
+        if (statsd != null && enableStatsd(registry))
         {
-            if (enableStatsd(registry))
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
         if (!enabled)
         {
