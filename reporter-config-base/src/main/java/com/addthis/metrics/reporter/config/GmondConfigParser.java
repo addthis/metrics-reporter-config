@@ -39,10 +39,10 @@ public class GmondConfigParser
 {
     private static final Logger log = LoggerFactory.getLogger(GmondConfigParser.class);
 
-    private static final String cCommentPattern = "//.*?\n"; //
-    private static final String cppCommentPattern = "(?s)//*.*?/*/"; /* */
-    private static final String emptyLinePattern = "(?m)^\\s*\n";
-    private static final String udpSendPattern = "(?s)udp_send_channel\\s*\\{(.*?)\\}";
+    private static final String C_COMMENT_PATTERN = "//.*?\n"; //
+    private static final String CPP_COMMENT_PATTERN = "(?s)//*.*?/*/"; /* */
+    private static final String EMPTY_LINE_PATTERN = "(?m)^\\s*\n";
+    private static final String UDP_SEND_PATTERN = "(?s)udp_send_channel\\s*\\{(.*?)\\}";
 
 
     public List<HostPort> getGmondSendChannels(String fileName)
@@ -90,15 +90,14 @@ public class GmondConfigParser
 
     public String stripComments(String conf)
     {
-        String cFree = conf.replaceAll(cCommentPattern, "\n");
-        String cppFree = cFree.replaceAll(cppCommentPattern, "");
-        return cppFree;
+        String cFree = conf.replaceAll(C_COMMENT_PATTERN, "\n");
+        return cFree.replaceAll(CPP_COMMENT_PATTERN, "");
     }
 
 
     public String removeEmptyLines(String conf)
     {
-        return conf.replaceAll(emptyLinePattern, "");
+        return conf.replaceAll(EMPTY_LINE_PATTERN, "");
     }
 
 
@@ -106,7 +105,7 @@ public class GmondConfigParser
     {
         List<String> channelBlobs = new ArrayList<String>();
 
-        Matcher matcher = Pattern.compile(udpSendPattern).matcher(conf);
+        Matcher matcher = Pattern.compile(UDP_SEND_PATTERN).matcher(conf);
         while(matcher.find())
         {
             channelBlobs.add(matcher.group(1).trim());
@@ -127,20 +126,6 @@ public class GmondConfigParser
         return chan;
     }
 
-
-    // from lib/libgmond.c
-    /*
-static cfg_opt_t udp_send_channel_opts[] = {
-  CFG_STR("mcast_join", NULL, CFGF_NONE),
-  CFG_STR("mcast_if", NULL, CFGF_NONE),
-  CFG_STR("host", NULL, CFGF_NONE ),
-  CFG_INT("port", -1, CFGF_NONE ),
-  CFG_INT("ttl", 1, CFGF_NONE ),
-  CFG_STR("bind", NULL, CFGF_NONE),
-  CFG_BOOL("bind_hostname", 0, CFGF_NONE),
-  CFG_END()
-};
-    */
     public HostPort makeHostPort(Map<String,String> chan)
     {
         if (chan.containsKey("mcast_join") || chan.containsKey("mcast_if"))
@@ -151,7 +136,7 @@ static cfg_opt_t udp_send_channel_opts[] = {
         HostPort hp = null;
         try
         {
-            hp = new HostPort(chan.get("host"), (Integer.valueOf(chan.get("port"))));
+            hp = new HostPort(chan.get("host"), Integer.valueOf(chan.get("port")));
         }
         catch (Exception e)
         {
@@ -171,7 +156,7 @@ static cfg_opt_t udp_send_channel_opts[] = {
         {
             fr = new FileReader(fileName);
             br = new BufferedReader(fr);
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while (line != null)
             {

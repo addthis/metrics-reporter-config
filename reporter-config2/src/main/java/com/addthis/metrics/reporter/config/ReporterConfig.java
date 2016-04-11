@@ -246,54 +246,33 @@ public class ReporterConfig extends AbstractReporterConfig
     public boolean enableAll()
     {
         boolean enabled = false;
-        if (console != null)
+        if (console != null && enableConsole())
         {
-            if (enableConsole())
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (csv != null)
+        if (csv != null && enableCsv())
         {
-            if (enableCsv())
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (ganglia != null)
+        if (ganglia != null && enableGanglia())
         {
-            if (enableGanglia())
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (graphite != null)
+        if (graphite != null && enableGraphite())
         {
-            if (enableGraphite())
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (riemann != null)
+        if (riemann != null && enableRiemann())
         {
-            if (enableRiemann())
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (statsd != null)
+        if (statsd != null && enableStatsd())
         {
-            if (enableStatsd())
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
-        if (reporters != null)
+        if (reporters != null && enableReporters())
         {
-            if (enableReporters())
-            {
-                enabled = true;
-            }
+            enabled = true;
         }
         if (!enabled)
         {

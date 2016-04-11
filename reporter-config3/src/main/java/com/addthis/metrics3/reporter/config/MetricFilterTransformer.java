@@ -34,19 +34,20 @@ public class MetricFilterTransformer
                 return predicate.allowString(unqualifyMetricName(name));
             }
         }
-    }
 
-    private static String unqualifyMetricName(String name)
-    {
-        int location = name.lastIndexOf('.');
-        if (location < 0)
+        private static String unqualifyMetricName(String name)
         {
-            return name;
+            int location = name.lastIndexOf('.');
+            if (location < 0)
+            {
+                return name;
+            }
+            else
+            {
+                return name.substring(location + 1);
+            }
         }
-        else
-        {
-            return name.substring(location + 1);
-        }
+
     }
 
     public static MetricFilter generateFilter(PredicateConfig predicate)

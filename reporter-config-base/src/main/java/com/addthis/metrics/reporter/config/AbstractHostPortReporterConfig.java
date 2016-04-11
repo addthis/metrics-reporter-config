@@ -52,6 +52,25 @@ public abstract class AbstractHostPortReporterConfig extends AbstractMetricRepor
     private InetAddress localhost;
     private String resolvedPrefix;
 
+    /**
+     * Test constructor
+     *
+     * @param localhost
+     *            localhost
+     */
+    AbstractHostPortReporterConfig(InetAddress localhost) {
+        this.localhost = localhost;
+    }
+
+    public AbstractHostPortReporterConfig() {
+        try {
+            this.localhost = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            // not expected to happen with properly configured system
+            log.error("Unable to get localhost", e);
+        }
+    }
+
     public List<HostPort> getHosts()
     {
         return hosts;
@@ -72,32 +91,8 @@ public abstract class AbstractHostPortReporterConfig extends AbstractMetricRepor
         this.hostsString = hostsString;
     }
 
-    private String getPrefix()
-    {
-        return prefix;
-    }
-
     public String getResolvedPrefix() {
         return resolvedPrefix;
-    }
-
-    /**
-     * Test constructor
-     *
-     * @param localhost
-     *            localhost
-     */
-    AbstractHostPortReporterConfig(InetAddress localhost) {
-        this.localhost = localhost;
-    }
-
-    public AbstractHostPortReporterConfig() {
-        try {
-            this.localhost = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            // not expected to happen with properly configured system
-            log.error("Unable to get localhost", e);
-        }
     }
 
     public List<HostPort> parseHostString()
