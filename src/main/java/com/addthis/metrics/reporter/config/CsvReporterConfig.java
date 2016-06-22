@@ -52,7 +52,22 @@ public class CsvReporterConfig extends AbstractReporterConfig
             boolean success = foutDir.mkdirs();
             if (!success)
             {
-                log.error("Failed to create directory {} for CsvReporter", outdir);
+                //Did we fail because the file already existed ?
+                //Ok , lets rename the existing file so we dont loose it
+                //and then re-create it.
+                if ( foutDir.exists() )
+                {
+                    String newName = foutDir.getAbsolutePath()+System.currentTimeMillis();
+                    log.error("metics: Failed to create directory {} for CsvReporter. It already exists. Renaming to {} ", outdir , newName );
+                    foutDir.renameTo( new File(newName));
+                    success = foutDir.mkdirs();
+                }
+            }
+
+            // checking for success again as it may have initially failed and the rename worked but we still failed to mkdir.
+            if (!success)
+            {
+                log.error("metrics: Failed to create or rename directory {} for CsvReporter.  ", outdir );
                 return false;
             }
             // static enable() methods omit the option of specifying a
