@@ -1,0 +1,198 @@
+prometheus:
+  -
+    host: 'localhost'
+    port: 8088
+    ssl: false
+
+    exclusions:
+      # EstimatedPartitionCount is a very expensive operation which deserializes compaction stats
+      # from all sstables on invocation.
+      - pattern: 'org\.apache\.cassandra\.metrics\.Table\.EstimatedPartitionCount\..+'
+      # following is for Cassandra < 3.0, since types of metrics vary (GAUGE + COUNTER)
+      - pattern: 'org\.apache\.cassandra\.metrics\.ThreadPools\.TotalBlockedTasks\..+'
+      # following is for Cassandra < 3.0, since types of metrics vary (GAUGE + COUNTER)
+      - pattern: 'org\.apache\.cassandra\.metrics\.ThreadPools\.CurrentlyBlockedTasks\..+'
+
+    # Codahale metrics name mappigns follow.
+    # These mappings group equal metrics of different targets under one name but
+    # specify labels to distinguish them.
+    #
+    # For example, the following mapping exports one name 'BloomFilterDiskSpaceUsed'
+    # containing the values for all tables using different labels.
+    mappings:
+      # example: org.apache.cassandra.metrics.keyspace.CasProposeLatency.workloads
+      - pattern: 'org\.apache\.cassandra\.metrics\.keyspace\.([^.]+)\.([^.]+)'
+        name: 'Keyspace_$1'
+        labels:
+          - label: 'keyspace'
+            value: '$2'
+
+      #
+      # Cassandra >= 3.0
+      #
+      # example: org.apache.cassandra.metrics.Table.BloomFilterDiskSpaceUsed.all
+      - pattern: 'org\.apache\.cassandra\.metrics\.Table\.([^.]+)\.all$'
+        name: 'TableAll_$1'
+      # example: org.apache.cassandra.metrics.Table.BloomFilterDiskSpaceUsed.system.paxos
+      - pattern: 'org\.apache\.cassandra\.metrics\.Table\.([^.]+)\.(([^.]+)\.([^.]+))'
+        name: 'Table_$1'
+        labels:
+          - label: 'keyspace'
+            value: '$3'
+          - label: 'table'
+            value: '$2'
+      # example: org.apache.cassandra.metrics.Table.BloomFilterDiskSpaceUsed.system
+      - pattern: 'org\.apache\.cassandra\.metrics\.Table\.([^.]+)\.([^.]+)'
+        name: 'TableKeyspace_$1'
+        labels:
+          - label: 'keyspace'
+            value: '$2'
+
+      #
+      # Cassandra < 3.0
+      #
+      # example: org.apache.cassandra.metrics.Table.BloomFilterDiskSpaceUsed.all
+      - pattern: 'org\.apache\.cassandra\.metrics\.ColumnFamily\.([^.]+)\.all$'
+        name: 'TableAll_$1'
+      # example: org.apache.cassandra.metrics.Table.BloomFilterDiskSpaceUsed.system.paxos
+      - pattern: 'org\.apache\.cassandra\.metrics\.ColumnFamily\.([^.]+)\.(([^.]+)\.([^.]+))'
+        name: 'Table_$1'
+        labels:
+          - label: 'keyspace'
+            value: '$3'
+          - label: 'table'
+            value: '$2'
+      # example: org.apache.cassandra.metrics.Table.BloomFilterDiskSpaceUsed.system
+      - pattern: 'org\.apache\.cassandra\.metrics\.ColumnFamily\.([^.]+)\.([^.]+)'
+        name: 'TableKeyspace_$1'
+        labels:
+          - label: 'keyspace'
+            value: '$2'
+
+      # example: org.apache.cassandra.metrics.Connection.TotalTimeouts
+      - pattern: 'org\.apache\.cassandra\.metrics\.Connection\.TotalTimeouts'
+        name: 'ConnectionTotalTimeouts'
+      # example: org.apache.cassandra.metrics.Connection.Timeouts.10.240.0.7
+      - pattern: 'org\.apache\.cassandra\.metrics\.Connection\.Timeouts\.(.+)'
+        name: 'ConnectionTimeouts'
+        labels:
+          - label: 'endpoint'
+            value: '$1'
+      # example: org.apache.cassandra.metrics.Connection.LargeMessagePendingTasks.10.240.0.7
+      - pattern: 'org\.apache\.cassandra\.metrics\.Connection\.([^.]+)\.(.+)'
+        name: 'Connection$1'
+        labels:
+          - label: 'endpoint'
+            value: '$2'
+    
+      # example: org.apache.cassandra.metrics.ThreadPools.ActiveTasks.internal.PendingRangeCalculator
+      - pattern: 'org\.apache\.cassandra\.metrics\.ThreadPools\.([^.]+)\.([^.]+)\.([^.]+)'
+        name: 'ThreadPools_$1'
+        labels:
+          - label: 'pool'
+            value: '$3'
+          - label: 'type'
+            value: '$2'
+    
+      # example: org.apache.cassandra.metrics.Cache.HitRate.CounterCache
+      - pattern: 'org\.apache\.cassandra\.metrics\.Cache\.([^.]+)\.([^.]+)'
+        name: 'Cache_$1'
+        labels:
+          - label: 'cache'
+            value: '$2'
+    
+      # example: org.apache.cassandra.metrics.DroppedMessage.InternalDroppedLatency.PAGED_RANGE
+      - pattern: 'org\.apache\.cassandra\.metrics\.DroppedMessage\.([^.]+)\.(.+)'
+        name: 'DroppedMessage_$1'
+        labels:
+          - label: 'message'
+            value: '$2'
+    
+    # example:
+      - pattern: 'org\.apache\.cassandra\.metrics\.Compaction\.(.+)'
+        name: 'Compaction_$1'
+    
+      # example: org.apache.cassandra.metrics.CommitLog.WaitingOnSegmentAllocation
+      - pattern: 'org\.apache\.cassandra\.metrics\.CommitLog\.(.+)'
+        name: 'CommitLog_$1'
+    
+    # example:
+      - pattern: 'org\.apache\.cassandra\.metrics\.BufferPool\.(.+)'
+        name: 'BufferPool_$1'
+    
+    # example:
+      - pattern: 'org\.apache\.cassandra\.metrics\.Storage\.(.+)'
+        name: 'Storage_$1'
+    
+    # example:
+      - pattern: 'org\.apache\.cassandra\.metrics\.CQL\.(.+)'
+        name: 'CQL_$1'
+    
+      # example: org.apache.cassandra.metrics.ClientRequest.ViewPendingMutations.ViewWrite
+      - pattern: 'org\.apache\.cassandra\.metrics\.ClientRequest\.([^.]+)\.([^.]+)'
+        name: 'ClientRequest_$1'
+        labels:
+          - label: 'sensor'
+            value: '$2'
+    
+      # example: org.apache.cassandra.metrics.Client.RequestsInFlight
+      - pattern: 'org\.apache\.cassandra\.metrics\.Client\.RequestsInFlight'
+        name: 'ClientRequestsInFlight'
+    
+      # example: org.apache.cassandra.metrics.Client.RequestCount
+      - pattern: 'org\.apache\.cassandra\.metrics\.Client\.RequestCount'
+        name: 'ClientRequestCount'
+    
+      # example: org.apache.cassandra.metrics.Client.Message.QUERY
+      - pattern: 'org\.apache\.cassandra\.metrics\.Client\.Message\.(.+)'
+        name: 'ClientMessage'
+        labels:
+          - label: 'message'
+            value: '$1'
+    
+      # example: org.apache.cassandra.metrics.Client.Error.READ_TIMEOUT
+      - pattern: 'org\.apache\.cassandra\.metrics\.Client\.Error\.(.+)'
+        name: 'ClientError'
+        labels:
+          - label: 'error'
+            value: '$1'
+    
+      # example: org.apache.cassandra.metrics.Client.connectedNativeClients
+      - pattern: 'org\.apache\.cassandra\.metrics\.Client\.(.+)'
+        name: 'Client_$1'
+    
+      # example: org.apache.cassandra.metrics.Index.IndexInfoCount.RowIndexEntry
+      - pattern: 'org\.apache\.cassandra\.metrics\.Index\.([^.]+)\.([^.]+)'
+        name: 'Index_$1'
+        labels:
+          - label: 'type'
+            value: '$2'
+    
+      # example: org.apache.cassandra.metrics.ReadRepair.RepairedBlocking
+      - pattern: 'org\.apache\.cassandra\.metrics\.ReadRepair\.(.+)'
+        name: 'ReadRepair_$1'
+    
+      # example: org.apache.cassandra.metrics.DirectMemory.Allocated
+      - pattern: 'org\.apache\.cassandra\.metrics\.DirectMemory\.(.+)'
+        name: 'DirectMemory_$1'
+    
+    # example org.apache.cassandra.metrics.HintedHandOffManager.Hints_created-10.240.0.10
+      - pattern: 'org\.apache\.cassandra\.metrics\.HintedHandOffManager\.([^-]+)-(.+)'
+        name: '$1'
+        labels:
+          - label: 'endpoint'
+            value: '$2'
+    # example org.apache.cassandra.metrics.Messaging.CrossNodeLatency
+      - pattern: 'org\.apache\.cassandra\.metrics\.Messaging\.CrossNodeLatency'
+        name: 'CrossNodeLatency'
+
+    #
+    # Cassandra < 3.0
+    #
+      - pattern: 'org\.apache\.cassandra\.metrics\.ClientRequestMetrics\.(.+)'
+        name: 'ClientRequestMetrics_$1'
+    #
+    # Cassandra < 3.0
+    #
+      - pattern: 'org\.apache\.cassandra\.metrics\.FileCache\.(.+)'
+        name: 'FileCache_$1'

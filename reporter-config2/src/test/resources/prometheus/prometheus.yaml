@@ -1,0 +1,11 @@
+prometheus:
+  -
+    host: 'localhost'
+    port: 8088
+    ssl: false
+    mappings:
+      # default mapping, expose the metrics using the metrics name used in codahale
+      - pattern: '(.+)'
+        name: '$1'
+    #exclusions:
+      #- pattern: 'regex-pattern-to-exclude-a-metrics'

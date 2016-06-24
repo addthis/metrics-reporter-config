@@ -47,6 +47,9 @@
     <dep.metrics2.version>2.2.0</dep.metrics2.version>
     <dep.metrics3.version>3.1.0</dep.metrics3.version>
     <dep.metrics-statsd.version>4.1.2</dep.metrics-statsd.version>
+    <dep.netty.version>4.0.37.Final</dep.netty.version>
+    <dep.prometheus-simpleclient.version>0.0.14</dep.prometheus-simpleclient.version>
+    <dep.protobuf.version>2.5.0</dep.protobuf.version>
     <project.build.targetJdk>1.6</project.build.targetJdk>
   </properties>
 

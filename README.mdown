@@ -161,6 +161,60 @@ Each substituted value gets sanitized by replacing all characters that
 are not allowed in the host name plus "-" with the underscore. The Ganglia reporter additionally
 supports the "groupPrefix" parameter. This will add a prefix to the Ganglia metric group.
 
+### Prometheus
+
+The Prometheus reporter does not support the prefix and predicate parameters and always
+operated on the fully qualified name. However, it supports name transformations via
+regular expressions to "group" multiple metrics into a single prometheus metric name
+and distinguish these using labels.
+
+For example, Apache Cassandra, emits table related metrics using qualified metric names
+like this: `org.apache.cassandra.metrics.Table.BloomFilterDiskSpaceUsed.system.paxos`,
+which means that this metric represents the disk space used by bloom filter for the
+table `paxos` in the keyspace `system`. The following config snippet transforms these
+metrics into a single metric for all tables. The metric type goes into the name,
+the keyspace name goes into the label `keyspace` and the table name goes into the
+label `table`.
+
+    prometheus:
+      -
+        mappings:
+          - pattern: 'org\.apache\.cassandra\.metrics\.Table\.([^.]+)\.(([^.]+)\.([^.]+))'
+            name: 'Table_$1'
+            labels:
+              - label: 'keyspace'
+                value: '$3'
+              - label: 'table'
+                value: '$2'
+
+It is also possible to exclude certain metrics using regular expressions.
+For example:
+
+    exclusions:
+      - pattern: 'org\.apache\.cassandra\.metrics\.Table\.EstimatedPartitionCount\..+'
+
+The implementation will emit warnings if a qualified metric name does _not_ match
+any mapping or exclusions.
+
+Other important parameters are:
+
+    prometheus:
+      -
+        host: 'localhost'
+        port: 8088
+        ssl: false
+
+`host` defines the _local_ name or better IP address on which the _exporter_ shall
+listen.
+`port` defines the TCP port on which the _exporter_ shall listen.
+`ssl` allows usage of SSL using a self signed certificate.
+
+The implementation supports both prometheus' protobuf and text format.
+
+You need the following dependencies to use the prometheus exporter:
+* `protobuf-java-2.5.0.jar` (version=2.5.0, groupId=com.google.protobuf, artifactId=protobuf-java)
+* `simpleclient-0.0.14.jar` (version=0.0.14, groupId=io.prometheus, artifactId=simpleclient)
+
 ## Building
 
 Assuming you have [Apache Maven](http://maven.apache.org/) installed

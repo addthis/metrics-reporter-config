@@ -23,6 +23,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.addthis.metrics.reporter.config.prometheus.PrometheusReporterConfig;
+
 
 // ser/d class.  May make a different abstract for commonalities
 
@@ -44,6 +46,8 @@ public class ReporterConfig extends AbstractReporterConfig
     private List<RiemannReporterConfig> riemann;
     @Valid
     private List<StatsDReporterConfig> statsd;
+    @Valid
+    private List<PrometheusReporterConfig> prometheus;
     @Valid
     private List<? extends MetricsReporterConfigTwo> reporters;
 
@@ -105,6 +109,16 @@ public class ReporterConfig extends AbstractReporterConfig
     public void setStatsd(List<StatsDReporterConfig> statsd)
     {
         this.statsd = statsd;
+    }
+
+    public List<PrometheusReporterConfig> getPrometheus()
+    {
+        return prometheus;
+    }
+
+    public void setPrometheus(List<PrometheusReporterConfig> prometheus)
+    {
+        this.prometheus = prometheus;
     }
 
     public List<? extends MetricsReporterConfigTwo> getReporters()
@@ -243,6 +257,24 @@ public class ReporterConfig extends AbstractReporterConfig
         return !failures;
     }
 
+    public boolean enablePrometheus()
+    {
+        boolean failures = false;
+        if (prometheus == null)
+        {
+            log.debug("Asked to enable prometheus, but it was not configured");
+            return false;
+        }
+        for (PrometheusReporterConfig prometheusConfig : prometheus)
+        {
+            if (!prometheusConfig.enable())
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableAll()
     {
         boolean enabled = false;
@@ -267,6 +299,10 @@ public class ReporterConfig extends AbstractReporterConfig
             enabled = true;
         }
         if (statsd != null && enableStatsd())
+        {
+            enabled = true;
+        }
+        if (prometheus != null && enablePrometheus())
         {
             enabled = true;
         }
