@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 public class RiemannReporterConfig extends AbstractRiemannReporterConfig implements MetricsReporterConfigTwo
 {
-    private static final Logger log = LoggerFactory.getLogger(AbstractRiemannReporterConfig.class);
+    private static final Logger log = LoggerFactory.getLogger(RiemannReporterConfig.class);
 
     @Override
     public boolean enable()

@@ -14,9 +14,6 @@
 
 package com.addthis.metrics.reporter.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 
 public class AbstractRiemannReporterConfig extends AbstractHostPortReporterConfig

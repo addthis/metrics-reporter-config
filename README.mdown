@@ -161,6 +161,12 @@ Each substituted value gets sanitized by replacing all characters that
 are not allowed in the host name plus "-" with the underscore. The Ganglia reporter additionally
 supports the "groupPrefix" parameter. This will add a prefix to the Ganglia metric group.
 
+### Riemann
+
+In order to use the riemann reporter, you need the following dependencies:
+* `riemann-java-client-0.2.10.jar` (Maven group ID: com.aphyr, Maven artifact ID: java-client, version: 0.2.10).
+* `netty-all-3.6.1.Final.jar` (Magen group ID: io.netty, Maven artifact ID: netty, version: 3.6.1.Final)
+
 ## Building
 
 Assuming you have [Apache Maven](http://maven.apache.org/) installed

@@ -49,6 +49,23 @@
             <version>${dep.metrics3.version}</version>
             <optional>true</optional>
         </dependency>
+        <!-- riemann -->
+        <dependency>
+            <groupId>com.aphyr</groupId>
+            <artifactId>riemann-java-client</artifactId>
+            <version>0.2.10</version>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.yammer.metrics</groupId>
+                    <artifactId>metrics-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.codahale.metrics</groupId>
+                    <artifactId>metrics-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- statsd -->
         <dependency>
             <groupId>com.readytalk</groupId>

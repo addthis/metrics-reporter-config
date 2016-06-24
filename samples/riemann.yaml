@@ -1,0 +1,45 @@
+riemann:
+  -
+    # localHost:
+    # prefix:
+    # separator:
+    # tags:
+    #   -
+    hosts:
+      -
+        host: 'localhost'
+        port: 5555
+    # hostsString:
+    # prefix:
+
+    period: 1
+    timeunit: SECONDS
+    # rateunit:
+    # durationunit:
+    # predicate:
+    #   color:
+    #   patterns:
+    #     -
+    #   useQualifiedName:
+    #   meter:
+    #     color:
+    #     patterns:
+    #       -
+    #         metric:
+    #         measure:
+    #     useQualifiedName:
+    #   histogram:
+    #     color:
+    #     patterns:
+    #       -
+    #         metric:
+    #         measure:
+    #     useQualifiedName:
+    #   timer:
+    #     color:
+    #     patterns:
+    #       -
+    #         metric:
+    #         measure:
+    #     useQualifiedName:
+
