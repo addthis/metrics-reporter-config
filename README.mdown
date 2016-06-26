@@ -161,6 +161,11 @@ Each substituted value gets sanitized by replacing all characters that
 are not allowed in the host name plus "-" with the underscore. The Ganglia reporter additionally
 supports the "groupPrefix" parameter. This will add a prefix to the Ganglia metric group.
 
+### Zabbix
+
+The Zabbix reporter requires the dependency `zabbix-sender-0.0.3.jar` (Maven group ID: io.github.hengyunabc,
+Maven artifact ID: zabbix-sender, version: 0.0.3).
+
 ## Building
 
 Assuming you have [Apache Maven](http://maven.apache.org/) installed

@@ -85,6 +85,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- zabbix -->
+        <dependency>
+            <groupId>io.github.hengyunabc</groupId>
+            <artifactId>zabbix-sender</artifactId>
+            <version>0.0.3</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>
