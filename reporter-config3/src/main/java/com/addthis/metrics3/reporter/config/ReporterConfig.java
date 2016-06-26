@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.addthis.metrics.reporter.config.AbstractReporterConfig;
+import com.addthis.metrics3.reporter.config.prometheus.PrometheusReporterConfig;
 import com.codahale.metrics.MetricRegistry;
 
 import org.slf4j.Logger;
@@ -47,6 +48,8 @@ public class ReporterConfig extends AbstractReporterConfig
     private List<RiemannReporterConfig> riemann;
     @Valid
     private List<StatsDReporterConfig> statsd;
+    @Valid
+    private List<PrometheusReporterConfig> prometheus;
 
     public List<ConsoleReporterConfig> getConsole()
     {
@@ -106,6 +109,16 @@ public class ReporterConfig extends AbstractReporterConfig
     public void setStatsd(List<StatsDReporterConfig> statsd)
     {
         this.statsd = statsd;
+    }
+
+    public List<PrometheusReporterConfig> getPrometheus()
+    {
+        return prometheus;
+    }
+
+    public void setPrometheus(List<PrometheusReporterConfig> prometheus)
+    {
+        this.prometheus = prometheus;
     }
 
     public boolean enableConsole(MetricRegistry registry)
@@ -216,6 +229,24 @@ public class ReporterConfig extends AbstractReporterConfig
         return !failures;
     }
 
+    public boolean enablePrometheus(MetricRegistry registry)
+    {
+        boolean failures = false;
+        if (prometheus == null)
+        {
+            log.debug("Asked to enable prometheus, but it was not configured");
+            return false;
+        }
+        for (PrometheusReporterConfig prometheusConfig : prometheus)
+        {
+            if (!prometheusConfig.enable(registry))
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableAll(MetricRegistry registry)
     {
         boolean enabled = false;
@@ -243,6 +274,10 @@ public class ReporterConfig extends AbstractReporterConfig
         {
             enabled = true;
         }
+        if (prometheus != null && enablePrometheus(registry))
+        {
+            enabled = true;
+        }
         if (!enabled)
         {
             log.warn("No reporters were succesfully enabled");
@@ -265,6 +300,7 @@ public class ReporterConfig extends AbstractReporterConfig
         report(ganglia);
         report(graphite);
         report(riemann);
+        report(prometheus);
     }
 
     public static ReporterConfig loadFromFileAndValidate(String fileName) throws IOException
