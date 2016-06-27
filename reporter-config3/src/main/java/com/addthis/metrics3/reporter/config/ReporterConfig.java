@@ -47,6 +47,8 @@ public class ReporterConfig extends AbstractReporterConfig
     private List<RiemannReporterConfig> riemann;
     @Valid
     private List<StatsDReporterConfig> statsd;
+    @Valid
+    private List<ZabbixReporterConfig> zabbix;
 
     public List<ConsoleReporterConfig> getConsole()
     {
@@ -106,6 +108,16 @@ public class ReporterConfig extends AbstractReporterConfig
     public void setStatsd(List<StatsDReporterConfig> statsd)
     {
         this.statsd = statsd;
+    }
+
+    public List<ZabbixReporterConfig> getZabbix()
+    {
+        return zabbix;
+    }
+
+    public void setZabbix(List<ZabbixReporterConfig> zabbix)
+    {
+        this.zabbix = zabbix;
     }
 
     public boolean enableConsole(MetricRegistry registry)
@@ -216,6 +228,24 @@ public class ReporterConfig extends AbstractReporterConfig
         return !failures;
     }
 
+    public boolean enableZabbix(MetricRegistry registry)
+    {
+        boolean failures = false;
+        if (zabbix == null)
+        {
+            log.debug("Asked to enable zabbix, but it was not configured");
+            return false;
+        }
+        for (ZabbixReporterConfig zabbixConfig : zabbix)
+        {
+            if (!zabbixConfig.enable(registry))
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableAll(MetricRegistry registry)
     {
         boolean enabled = false;
@@ -243,6 +273,10 @@ public class ReporterConfig extends AbstractReporterConfig
         {
             enabled = true;
         }
+        if (zabbix != null && enableZabbix(registry))
+        {
+            enabled = true;
+        }
         if (!enabled)
         {
             log.warn("No reporters were succesfully enabled");
@@ -265,6 +299,7 @@ public class ReporterConfig extends AbstractReporterConfig
         report(ganglia);
         report(graphite);
         report(riemann);
+        report(zabbix);
     }
 
     public static ReporterConfig loadFromFileAndValidate(String fileName) throws IOException
