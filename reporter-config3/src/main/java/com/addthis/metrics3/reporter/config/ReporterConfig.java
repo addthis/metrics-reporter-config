@@ -44,6 +44,8 @@ public class ReporterConfig extends AbstractReporterConfig
     @Valid
     private List<GraphiteReporterConfig> graphite;
     @Valid
+    private List<InfluxDBReporterConfig> influxdb;
+    @Valid
     private List<RiemannReporterConfig> riemann;
     @Valid
     private List<StatsDReporterConfig> statsd;
@@ -88,6 +90,16 @@ public class ReporterConfig extends AbstractReporterConfig
     public void setGraphite(List<GraphiteReporterConfig> graphite)
     {
         this.graphite = graphite;
+    }
+
+    public List<InfluxDBReporterConfig> getInfluxdb()
+    {
+        return influxdb;
+    }
+
+    public void setInfluxdb(List<InfluxDBReporterConfig> influxdb)
+    {
+        this.influxdb = influxdb;
     }
 
     public List<RiemannReporterConfig> getRiemann()
@@ -192,6 +204,24 @@ public class ReporterConfig extends AbstractReporterConfig
         return !failures;
     }
 
+    public boolean enableInfluxdb(MetricRegistry registry)
+    {
+        boolean failures = false;
+        if (influxdb == null)
+        {
+            log.debug("Asked to enable influx, but it was not configured");
+            return false;
+        }
+        for (InfluxDBReporterConfig influxConfig : influxdb)
+        {
+            if (!influxConfig.enable(registry))
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableRiemann(MetricRegistry registry)
     {
         boolean failures = false;
@@ -265,6 +295,10 @@ public class ReporterConfig extends AbstractReporterConfig
         {
             enabled = true;
         }
+        if (influxdb != null && enableInfluxdb(registry))
+        {
+            enabled = true;
+        }
         if (riemann != null && enableRiemann(registry))
         {
             enabled = true;
@@ -298,6 +332,7 @@ public class ReporterConfig extends AbstractReporterConfig
         report(csv);
         report(ganglia);
         report(graphite);
+        report(influxdb);
         report(riemann);
         report(zabbix);
     }

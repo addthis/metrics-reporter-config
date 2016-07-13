@@ -40,6 +40,7 @@ Current supported reporters include:
  * csv
  * ganglia
  * graphite
+ * influx
 
 Note that Metrics-Reporter-Config's dependencies on non-core reporters
 are *optional* in maven-speak.  That means that depending on
@@ -165,6 +166,37 @@ supports the "groupPrefix" parameter. This will add a prefix to the Ganglia metr
 
 The Zabbix reporter requires the dependency `zabbix-sender-0.0.3.jar` (Maven group ID: io.github.hengyunabc,
 Maven artifact ID: zabbix-sender, version: 0.0.3).
+
+### InfluxDB
+
+The InfluxDB reporter currently requires the dependency [`metrics-influxdb-1.1.6.jar`](http://repo1.maven.org/maven2/com/izettle/metrics-influxdb/1.1.6/metrics-influxdb-1.1.6.jar)
+[Sources](https://github.com/iZettle/dropwizard-metrics-influxdb) (Maven group ID: com.izettle,
+Maven artifact ID: metrics-influxdb, version 1.1.6).
+
+Dropwizard 4.0 will introduce native InfluxDB support.
+
+InfluxDB connection requires a few more configuration properties:
+
+    influxdb:
+      -
+        period: 60
+        timeunit: 'SECONDS'
+        protocol: 'http'
+        auth: 'troll:admin123'
+        dbName: 'db1'
+        connectionTimeout: 1000
+        readTimeout: 1000
+        tag: 'node1'
+        hosts:
+          - host: 'localhost'
+            port: 8086
+
+* `protocol` - `http` or `https`
+* `auth` - `username:password`, can be empty
+* `dbName` - InfluxDB database name
+* `connectionTimeout` - `java.net.URLConnection` connection timeout in milliseconds
+* `readTimeout` - `java.net.URLConnection` read timeout in milliseconds
+* `tag` - every send measurement will be tagged with this tag. `tag` is implemented as alias for `prefix` used e.g. for Graphite so variables `host.name` etc also works here.
 
 ## Building
 
