@@ -186,7 +186,9 @@ InfluxDB connection requires a few more configuration properties:
         dbName: 'db1'
         connectionTimeout: 1000
         readTimeout: 1000
-        tag: 'node1'
+        tags:
+        - host: 'node1'
+        - env: 'prod'
         hosts:
           - host: 'localhost'
             port: 8086
@@ -196,7 +198,7 @@ InfluxDB connection requires a few more configuration properties:
 * `dbName` - InfluxDB database name
 * `connectionTimeout` - `java.net.URLConnection` connection timeout in milliseconds
 * `readTimeout` - `java.net.URLConnection` read timeout in milliseconds
-* `tag` - every send measurement will be tagged with this tag. `tag` is implemented as alias for `prefix` used e.g. for Graphite so variables `host.name` etc also works here.
+* `tags` - every send measurement will be tagged with this tags map. Tags values can contain variables like Graphite prefix - e.g. `host.name`.
 
 ## Building
 

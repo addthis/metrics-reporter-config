@@ -7,7 +7,10 @@ influxdb:
     dbName: 'db1'
     connectionTimeout: 1000
     readTimeout: 1000
-    tag: 'node1'
+    tags:
+      host: 'node1'
+      env: 'prod'
+      sth: 'else'
     hosts:
       - host: 'localhost'
         port: 8086

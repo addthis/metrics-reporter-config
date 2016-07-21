@@ -32,20 +32,15 @@ public class InfluxDBReporterConfig extends AbstractInfluxDBReporterConfig imple
 {
     private static final Logger log = LoggerFactory.getLogger(InfluxDBReporterConfig.class);
 
-    private static final String HOST_TAG_NAME = "host";
-
     private InfluxDbReporter reporter;
 
     private void enableMetrics3(HostPort hostPort, MetricRegistry registry) throws Exception
     {
-        Map<String, String> tagsMap = new HashMap<String, String>();
-        tagsMap.put(HOST_TAG_NAME, getResolvedTag());
-
         InfluxDbSender influxDbSender = new InfluxDbHttpSender(getProtocol(), hostPort.getHost(), hostPort.getPort(),
             getDbName(), getAuth(), getRealRateunit(), getConnectionTimeout(), getReadTimeout());
 
         reporter = InfluxDbReporter.forRegistry(registry).convertRatesTo(getRealRateunit())
-            .convertDurationsTo(getRealDurationunit()).withTags(tagsMap)
+            .convertDurationsTo(getRealDurationunit()).withTags(getResolvedTags())
             .filter(MetricFilterTransformer.generateFilter(getPredicate())).build(influxDbSender);
 
         reporter.start(getPeriod(), getRealTimeunit());

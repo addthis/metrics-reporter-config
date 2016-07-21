@@ -14,7 +14,9 @@
 
 package com.addthis.metrics.reporter.config;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -44,9 +46,9 @@ public class AbstractInfluxDBReporterConfig extends AbstractHostPortReporterConf
     private int readTimeout;
 
     @NotNull
-    private String tag;
+    private Map<String, String> tags;
 
-    private String resolvedTag;
+    private Map<String, String> resolvedTags;
 
     @Override
     public List<HostPort> getFullHostList()
@@ -79,28 +81,23 @@ public class AbstractInfluxDBReporterConfig extends AbstractHostPortReporterConf
         return dbName;
     }
 
-    public void setDbName(final String dbName)
+    public void setDbName(String dbName)
     {
         this.dbName = dbName;
     }
 
-    /**
-     * Treats tag as alias for prefix.
-     *
-     * @param tag
-     *            measurement tag
-     * @see #setPrefix(String)
-     */
-    public void setTag(String tag)
-    {
-        this.setPrefix(tag);
-        this.tag = tag;
-        this.resolvedTag = getResolvedPrefix();
+    public void setTags(Map<String, String> tags) {
+        this.tags = tags;
+        this.resolvedTags = new HashMap<String, String>(tags.size());
+        for (Map.Entry<String, String> entry : tags.entrySet())
+        {
+            this.resolvedTags.put(entry.getKey(), resolvePrefix(entry.getValue()));
+        }
     }
 
-    public String getResolvedTag()
+    public Map<String, String> getResolvedTags()
     {
-        return resolvedTag;
+        return resolvedTags;
     }
 
     public int getConnectionTimeout()
