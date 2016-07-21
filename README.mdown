@@ -187,18 +187,19 @@ InfluxDB connection requires a few more configuration properties:
         connectionTimeout: 1000
         readTimeout: 1000
         tags:
-        - host: 'node1'
-        - env: 'prod'
+         host: '${host.name}'
+         env: 'prod'
         hosts:
           - host: 'localhost'
             port: 8086
 
+* `hosts` - must contain exactly one host configured. For HA see the [InfluxDB Relay](https://github.com/influxdata/influxdb-relay)
 * `protocol` - `http` or `https`
 * `auth` - `username:password`, can be empty
 * `dbName` - InfluxDB database name
 * `connectionTimeout` - `java.net.URLConnection` connection timeout in milliseconds
 * `readTimeout` - `java.net.URLConnection` read timeout in milliseconds
-* `tags` - every send measurement will be tagged with this tags map. Tags values can contain variables like Graphite prefix - e.g. `host.name`.
+* `tags` - every send measurement will be tagged with this tags map. Tags values can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`.
 
 ## Building
 

@@ -70,21 +70,22 @@ public class InfluxDBReporterConfig extends AbstractInfluxDBReporterConfig imple
             return false;
         }
 
-        for (HostPort hostPort : hosts)
-        {
-            log.info("Enabling InfluxDBReporter to {}:{}", hostPort.getHost(), hostPort.getPort());
-            try
-            {
-                // connect with first working host
-                enableMetrics3(hostPort, registry);
-                return true;
-            } catch (Exception e)
-            {
-                log.error("Failed to enable InfluxDBReporter for {}:{}", hostPort.getHost(), hostPort.getPort(), e);
-            }
+        if(hosts.size() != 1) {
+            log.error("Only 1 host can be specified, cannot enable InfluxDBReporter");
+            return false;
         }
-        log.error("None of configured InfluxDBReporter hosts worked");
-        return false;
+
+        HostPort hostPort = hosts.get(0);
+        log.info("Enabling InfluxDBReporter to {}:{}", hostPort.getHost(), hostPort.getPort());
+        try
+        {
+          enableMetrics3(hostPort, registry);
+        } catch (Exception e)
+        {
+            log.error("Failed to enable InfluxDBReporter for {}:{}", hostPort.getHost(), hostPort.getPort(), e);
+            return false;
+        }
+        return true;
     }
 
     private boolean checkClass(String className)
