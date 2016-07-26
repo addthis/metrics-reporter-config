@@ -169,9 +169,9 @@ Maven artifact ID: zabbix-sender, version: 0.0.3).
 
 ### InfluxDB
 
-The InfluxDB reporter currently requires the dependency [`metrics-influxdb-1.1.6.jar`](http://repo1.maven.org/maven2/com/izettle/metrics-influxdb/1.1.6/metrics-influxdb-1.1.6.jar)
+The InfluxDB reporter currently requires the dependency [`metrics-influxdb-1.1.7.jar`](http://repo1.maven.org/maven2/com/izettle/metrics-influxdb/1.1.7/metrics-influxdb-1.1.7.jar)
 [Sources](https://github.com/iZettle/dropwizard-metrics-influxdb) (Maven group ID: com.izettle,
-Maven artifact ID: metrics-influxdb, version 1.1.6).
+Maven artifact ID: metrics-influxdb, version 1.1.7).
 
 Dropwizard 4.0 will introduce native InfluxDB support.
 
