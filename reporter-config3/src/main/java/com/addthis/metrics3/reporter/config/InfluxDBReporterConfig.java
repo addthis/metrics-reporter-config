@@ -37,7 +37,7 @@ public class InfluxDBReporterConfig extends AbstractInfluxDBReporterConfig imple
     private void enableMetrics3(HostPort hostPort, MetricRegistry registry) throws Exception
     {
         InfluxDbSender influxDbSender = new InfluxDbHttpSender(getProtocol(), hostPort.getHost(), hostPort.getPort(),
-            getDbName(), getAuth(), getRealRateunit(), getConnectionTimeout(), getReadTimeout());
+            getDbName(), getAuth(), getRealRateunit(), getConnectionTimeout(), getReadTimeout(), getResolvedPrefix());
 
         reporter = InfluxDbReporter.forRegistry(registry).convertRatesTo(getRealRateunit())
             .convertDurationsTo(getRealDurationunit()).withTags(getResolvedTags())

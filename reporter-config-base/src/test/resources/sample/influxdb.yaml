@@ -11,6 +11,7 @@ influxdb:
       host: 'node1'
       env: 'prod'
       sth: 'else'
+    prefix: ''
     hosts:
       - host: 'localhost'
         port: 8086

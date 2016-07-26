@@ -189,6 +189,7 @@ InfluxDB connection requires a few more configuration properties:
         tags:
          host: '${host.name}'
          env: 'prod'
+        prefix: ''
         hosts:
           - host: 'localhost'
             port: 8086
@@ -200,6 +201,7 @@ InfluxDB connection requires a few more configuration properties:
 * `connectionTimeout` - `java.net.URLConnection` connection timeout in milliseconds
 * `readTimeout` - `java.net.URLConnection` read timeout in milliseconds
 * `tags` - every send measurement will be tagged with this tags map. Tags values can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`.
+* `prefix` - its value will be prepended to each metric name sent by reporter (see Graphite & Ganglia). Prefix can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`. Please also look at tags.
 
 ## Building
 
