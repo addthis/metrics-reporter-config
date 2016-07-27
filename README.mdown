@@ -173,7 +173,7 @@ The InfluxDB reporter currently requires the dependency [`metrics-influxdb-1.1.7
 [Sources](https://github.com/iZettle/dropwizard-metrics-influxdb) (Maven group ID: com.izettle,
 Maven artifact ID: metrics-influxdb, version 1.1.7).
 
-Dropwizard 4.0 will introduce native InfluxDB support.
+Metrics 4.0 will introduce native InfluxDB support.
 
 InfluxDB connection requires a few more configuration properties:
 
