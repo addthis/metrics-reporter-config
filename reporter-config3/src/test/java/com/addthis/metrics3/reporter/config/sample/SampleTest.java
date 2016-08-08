@@ -119,6 +119,15 @@ public class SampleTest
     }
 
     @Test
+    public void sampleInfluxDB() throws Exception
+    {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/influxdb.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("Sample InfluxDB");
+        runLoop(config);
+    }
+
+    @Test
     public void sampleStatsD() throws Exception
     {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd.yaml");

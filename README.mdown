@@ -40,6 +40,7 @@ Current supported reporters include:
  * csv
  * ganglia
  * graphite
+ * influx
 
 Note that Metrics-Reporter-Config's dependencies on non-core reporters
 are *optional* in maven-speak.  That means that depending on
@@ -165,6 +166,42 @@ supports the "groupPrefix" parameter. This will add a prefix to the Ganglia metr
 
 The Zabbix reporter requires the dependency `zabbix-sender-0.0.3.jar` (Maven group ID: io.github.hengyunabc,
 Maven artifact ID: zabbix-sender, version: 0.0.3).
+
+### InfluxDB
+
+The InfluxDB reporter currently requires the dependency [`metrics-influxdb-1.1.7.jar`](http://repo1.maven.org/maven2/com/izettle/metrics-influxdb/1.1.7/metrics-influxdb-1.1.7.jar)
+[Sources](https://github.com/iZettle/dropwizard-metrics-influxdb) (Maven group ID: com.izettle,
+Maven artifact ID: metrics-influxdb, version 1.1.7).
+
+Metrics 4.0 will introduce native InfluxDB support.
+
+InfluxDB connection requires a few more configuration properties:
+
+    influxdb:
+      -
+        period: 60
+        timeunit: 'SECONDS'
+        protocol: 'http'
+        auth: 'troll:admin123'
+        dbName: 'db1'
+        connectionTimeout: 1000
+        readTimeout: 1000
+        tags:
+         host: '${host.name}'
+         env: 'prod'
+        prefix: ''
+        hosts:
+          - host: 'localhost'
+            port: 8086
+
+* `hosts` - must contain exactly one host configured. For HA see the [InfluxDB Relay](https://github.com/influxdata/influxdb-relay)
+* `protocol` - `http` or `https`
+* `auth` - `username:password`, can be empty
+* `dbName` - InfluxDB database name
+* `connectionTimeout` - `java.net.URLConnection` connection timeout in milliseconds
+* `readTimeout` - `java.net.URLConnection` read timeout in milliseconds
+* `tags` - every send measurement will be tagged with this tags map. Tags values can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`.
+* `prefix` - its value will be prepended to each metric name sent by reporter (see Graphite & Ganglia). Prefix can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`. Please also look at tags.
 
 ## Building
 

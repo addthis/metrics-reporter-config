@@ -75,6 +75,12 @@
             <version>0.0.3</version>
             <optional>true</optional>
         </dependency>
+        <!-- influxdb -->
+        <dependency>
+            <groupId>com.izettle</groupId>
+            <artifactId>dropwizard-metrics-influxdb</artifactId>
+            <version>1.1.7</version>
+        </dependency>
     </dependencies>
 
 </project>
