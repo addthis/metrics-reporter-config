@@ -41,6 +41,7 @@ Current supported reporters include:
  * ganglia
  * graphite
  * influx
+ * prometheus
 
 Note that Metrics-Reporter-Config's dependencies on non-core reporters
 are *optional* in maven-speak.  That means that depending on
@@ -203,6 +204,55 @@ InfluxDB connection requires a few more configuration properties:
 * `tags` - every send measurement will be tagged with this tags map. Tags values can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`.
 * `prefix` - its value will be prepended to each metric name sent by reporter (see Graphite & Ganglia). Prefix can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`. Please also look at tags.
 
+### Prometheus
+
+**only metric3 is currently supported**
+
+The Prometheus configuration provides two options to report metrics. The first is the push gateway and the second is the metrics servlet.
+
+* The push gateway has a dependency on [io.prometheus:simpleclient_pushgateway:0.0.16](https://mvnrepository.com/artifact/io.prometheus/simpleclient_pushgateway)
+* The metrics service has a dependency on [io.prometheus:simpleclient_servlet:0.0.16](https://mvnrepository.com/artifact/io.prometheus/simpleclient_servlet)
+
+*Prometheus Specific Configuration Options:*
+
+* `job` - prometheus job name. This is added to every metric
+* `labels` - map<string, string> that will be added to every metric. Variable substitution is available for label values (see graphite & ganglia)
+* `type` - (`pushgateway`|`servlet`) pushgateway requires host(s), period and timeunit. Servlet does not.
+
+#### Push Gateway Configuration
+
+    prometheus:
+      -
+        type: pushgateway
+        period: 60
+        timeunit: 'SECONDS'
+        job: 'app_name'
+        labels:
+            env: test
+            host: '${host.name}'
+        hosts:
+            - host: localhost
+              port: 9091
+
+#### Servlet Configuration
+
+    prometheus:
+      -
+        type: servlet
+        job: 'app_name'
+        labels:
+            env: test
+            host: '${host.name}'
+
+In addition to the yaml configuration, you will also need to register the servlet with your environment.
+
+```
+config.getReporterConfig().enablePrometheus(environment.metrics());
+MetricsServlet servlet = config.getReporterConfig().getPrometheus().get(0).getMetricsServlet();
+environment.admin()
+           .addServlet("prometheus-metrics", servlet)
+           .addMapping("/prometheus-metrics");
+```
 ## Building
 
 Assuming you have [Apache Maven](http://maven.apache.org/) installed

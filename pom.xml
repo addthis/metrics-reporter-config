@@ -47,8 +47,24 @@
     <dep.metrics2.version>2.2.0</dep.metrics2.version>
     <dep.metrics3.version>3.1.0</dep.metrics3.version>
     <dep.metrics-statsd.version>4.1.2</dep.metrics-statsd.version>
-    <project.build.targetJdk>1.6</project.build.targetJdk>
+    <project.build.targetJdk>1.7</project.build.targetJdk>
+    <prometheus.version>0.0.16</prometheus.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.prometheus</groupId>
+        <artifactId>simpleclient_pushgateway</artifactId>
+        <version>${prometheus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.prometheus</groupId>
+        <artifactId>simpleclient_servlet</artifactId>
+        <version>${prometheus.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
