@@ -40,6 +40,8 @@ Current supported reporters include:
  * csv
  * ganglia
  * graphite
+ * influx
+ * prometheus
 
 Note that Metrics-Reporter-Config's dependencies on non-core reporters
 are *optional* in maven-speak.  That means that depending on
@@ -161,6 +163,96 @@ Each substituted value gets sanitized by replacing all characters that
 are not allowed in the host name plus "-" with the underscore. The Ganglia reporter additionally
 supports the "groupPrefix" parameter. This will add a prefix to the Ganglia metric group.
 
+### Zabbix
+
+The Zabbix reporter requires the dependency `zabbix-sender-0.0.3.jar` (Maven group ID: io.github.hengyunabc,
+Maven artifact ID: zabbix-sender, version: 0.0.3).
+
+### InfluxDB
+
+The InfluxDB reporter currently requires the dependency [`metrics-influxdb-1.1.7.jar`](http://repo1.maven.org/maven2/com/izettle/metrics-influxdb/1.1.7/metrics-influxdb-1.1.7.jar)
+[Sources](https://github.com/iZettle/dropwizard-metrics-influxdb) (Maven group ID: com.izettle,
+Maven artifact ID: metrics-influxdb, version 1.1.7).
+
+Metrics 4.0 will introduce native InfluxDB support.
+
+InfluxDB connection requires a few more configuration properties:
+
+    influxdb:
+      -
+        period: 60
+        timeunit: 'SECONDS'
+        protocol: 'http'
+        auth: 'troll:admin123'
+        dbName: 'db1'
+        connectionTimeout: 1000
+        readTimeout: 1000
+        tags:
+         host: '${host.name}'
+         env: 'prod'
+        prefix: ''
+        hosts:
+          - host: 'localhost'
+            port: 8086
+
+* `hosts` - must contain exactly one host configured. For HA see the [InfluxDB Relay](https://github.com/influxdata/influxdb-relay)
+* `protocol` - `http` or `https`
+* `auth` - `username:password`, can be empty
+* `dbName` - InfluxDB database name
+* `connectionTimeout` - `java.net.URLConnection` connection timeout in milliseconds
+* `readTimeout` - `java.net.URLConnection` read timeout in milliseconds
+* `tags` - every send measurement will be tagged with this tags map. Tags values can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`.
+* `prefix` - its value will be prepended to each metric name sent by reporter (see Graphite & Ganglia). Prefix can contain variables described for Graphite prefix parameter - `host.name`, `host.name.short`, `host.address`, `host.fqdn`. Please also look at tags.
+
+### Prometheus
+
+**only metric3 is currently supported**
+
+The Prometheus configuration provides two options to report metrics. The first is the push gateway and the second is the metrics servlet.
+
+* The push gateway has a dependency on [io.prometheus:simpleclient_pushgateway:0.0.16](https://mvnrepository.com/artifact/io.prometheus/simpleclient_pushgateway)
+* The metrics service has a dependency on [io.prometheus:simpleclient_servlet:0.0.16](https://mvnrepository.com/artifact/io.prometheus/simpleclient_servlet)
+
+*Prometheus Specific Configuration Options:*
+
+* `job` - prometheus job name. This is added to every metric
+* `labels` - map<string, string> that will be added to every metric. Variable substitution is available for label values (see graphite & ganglia)
+* `type` - (`pushgateway`|`servlet`) pushgateway requires host(s), period and timeunit. Servlet does not.
+
+#### Push Gateway Configuration
+
+    prometheus:
+      -
+        type: pushgateway
+        period: 60
+        timeunit: 'SECONDS'
+        job: 'app_name'
+        labels:
+            env: test
+            host: '${host.name}'
+        hosts:
+            - host: localhost
+              port: 9091
+
+#### Servlet Configuration
+
+    prometheus:
+      -
+        type: servlet
+        job: 'app_name'
+        labels:
+            env: test
+            host: '${host.name}'
+
+In addition to the yaml configuration, you will also need to register the servlet with your environment.
+
+```
+config.getReporterConfig().enablePrometheus(environment.metrics());
+MetricsServlet servlet = config.getReporterConfig().getPrometheus().get(0).getMetricsServlet();
+environment.admin()
+           .addServlet("prometheus-metrics", servlet)
+           .addMapping("/prometheus-metrics");
+```
 ### Riemann
 
 In order to use the riemann reporter, you need the following dependencies:

@@ -20,32 +20,29 @@ import com.codahale.metrics.Counter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 // TODO: Make this an integration test
-public class SampleTest
-{
+public class SampleTest {
     private static final Logger log = LoggerFactory.getLogger(SampleTest.class);
 
     private static final Yaml yaml = new Yaml(new Constructor(ReporterConfig.class));
     private final int loops = 2;
 
-    private void runLoop(ReporterConfig config) throws Exception
-    {
+    private void runLoop(ReporterConfig config) throws Exception {
         MetricRegistry registry = new MetricRegistry();
         Counter counter = registry.counter("mycounter");
         Meter meter = registry.meter("foo");
         config.enableConsole(registry);
-        for (int i=0; i< loops; i++)
-        {
+        for (int i = 0; i < loops; i++) {
             counter.inc();
             meter.mark();
             Thread.sleep(1000);
@@ -55,16 +52,14 @@ public class SampleTest
     }
 
     @Test
-    public void sampleConsole() throws Exception
-    {
+    public void sampleConsole() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/console.yaml");
         System.out.println(yaml.dump(config));
         runLoop(config);
     }
 
     @Test
-    public void sampleCSV() throws Exception
-    {
+    public void sampleCSV() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/csv.yaml");
         System.out.println(yaml.dump(config));
         log.info("Sample CSV Reporter");
@@ -72,8 +67,7 @@ public class SampleTest
     }
 
     @Test
-    public void sampleGanglia() throws Exception
-    {
+    public void sampleGanglia() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/ganglia.yaml");
         System.out.println(yaml.dump(config));
         log.info("Sample Ganglia Reporter");
@@ -82,8 +76,7 @@ public class SampleTest
     }
 
     @Test
-    public void sampleGangliaGmond() throws Exception
-    {
+    public void sampleGangliaGmond() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/ganglia-gmond.yaml");
         System.out.println(yaml.dump(config));
         log.info("Sample Ganglia Gmond");
@@ -92,8 +85,7 @@ public class SampleTest
 
 
     @Test
-    public void sampleGraphite() throws Exception
-    {
+    public void sampleGraphite() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite.yaml");
         System.out.println(yaml.dump(config));
         log.info("Sample Graphite");
@@ -101,8 +93,7 @@ public class SampleTest
     }
 
     @Test
-    public void sampleGraphiteString() throws Exception
-    {
+    public void sampleGraphiteString() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string.yaml");
         System.out.println(yaml.dump(config));
         log.info("Graphite String");
@@ -110,8 +101,7 @@ public class SampleTest
     }
 
     @Test
-    public void sampleGraphiteStringDupe() throws Exception
-    {
+    public void sampleGraphiteStringDupe() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/graphite-string-dupe.yaml");
         System.out.println(yaml.dump(config));
         log.info("Graphite String Dupe");
@@ -119,8 +109,15 @@ public class SampleTest
     }
 
     @Test
-    public void sampleStatsD() throws Exception
-    {
+    public void sampleInfluxDB() throws Exception {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/influxdb.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("Sample InfluxDB");
+        runLoop(config);
+    }
+
+    @Test
+    public void sampleStatsD() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd.yaml");
         System.out.println(yaml.dump(config));
         log.info("Sample StatsD");
@@ -130,8 +127,7 @@ public class SampleTest
     }
 
     @Test
-    public void sampleStatsDMulti() throws Exception
-    {
+    public void sampleStatsDMulti() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd-multi.yaml");
         System.out.println(yaml.dump(config));
         log.info("StatsD Multi");
@@ -141,8 +137,17 @@ public class SampleTest
     }
 
     @Test
-    public void sampleMulti() throws Exception
-    {
+    public void samplePrometheusMulti() throws Exception {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/prometheus.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("Sample Prometheus");
+        assertNotNull(config.getPrometheus());
+        assertEquals(2, config.getPrometheus().size());
+        runLoop(config);
+    }
+
+    @Test
+    public void sampleMulti() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/multi.yaml");
         System.out.println(yaml.dump(config));
         log.info("Multi Reporter");

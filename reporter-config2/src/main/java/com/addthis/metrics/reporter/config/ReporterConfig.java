@@ -45,6 +45,8 @@ public class ReporterConfig extends AbstractReporterConfig
     @Valid
     private List<StatsDReporterConfig> statsd;
     @Valid
+    private List<ZabbixReporterConfig> zabbix;
+    @Valid
     private List<? extends MetricsReporterConfigTwo> reporters;
 
     public List<ConsoleReporterConfig> getConsole()
@@ -105,6 +107,16 @@ public class ReporterConfig extends AbstractReporterConfig
     public void setStatsd(List<StatsDReporterConfig> statsd)
     {
         this.statsd = statsd;
+    }
+
+    public List<ZabbixReporterConfig> getZabbix()
+    {
+        return zabbix;
+    }
+
+    public void setZabbix(List<ZabbixReporterConfig> zabbix)
+    {
+        this.zabbix = zabbix;
     }
 
     public List<? extends MetricsReporterConfigTwo> getReporters()
@@ -243,6 +255,24 @@ public class ReporterConfig extends AbstractReporterConfig
         return !failures;
     }
 
+    public boolean enableZabbix()
+    {
+        boolean failures = false;
+        if (zabbix == null)
+        {
+            log.debug("Asked to enable zabbix, but it was not configured");
+            return false;
+        }
+        for (ZabbixReporterConfig zabbixConfig : zabbix)
+        {
+            if (!zabbixConfig.enable())
+            {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
     public boolean enableAll()
     {
         boolean enabled = false;
@@ -267,6 +297,10 @@ public class ReporterConfig extends AbstractReporterConfig
             enabled = true;
         }
         if (statsd != null && enableStatsd())
+        {
+            enabled = true;
+        }
+        if (zabbix != null && enableZabbix())
         {
             enabled = true;
         }

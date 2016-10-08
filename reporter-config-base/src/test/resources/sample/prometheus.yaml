@@ -1,0 +1,16 @@
+prometheus:
+  -
+    job: 'db1'
+    labels:
+      host: 'node1'
+      env: 'prod'
+    type: 'servlet'
+  -
+    job: 'db2'
+    labels:
+      host: 'node2'
+      env: 'prod'
+    type: 'pushgateway'
+    hosts:
+      - host: 'localhost'
+        port: 9091
