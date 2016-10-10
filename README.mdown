@@ -253,6 +253,13 @@ environment.admin()
            .addServlet("prometheus-metrics", servlet)
            .addMapping("/prometheus-metrics");
 ```
+### Riemann
+
+In order to use the riemann reporter, you need the following dependencies:
+* `riemann-java-client-0.2.10.jar` (Maven group ID: com.aphyr, Maven artifact ID: java-client, version: 0.2.10).
+* `netty-all-3.6.1.Final.jar` (Maven group ID: io.netty, Maven artifact ID: netty, version: 3.6.1.Final)
+* `protobuf-java-2.5.0.jar` (Maven group ID: com.google.protobuf, Maven artifact ID: protobuf-java, version: 2.5.0)
+
 ## Building
 
 Assuming you have [Apache Maven](http://maven.apache.org/) installed
