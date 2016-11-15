@@ -11,6 +11,8 @@ influxdb:
       host: 'node1'
       env: 'prod'
       sth: 'else'
+    measurementMappings:
+      cassandra_Table_ReadLatency: org.apache.cassandra.metrics.Table.ReadLatency.*
     prefix: ''
     hosts:
       - host: 'localhost'

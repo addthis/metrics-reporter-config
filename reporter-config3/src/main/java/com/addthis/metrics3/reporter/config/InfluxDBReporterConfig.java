@@ -41,6 +41,7 @@ public class InfluxDBReporterConfig extends AbstractInfluxDBReporterConfig imple
 
         reporter = InfluxDbReporter.forRegistry(registry).convertRatesTo(getRealRateunit())
             .convertDurationsTo(getRealDurationunit()).withTags(getResolvedTags())
+            .measurementMappings(getMeasurementMappings())
             .filter(MetricFilterTransformer.generateFilter(getPredicate())).build(influxDbSender);
 
         reporter.start(getPeriod(), getRealTimeunit());
