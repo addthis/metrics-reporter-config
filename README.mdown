@@ -190,6 +190,8 @@ InfluxDB connection requires a few more configuration properties:
         tags:
          host: '${host.name}'
          env: 'prod'
+        measurementMappings:
+         cassandra_Table_ReadLatency: org.apache.cassandra.metrics.Table.ReadLatency.*
         prefix: ''
         hosts:
           - host: 'localhost'

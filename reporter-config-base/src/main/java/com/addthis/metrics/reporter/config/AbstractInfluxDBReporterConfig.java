@@ -17,6 +17,7 @@ package com.addthis.metrics.reporter.config;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -49,6 +50,9 @@ public class AbstractInfluxDBReporterConfig extends AbstractHostPortReporterConf
     private Map<String, String> tags;
 
     private Map<String, String> resolvedTags;
+
+    @NotNull
+    private Map<String, String> measurementMappings = Collections.emptyMap();
 
     @Override
     public List<HostPort> getFullHostList()
@@ -119,4 +123,8 @@ public class AbstractInfluxDBReporterConfig extends AbstractHostPortReporterConf
     {
         this.readTimeout = readTimeout;
     }
+
+    public Map<String, String> getMeasurementMappings() { return measurementMappings; }
+
+    public void setMeasurementMappings(Map<String, String> measurementMappings) { this.measurementMappings = measurementMappings; }
 }
