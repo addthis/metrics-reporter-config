@@ -1,0 +1,10 @@
+color: "black"
+useQualifiedName: true
+meter:
+  color: "black"
+  patterns:
+    -
+      metric: ".*"
+      measure: "m15_rate|m5_rate|mean_rate"
+patterns:
+  - "^org.eclipse.jetty.server.*$"
