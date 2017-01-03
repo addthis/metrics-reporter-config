@@ -15,8 +15,12 @@
 package com.addthis.metrics3.reporter.config;
 
 import com.addthis.metrics.reporter.config.PredicateConfig;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Meter;
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.Timer;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +50,48 @@ public class MetricFilterTransformer
             else
             {
                 return predicate.allowString(unqualifyMetricName(name));
+            }
+        }
+
+
+        /**
+         * This will only be invoked if using a fork of the metrics library with support
+         * for filtering on a per-measurement basis - http://github.com/thelastpickle/metrics
+         * Otherwise this method is not invoked. The @Override annotation is omitted so
+         * that compilation is successful using either the metrics library or the fork of the
+         * metrics library.
+         */
+        public boolean matches(String name, Metric metric, String measurement)
+        {
+            if ((predicate.getMeter() != null) && (metric instanceof Meter))
+            {
+                return allowMeasurement(name, measurement, predicate.getMeter(), predicate.getMeterPatterns());
+            }
+            else if ((predicate.getHistogram() != null) && (metric instanceof Histogram))
+            {
+                return allowMeasurement(name, measurement, predicate.getHistogram(), predicate.getHistogramPatterns());
+            }
+            else if ((predicate.getTimer() != null) && (metric instanceof Timer))
+            {
+                return allowMeasurement(name, measurement, predicate.getTimer(), predicate.getTimerPatterns());
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
+        private boolean allowMeasurement(String name, String measurement,
+                PredicateConfig.Measurement type, List<PredicateConfig.MeasurementPattern> patterns)
+        {
+            if (type.getUseQualifiedName())
+            {
+                return predicate.allowMeasurement(name, measurement, type, patterns);
+            }
+            else
+            {
+                return predicate.allowMeasurement(unqualifyMetricName(name), measurement, type, patterns);
             }
         }
 

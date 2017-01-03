@@ -124,7 +124,7 @@ name (`org.example.foo.MyClass`) enable `useQualifiedName`.
 that are reported by a meter then use can use the measurement options
 on the predicate configuration. This feature is only available if you
 include as a dependency a fork of the metrics project that supports
-this feature, such as http://github.com/mspiegel/metrics.  If the per
+this feature, such as http://github.com/thelastpickle/metrics.  If the per
 measurement filtering is available then it is only applied once a
 metric has passed the top level filter.
 
