@@ -82,7 +82,7 @@ public class MetricPredicateTransformer
 
         /**
          * This will only be invoked if using a fork of the metrics library with support
-         * for filtering on a per-measurement basis - http://github.com/mspiegel/metrics.
+         * for filtering on a per-measurement basis - http://github.com/thelastpickle/metrics.
          * Otherwise this method is not invoked. The @Override annotation is omitted so
          * that compilation is successful using either the metrics library or the fork of the
          * metrics library.
