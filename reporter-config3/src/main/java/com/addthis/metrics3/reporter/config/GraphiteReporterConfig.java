@@ -23,6 +23,9 @@ import com.addthis.metrics.reporter.config.HostPort;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
+import com.codahale.metrics.graphite.GraphiteSender;
+import com.codahale.metrics.graphite.GraphiteUDP;
+import com.codahale.metrics.graphite.PickledGraphite;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,14 +38,39 @@ public class GraphiteReporterConfig extends AbstractGraphiteReporterConfig imple
 
     private void enableMetrics3(HostPort hostPort, MetricRegistry registry)
     {
+        InetSocketAddress addr = new InetSocketAddress(hostPort.getHost(), hostPort.getPort());
+        GraphiteSender sender;
+        if (isPickled())
+        {
+            sender = isUdp() ? newPickledGraphiteUDP(addr) : new PickledGraphite(addr);
+        }
+        else
+        {
+            sender = isUdp() ? new GraphiteUDP(addr) : new Graphite(addr);
+        }
+
         reporter = GraphiteReporter.forRegistry(registry)
                 .convertRatesTo(getRealRateunit())
                 .convertDurationsTo(getRealDurationunit())
                 .prefixedWith(getResolvedPrefix())
                 .filter(MetricFilterTransformer.generateFilter(getPredicate()))
-                .build(new Graphite(new InetSocketAddress(hostPort.getHost(),
-                        hostPort.getPort())));
+                .build(sender);
         reporter.start(getPeriod(), getRealTimeunit());
+    }
+
+    // using reflection until PickledGraphiteUDP is merged, released, and depended upon
+    private static GraphiteSender newPickledGraphiteUDP(InetSocketAddress addr)
+    {
+        try
+        {
+            return (GraphiteSender) Class.forName("com.codahale.metrics.graphite.PickledGraphiteUDP")
+                    .getConstructor(InetSocketAddress.class)
+                    .newInstance(addr);
+        }
+        catch (ReflectiveOperationException ex)
+        {
+            throw new IllegalStateException("PickledGraphiteUDP not found in metrics-graphite jar file");
+        }
     }
 
     @Override
