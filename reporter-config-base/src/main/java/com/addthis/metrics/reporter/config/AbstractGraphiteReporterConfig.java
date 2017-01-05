@@ -17,6 +17,7 @@ package com.addthis.metrics.reporter.config;
 import java.net.InetAddress;
 
 import java.util.List;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,11 @@ import org.slf4j.LoggerFactory;
 public class AbstractGraphiteReporterConfig extends AbstractHostPortReporterConfig
 {
     private static final Logger log = LoggerFactory.getLogger(AbstractGraphiteReporterConfig.class);
+
+    @Valid
+    private boolean udp;
+    @Valid
+    private boolean pickled;
 
     /**
      * Test constructor
@@ -37,6 +43,22 @@ public class AbstractGraphiteReporterConfig extends AbstractHostPortReporterConf
 
     public AbstractGraphiteReporterConfig() {
         super();
+    }
+
+    public void setUdp(boolean udp) {
+        this.udp = udp;
+    }
+
+    public boolean isUdp() {
+        return udp;
+    }
+
+    public void setPickled(boolean pickled) {
+        this.pickled = pickled;
+    }
+
+    public boolean isPickled() {
+        return pickled;
     }
 
     @Override
