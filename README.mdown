@@ -1,15 +1,15 @@
 ## Description
 
-Coda Hale's [Metrics](http://github.com/codahale/metrics) package
+Coda Hale's [Metrics](https://github.com/dropwizard/metrics) package
 makes it easy to create useful metrics so you know what is going on in
 production.  In addition to showing up in the normal Java places
-(JMX), [Metrics](http://github.com/codahale/metrics) supports an
+(JMX), [Metrics](https://github.com/dropwizard/metrics) supports an
 arbitrary number of *Reporters* (where to send the application
 telemetry to make pretty graphs).  [Ganglia](http://ganglia.info/) and
 [Graphite](http://graphite.wikidot.com/) (or both!) are among the most
 popular choices.
 
-However, [Metrics](http://github.com/codahale/metrics) purposefully
+However, [Metrics](https://github.com/dropwizard/metrics) purposefully
 doesn't come with a kitchen sink of support for every dependency
 injection or configuration tool yet devised by Java developers.
 Metrics-Reporter-Config aims to provide a simple way to configure and
