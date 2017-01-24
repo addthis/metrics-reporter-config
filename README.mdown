@@ -124,9 +124,11 @@ name (`org.example.foo.MyClass`) enable `useQualifiedName`.
 that are reported by a meter then use can use the measurement options
 on the predicate configuration. This feature is only available if you
 include as a dependency a fork of the metrics project that supports
-this feature, such as http://github.com/thelastpickle/metrics.  If the per
-measurement filtering is available then it is only applied once a
-metric has passed the top level filter.
+this feature. Forks supporting this feature: for metrics2:
+http://github.com/mspiegel/metrics; for metrics3 (graphite reporter only):
+http://github.com/thelastpickle/metrics.  If the per measurement filtering
+is available then it is only applied once a metric has passed the top
+level filter.
 
     ganglia:
       -
@@ -148,9 +150,11 @@ metric has passed the top level filter.
 ### Graphite and Ganglia
 
 The Graphite and Ganglia reporters supports the "prefix" parameter. Its value will be
-prepended to each metric name sent by reporter. This feature is only available
-in Ganglia if you include as a dependency a fork of the metrics project that supports
-this feature, such as http://github.com/mspiegel/metrics. This value
+prepended to each metric name sent by reporter. This feature is only available if you
+include as a dependency a fork of the metrics project that supports
+this feature. Forks supporting this feature: for metrics2:
+http://github.com/mspiegel/metrics; for metrics3 (graphite reporter only):
+http://github.com/thelastpickle/metrics. This value
 may contain one of the following variable references using "${variable.name}"
 as format.
 
