@@ -153,8 +153,7 @@ The Graphite and Ganglia reporters supports the "prefix" parameter. Its value wi
 prepended to each metric name sent by reporter. This feature is only available if you
 include as a dependency a fork of the metrics project that supports
 this feature. Forks supporting this feature: for metrics2:
-http://github.com/mspiegel/metrics; for metrics3 (graphite reporter only):
-http://github.com/thelastpickle/metrics. This value
+http://github.com/mspiegel/metrics; None yet known for metrics3. This value
 may contain one of the following variable references using "${variable.name}"
 as format.
 
