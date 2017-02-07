@@ -34,6 +34,7 @@ public class ValidateTest
     public void validateSamples() throws IOException
     {
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/console.yaml");
+        ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/console-jvm-metrics-enabled.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/csv.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/ganglia.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/ganglia-gmond.yaml");
