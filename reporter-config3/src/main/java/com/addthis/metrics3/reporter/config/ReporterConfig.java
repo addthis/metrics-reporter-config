@@ -57,6 +57,8 @@ public class ReporterConfig extends AbstractReporterConfig {
     @Valid
     private List<PrometheusReporterConfig> prometheus;
 
+    private boolean jvmMetricsEnabled = false;
+
     public List<ConsoleReporterConfig> getConsole() {
         return console;
     }
@@ -127,6 +129,14 @@ public class ReporterConfig extends AbstractReporterConfig {
 
     public List<PrometheusReporterConfig> getPrometheus() {
         return this.prometheus;
+    }
+
+    public boolean isJvmMetricsEnabled() {
+        return jvmMetricsEnabled;
+    }
+
+    public void setJvmMetricsEnabled(boolean jvmMetricsEnabled) {
+        this.jvmMetricsEnabled = jvmMetricsEnabled;
     }
 
     public boolean enableConsole(MetricRegistry registry) {
@@ -290,7 +300,9 @@ public class ReporterConfig extends AbstractReporterConfig {
         if (!enabled) {
             log.warn("No reporters were succesfully enabled");
         }
-        registerJvmMetrics(registry);
+        if (jvmMetricsEnabled) {
+            registerJvmMetrics(registry);
+        }
         return enabled;
     }
 

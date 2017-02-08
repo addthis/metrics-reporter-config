@@ -1,0 +1,5 @@
+jvmMetricsEnabled: true
+console:
+  -
+    period: 2
+    timeunit: 'SECONDS'
