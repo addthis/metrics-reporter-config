@@ -20,15 +20,16 @@ import java.util.List;
 
 import com.addthis.metrics.reporter.config.AbstractGangliaReporterConfig;
 import com.addthis.metrics.reporter.config.HostPort;
+
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ganglia.GangliaReporter;
 
-import info.ganglia.gmetric4j.gmetric.GMetric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GangliaReporterConfig extends AbstractGangliaReporterConfig implements MetricsReporterConfigThree
-{
+import info.ganglia.gmetric4j.gmetric.GMetric;
+
+public class GangliaReporterConfig extends AbstractGangliaReporterConfig implements MetricsReporterConfigThree {
     private static final Logger log = LoggerFactory.getLogger(GangliaReporterConfig.class);
 
     private GangliaReporter reporter;
@@ -39,34 +40,28 @@ public class GangliaReporterConfig extends AbstractGangliaReporterConfig impleme
          * "ttl" parameter is ignored for GMetric.UDPAddressingMode.UNICAST
          */
         reporter = GangliaReporter.forRegistry(registry)
-        .convertRatesTo(getRealRateunit())
-        .convertDurationsTo(getRealDurationunit())
-        .prefixedWith(groupPrefix)
-        .filter(MetricFilterTransformer.generateFilter(getPredicate()))
-        .build(new GMetric(hostPort.getHost(), hostPort.getPort(),
-                GMetric.UDPAddressingMode.UNICAST, 1));
+                                  .convertRatesTo(getRealRateunit())
+                                  .convertDurationsTo(getRealDurationunit())
+                                  .prefixedWith(groupPrefix)
+                                  .filter(MetricFilterTransformer.generateFilter(getPredicate()))
+                                  .build(new GMetric(hostPort.getHost(), hostPort.getPort(),
+                                                     GMetric.UDPAddressingMode.UNICAST, 1, true, null, getSpoofName()));
 
         reporter.start(getPeriod(), getRealTimeunit());
     }
 
     @Override
-    public boolean enable(MetricRegistry registry)
-    {
+    public boolean enable(MetricRegistry registry) {
         boolean success = setup("com.codahale.metrics.ganglia.GangliaReporter");
-        if (!success)
-        {
+        if (!success) {
             return false;
         }
         List<HostPort> hosts = getFullHostList();
-        for (HostPort hostPort : hosts)
-        {
+        for (HostPort hostPort : hosts) {
             log.info("Enabling GangliaReporter to {}:{}", new Object[]{hostPort.getHost(), hostPort.getPort()});
-            try
-            {
+            try {
                 enableMetrics3(hostPort, registry);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 log.error("Faliure while enabling GangliaReporter", e);
                 return false;
             }
