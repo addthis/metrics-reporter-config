@@ -15,15 +15,14 @@
 package com.addthis.metrics.reporter.config;
 
 
-import java.util.List;
-
 import javax.validation.constraints.NotNull;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AbstractGangliaReporterConfig extends AbstractHostPortReporterConfig
-{
+public class AbstractGangliaReporterConfig extends AbstractHostPortReporterConfig {
     private static final Logger log = LoggerFactory.getLogger(AbstractGangliaReporterConfig.class);
 
     @NotNull
@@ -31,24 +30,21 @@ public class AbstractGangliaReporterConfig extends AbstractHostPortReporterConfi
     @NotNull
     protected boolean compressPackageNames = false;
     protected String gmondConf;
+    protected String spoofName;
 
-    public boolean getCompressPackageNames()
-    {
+    public boolean getCompressPackageNames() {
         return compressPackageNames;
     }
 
-    public void setCompressPackageNames(boolean compressPackageNames)
-    {
+    public void setCompressPackageNames(boolean compressPackageNames) {
         this.compressPackageNames = compressPackageNames;
     }
 
-    public String getGmondConf()
-    {
+    public String getGmondConf() {
         return gmondConf;
     }
 
-    public void setGmondConf(String gmondConf)
-    {
+    public void setGmondConf(String gmondConf) {
         this.gmondConf = gmondConf;
     }
 
@@ -60,35 +56,35 @@ public class AbstractGangliaReporterConfig extends AbstractHostPortReporterConfi
         this.groupPrefix = groupPrefix;
     }
 
-    @Override
-    public List<HostPort> getFullHostList()
-    {
-         if (gmondConf != null)
-         {
-             GmondConfigParser gcp = new GmondConfigParser();
-             List<HostPort> confHosts = gcp.getGmondSendChannels(gmondConf);
-             if (confHosts == null || confHosts.isEmpty())
-             {
-                 log.warn("No send channels found after reading {}", gmondConf);
-             }
-             return confHosts;
-         }
-         else
-         {
-             return getHostListAndStringList();
-         }
+    public String getSpoofName() {
+        return spoofName;
     }
 
-    protected boolean setup(String className)
-    {
-        if (!isClassAvailable(className))
-        {
+    public void setSpoofName(String spoofName) {
+        this.spoofName = spoofName;
+    }
+
+    @Override
+    public List<HostPort> getFullHostList() {
+        if (gmondConf != null) {
+            GmondConfigParser gcp = new GmondConfigParser();
+            List<HostPort> confHosts = gcp.getGmondSendChannels(gmondConf);
+            if (confHosts == null || confHosts.isEmpty()) {
+                log.warn("No send channels found after reading {}", gmondConf);
+            }
+            return confHosts;
+        } else {
+            return getHostListAndStringList();
+        }
+    }
+
+    protected boolean setup(String className) {
+        if (!isClassAvailable(className)) {
             log.error("Tried to enable GangliaReporter, but class {} was not found", className);
             return false;
         }
         List<HostPort> hosts = getFullHostList();
-        if (hosts == null || hosts.isEmpty())
-        {
+        if (hosts == null || hosts.isEmpty()) {
             log.error("No hosts specified, cannot enable GangliaReporter");
             return false;
         }
