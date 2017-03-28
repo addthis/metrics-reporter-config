@@ -30,6 +30,8 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Snapshot;
 import com.codahale.metrics.Timer;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +49,10 @@ public class MetricRegistryDecorator extends Collector {
     public MetricRegistryDecorator(MetricRegistry registry, String job, Map<String, String> labels) {
         this.registry = registry;
 
-        labelNames.add("job");
-        labelValues.add(job);
+        if (StringUtils.isNotBlank(job)) {
+            labelNames.add("job");
+            labelValues.add(job);
+        }
 
         for (Map.Entry<String, String> entry : labels.entrySet()) {
             labelNames.add(entry.getKey());
