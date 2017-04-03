@@ -30,6 +30,8 @@ public class MetricPredicateTransformer
 {
     private static final Logger log = LoggerFactory.getLogger(MetricPredicateTransformer.class);
 
+    private MetricPredicateTransformer () {}
+
     static class PredicateConfigMetricPredicate implements MetricPredicate
     {
         final PredicateConfig predicate;

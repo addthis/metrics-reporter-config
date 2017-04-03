@@ -45,7 +45,6 @@ public class SampleTest {
         for (int i = 0; i < loops; i++) {
             counter.inc();
             meter.mark();
-            Thread.sleep(1000);
             log.debug("runLoop tick");
         }
         log.info("Done with sample data loop");

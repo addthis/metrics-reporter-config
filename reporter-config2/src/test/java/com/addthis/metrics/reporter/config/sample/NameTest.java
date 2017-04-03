@@ -77,7 +77,6 @@ public class NameTest
         }
         config.enableAll();
         counter.inc();
-        Thread.sleep(10000);
     }
 
 }
