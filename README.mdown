@@ -71,7 +71,7 @@ An example config file might look like this:
         timeunit: 'SECONDS'
         hosts:
          - host: 'graphite-server.domain.local'
-            port: 2003
+           port: 2003
 
 
 And then to wire up your app call
