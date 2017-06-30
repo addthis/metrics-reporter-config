@@ -172,7 +172,7 @@ public abstract class AbstractHostPortReporterConfig extends AbstractMetricRepor
         return name.replaceAll("[^a-zA-Z0-9_-]", "_");
     }
 
-    String resolvePrefix(String prefixTemplate) {
+    public String resolvePrefix(String prefixTemplate) {
         Map<String, String> valueMap = new HashMap<String, String>();
         if (localhost != null) {
             String hostname = localhost.getHostName();

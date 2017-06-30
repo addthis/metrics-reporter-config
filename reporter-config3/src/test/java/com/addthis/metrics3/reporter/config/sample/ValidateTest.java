@@ -41,6 +41,7 @@ public class ValidateTest
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/ganglia-gmond-predicate-measurement.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/graphite.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/influxdb.yaml");
+        ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/kafka.yaml");
         ReporterConfig.loadFromFileAndValidate("src/test/resources/sample/multi.yaml");
     }
 

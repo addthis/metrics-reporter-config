@@ -115,7 +115,6 @@
       <version>3.1</version>
     </dependency>
   </dependencies>
-
   <repositories>
     <!-- re-specify central repo to ensure it's the default -->
     <repository>
@@ -127,6 +126,11 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <!-- kafka reporter -->
+	<repository>
+	  <id>jitpack.io</id>
+	  <url>https://jitpack.io</url>
+	</repository>
     <!-- riemann reporter -->
     <repository>
       <id>clojars.org</id>
