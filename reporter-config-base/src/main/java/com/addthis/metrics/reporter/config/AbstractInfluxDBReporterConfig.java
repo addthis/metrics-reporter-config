@@ -50,6 +50,8 @@ public class AbstractInfluxDBReporterConfig extends AbstractHostPortReporterConf
 
     private Map<String, String> resolvedTags;
 
+    private boolean groupGauges;
+    
     @Override
     public List<HostPort> getFullHostList()
     {
@@ -118,5 +120,13 @@ public class AbstractInfluxDBReporterConfig extends AbstractHostPortReporterConf
     public void setReadTimeout(int readTimeout)
     {
         this.readTimeout = readTimeout;
+    }
+
+    public boolean getGroupGauges() {
+        return groupGauges;
+    }
+
+    public void setGroupGauges(boolean groupGauges) {
+        this.groupGauges = groupGauges;
     }
 }
