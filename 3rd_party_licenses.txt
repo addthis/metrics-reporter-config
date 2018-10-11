@@ -1,0 +1,197 @@
+
+ LICENSES FOR THIRD-PARTY COMPONENTS 
+
+===============================================================================
+   
+The following sections list licensing information for
+libraries included with the metrics-reporter-config source and components
+used to test metrics-reporter-config. 
+
+The following software may be included in this product:
+
+===============================================================================
+
+        Guava: Google Core Libraries For Java » 17.0
+
+Guava: Google Core Libraries For Java » 17.0 uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works.
+
+http://www.apache.org/licenses/LICENSE-2.0.txt
+
+--------------------------------------------------------------------------- 
+
+        SLF4J Simple Binding 
+
+        SLF4J API Module 
+
+ Copyright (c) 2004-2007 QOS.ch
+
+SLF4J Simple Binding 1.7.7 and SLF4J API Module 1.7.7 use MIT license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works. 
+
+
+https://opensource.org/licenses/mit-license.php
+
+--------------------------------------------------------------------------- 
+
+        SnakeYAML » 1.12
+
+SnakeYAML » 1.12 uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works.
+
+https://bitbucket.org/asomov/snakeyaml/src/ec5a1d0096b3aeff131a5f09969736b216ba5c2f/LICENSE.txt?at=default&fileviewer=file-view-default
+
+---------------------------------------------------------------------------
+
+        Hibernate Validator Engine Relocation Artifact » 4.3.0.Final
+
+copyright
+
+Alaa Nassef
+Carlos Vara
+Dag Hovland
+Davide Marchignoli
+Emmanuel Bernard
+Federico
+Federico Mancini
+Gavin King
+George Gastaldi
+Gerhard Petracek
+Gunnar Morling
+Hardy Ferentschik
+Henno Vermeulen
+Juraci Krohling
+Justin Nauman
+Kevin Pollet
+kevinpollet
+Paolo Perrotta
+Pete Muir
+Shane Bryzak
+Steve Ebersole
+Strong Liu
+
+Hibernate Validator Engine Relocation Artifact » 4.3.0.Final uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works.
+
+https://github.com/hibernate/hibernate-validator/blob/4.3/license.txt
+
+--------------------------------------------------------------------------- 
+
+        Mockito » 1.9.0
+
+The MIT License
+
+Copyright (c) 2007 Mockito contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+https://github.com/mockito/mockito/blob/release/2.x/LICENSE
+
+---------------------------------------------------------------------------
+
+        Apache Commons Lang » 3.1
+
+Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works. 
+
+https://www.apache.org/licenses/LICENSE-2.0.txt
+
+---------------------------------------------------------------------------
+
+        JUnit
+
+JUnit » 4.11 uses Eclipse Public License - Version 1.0, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works. 
+
+
+http://www.eclipse.org/org/documents/epl-v10.php
+
+
+--------------------------------------------------------------------------- 
+
+        Metrics Core Library » 2.2.0
+        Metrics Graphite Support » 2.2.0
+        Metrics Ganglia Support » 2.2.0
+
+
+Copyright 2010-2012 Coda Hale and Yammer, Inc. 
+
+Metrics Core Library 2.2.0 uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works. 
+
+  
+
+http://www.apache.org/licenses/LICENSE-2.0.html
+
+--------------------------------------------------------------------------- 
+
+        Riemann Java Client » 0.2.10
+
+Riemann Java Client » 0.2.10 uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works.
+
+https://github.com/riemann/riemann-java-client/blob/master/LICENSE
+
+
+--------------------------------------------------------------------------- 
+
+        Metrics StatsD Common » 4.1.2
+        Metrics2 StatsD » 4.1.2
+        Metrics3 StatsD » 4.1.2
+
+
+Copyright 2010-2012 Coda Hale and Yammer, Inc.
+
+Metrics StatsD Common » 4.1.2 and Metrics2 StatsD » 4.1.2 uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works.
+
+https://github.com/ReadyTalk/metrics-statsd/blob/master/LICENSE
+
+--------------------------------------------------------------------------- 
+
+        Zabbix Sender » 0.0.3
+
+Zabbix Sender » 0.0.3 uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works.
+
+https://github.com/hengyunabc/zabbix-sender/blob/master/LICENSE.txt
+
+--------------------------------------------------------------------------- 
+
+        Metrics Core » 3.1.0
+        JVM Integration For Metrics » 3.1.0
+        Ganglia Integration For Metrics » 3.1.0    
+        Graphite Integration For Metrics » 3.1.0
+
+Copyright (c) 2010-2013 Coda Hale, Yammer.com
+
+Published under Apache Software License 2.0, see LICENSE
+
+https://github.com/dropwizard/metrics/blob/3.1-maintenance/LICENSE
+
+--------------------------------------------------------------------------- 
+
+        InfluxDb Integration For DropWizard » 1.1.7
+
+Copyright 2015 iZettle AB
+
+InfluxDb Integration For DropWizard » 1.1.7 uses the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works.
+
+https://github.com/iZettle/dropwizard-metrics-influxdb/blob/master/LICENSE
+
+--------------------------------------------------------------------------- 
+
+        Prometheus Java Simpleclient Pushgateway
+        Prometheus Java Simpleclient Servlet 
+
+Prometheus Java Simpleclient Pushgateway 0.0.16 and Prometheus Java Simpleclient Servlet 0.0.16 use the Apache 2.0 license, shown below. See the License for details about distribution rights, and the specific rights regarding derivate works. 
+
+  
+
+http://www.apache.org/licenses/LICENSE-2.0.html
