@@ -23,13 +23,25 @@
     <artifactId>reporter-config3</artifactId>
     <name>metrics reporter config 3.x</name>
     <description />
-
     <dependencies>
         <dependency>
             <groupId>com.addthis.metrics</groupId>
             <artifactId>reporter-config-base</artifactId>
             <version>3.2.3-SNAPSHOT</version>
         </dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.8.2.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.zookeeper</groupId>
+					<artifactId>zookeeper</artifactId>
+				</exclusion>
+			</exclusions>
+            <scope>compile</scope>
+            <optional>true</optional>
+		</dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
@@ -115,6 +127,14 @@
             <artifactId>simpleclient_servlet</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- kafka -->
+	    <dependency>
+	      <groupId>com.github.mstump</groupId>
+	      <artifactId>metrics-kafka</artifactId>
+          <version>c804bf1874</version>
+          <optional>true</optional>
+		  <scope>compile</scope>
+	    </dependency>
     </dependencies>
 
 </project>

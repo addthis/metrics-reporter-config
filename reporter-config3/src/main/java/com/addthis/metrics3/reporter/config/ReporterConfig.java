@@ -43,6 +43,8 @@ public class ReporterConfig extends AbstractReporterConfig {
     @Valid
     private List<CsvReporterConfig> csv;
     @Valid
+    private List<KafkaReporterConfig> kafka;
+    @Valid
     private List<GangliaReporterConfig> ganglia;
     @Valid
     private List<GraphiteReporterConfig> graphite;
@@ -73,6 +75,14 @@ public class ReporterConfig extends AbstractReporterConfig {
 
     public void setCsv(List<CsvReporterConfig> csv) {
         this.csv = csv;
+    }
+
+    public List<KafkaReporterConfig> getKafka() {
+        return kafka;
+    }
+
+    public void setKafka(List<KafkaReporterConfig> kafka) {
+        this.kafka = kafka;
     }
 
     public List<GangliaReporterConfig> getGanglia() {
@@ -161,6 +171,20 @@ public class ReporterConfig extends AbstractReporterConfig {
         }
         for (CsvReporterConfig csvConfig : csv) {
             if (!csvConfig.enable(registry)) {
+                failures = true;
+            }
+        }
+        return !failures;
+    }
+
+    public boolean enableKafka(MetricRegistry registry) {
+        boolean failures = false;
+        if (kafka == null) {
+            log.debug("Asked to enable kafka, but it was not configured");
+            return false;
+        }
+        for (KafkaReporterConfig kafkaConfig : kafka) {
+            if (!kafkaConfig.enable(registry)) {
                 failures = true;
             }
         }
@@ -276,6 +300,9 @@ public class ReporterConfig extends AbstractReporterConfig {
         if (csv != null && enableCsv(registry)) {
             enabled = true;
         }
+        if (kafka != null && enableKafka(registry)) {
+            enabled = true;
+        }
         if (ganglia != null && enableGanglia(registry)) {
             enabled = true;
         }
@@ -328,6 +355,7 @@ public class ReporterConfig extends AbstractReporterConfig {
     public void report() {
         report(console);
         report(csv);
+        report(kafka);
         report(ganglia);
         report(graphite);
         report(influxdb);

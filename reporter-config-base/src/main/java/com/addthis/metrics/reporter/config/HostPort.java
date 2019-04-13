@@ -54,6 +54,9 @@ public class HostPort
     {
         this.port = port;
     }
+
+    public String toString()
+    {
+        return String.format("%s:%d", this.host, this.port);
+    }
 }
-
-

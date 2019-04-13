@@ -127,6 +127,16 @@ public class SampleTest {
     }
 
     @Test
+    public void sampleKafka() throws Exception {
+        ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/kafka.yaml");
+        System.out.println(yaml.dump(config));
+        log.info("Sample Kafka");
+        assertNotNull(config.getKafka());
+        assertEquals(1, config.getKafka().size());
+        runLoop(config);
+    }
+
+    @Test
     public void sampleStatsDMulti() throws Exception {
         ReporterConfig config = ReporterConfig.loadFromFile("src/test/resources/sample/statsd-multi.yaml");
         System.out.println(yaml.dump(config));
@@ -153,5 +163,4 @@ public class SampleTest {
         log.info("Multi Reporter");
         runLoop(config);
     }
-
 }
